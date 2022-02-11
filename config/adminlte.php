@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Auth;
 return [
 
     /*
@@ -45,9 +45,9 @@ return [
     |
     */
 
-    'logo' => '<b>Key</b>Kuy',
-    'logo_img' => 'assets/download.png',
-    'logo_img_class' => 'brand-image-xs mr-3 rounded-circle',
+    'logo' => '<b>Omah Kunci</b>',
+    'logo_img' => 'assets/Group 1.svg',
+    'logo_img_class' => 'brand-image-xs mr-2 ml-2 rounded-circle',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image',
     'logo_img_alt' => 'AdminLTE',
@@ -86,7 +86,7 @@ return [
     'layout_topnav' => null,
     'layout_boxed' => null,
     'layout_fixed_sidebar' => null,
-    'layout_fixed_navbar' => true,
+    'layout_fixed_navbar' => false,
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
 
@@ -127,11 +127,11 @@ return [
     'classes_content_wrapper' => 'bg-grey',
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-light-primary elevation-4',
-    'classes_sidebar_nav' => '',
-    'classes_topnav' => 'navbar-white navbar-light',
-    'classes_topnav_nav' => 'navbar-expand',
-    'classes_topnav_container' => 'container',
+    'classes_sidebar' => 'sidebar-light-primary elevation-2 bg ',
+    'classes_sidebar_nav' => 'bgnavbar',
+    'classes_topnav' => ' navbar-light bgnavbar navhide',
+    'classes_topnav_nav' => 'navbar-expand bgnavbar',
+    'classes_topnav_container' => 'container  bgnavbar ',
 
     /*
     |--------------------------------------------------------------------------
@@ -167,7 +167,7 @@ return [
     |
     */
 
-    'right_sidebar' => false,
+    'right_sidebar' => true,
     'right_sidebar_icon' => 'fas fa-cogs',
     'right_sidebar_theme' => 'light',
     'right_sidebar_slide' => true,
@@ -238,32 +238,34 @@ return [
 
         // Sidebar items:
 
-        [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
-        ],
+      
 
-        ['header' => 'Aplikasi'],
+        // ['header' => 'Aplikasi'],
         [
             'text' => 'Dashboard',
             'url'  => '/home',
-            'icon' =>'fa fa-home',
+            'icon' =>'',
         ],
         [
             'text' => 'Kasir',
             'url'  => '/kasir',
-            'icon' =>'fas fa-cash-register',
+            'icon' =>'',
+            'role' =>'kasir',
         ],
         [
             'text' => 'Transaksi',
             'url'  => '/transaksi',
-            'icon' => 'fas fa-fw fa-book',
+            'icon' => '',
         ],
         [
             'text' => 'Petunjuk',
             'url'  => '/userguide',
-            'icon' => 'fas fa-fw fa-book',
+            'icon' => '',
+        ],
+        [
+            'text' => 'Produk',
+            'url'  => '/produk',
+            'icon' => '',
         ],
     ],
 

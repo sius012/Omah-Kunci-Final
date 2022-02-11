@@ -12,37 +12,44 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('cashier');
+Route::get('/', function(){
+    return view('welcome');
 });
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
+// Route Untuk Omah Kunci
 
-Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
-
-Auth::routes();
-
-
-
-Route::middleware('auth')->group(function () {
-    Route::get('/kasir', 'CassierController@index')->name('trans');
-    Route::post('/tambah', 'CassierController@tambah');
-    Route::post('/tambahbarang', 'CassierController@tambahdata');
-    Route::post('/hapustrans', 'CassierController@hapustrans');
-    Route::get('kasir/hapus/{id}', 'CassierController@hapus')->name('hapus');
-    Route::get('kasir/hapustrans/{idtrans}', 'CassierController@hapustransaksi')->name('hapustrans');
-    Route::get('/notas', function(){
-        return view('nota.nota');
-    });
-    Route::post('/print', 'CassierController@print')->name('cetak');
-    Route::get('/reload', 'CassierController@reload')->name('reload');
-    Route::get('/transaksi', 'CassierController@show')->name("transaksi");
-    Route::get('/userguide', function(){
-        return view('guide.guide');
-    });
+Route::get('/home', function () {
+    return view('home');
 });
+
+Route::get('/kasir', function(){
+    return view('kasir');
+})->name("kasir");
+Route::post('/cari', 'KasirController@cari')->name('cari');
+Route::post('/tambahItem', 'KasirController@tambahTransaksiDetail');
+
+Route::post('/selesaitransaksi', 'KasirController@selesai')->name('selesai');
+Route::get('/selesai', 'KasirController@reset');
+Route::post('/loader', 'KasirController@loader');
+Route::get('/resettransaction', 'KasirController@resetTransaction');
+Route::post('/removedetail', 'KasirController@removedetail');
+
+
+Route::get('/transaksi', 'transaksiController@index');
+Route::get('/produk', 'ProdukController@index');
+Route::post('/tambahbarang', 'ProdukController@tambahbarang');
+Route::post('/hapusbarang', 'ProdukController@hapusbarang');
+Route::post('/loadproduk', 'ProdukController@loadProduk');
+Route::post('/getprodukinfo', 'ProdukController@loadSingleProduk');
+Route::post('/updateproduk', 'ProdukController@updatebarang');
+
+
+
+Route::get('/notabesar', 'PreorderController@index');
+Route::post('/tambahpreorder', 'PreorderController@tambahtransaksi');
+
+Route::post('/loadsingletrans', 'transaksiController@showDetail');
+
+Route::post('/loaddatanb', 'PreorderController@loaddata');
