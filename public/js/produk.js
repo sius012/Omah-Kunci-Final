@@ -1,4 +1,7 @@
 $(document).ready(function(){   
+    $("button[data-target='#modalproduk']").click(function(e){
+        $("#submitterproduk").attr('action', '/tambahbarang');
+    });
     function getProdukInfo(id_produk){
         var produkInfo;
         $.ajax({
@@ -13,11 +16,12 @@ $(document).ready(function(){
             url: "/getprodukinfo", 
             success: function(data){
                 produkInfo = data;
-                $("#kode-edit").val(data["kode_produk"]);
-                $("#nama-edit").val(data["nama_produk"]);
-                $("#merek-edit").val(data["merk"]);
-                $("#kategori-edit").val(data["id_kategori"]);
-                $("#harga-edit").val(data["harga"]);
+                $("#kode-produk").val(data["kode_produk"]);
+                $("#nama-produk").val(data["nama_produk"]);
+                $("#merek-produk").val(data["merk"]);
+                $("#kategori-produk").val(data["id_kategori"]);
+                $("#harga-produk").val(data["harga"]);
+                $("#satuan-produk").val(data["stn"]);
                 
             },
             error: function(response,){
@@ -39,9 +43,9 @@ $(document).ready(function(){
             url: "/loadproduk", 
             success: function(data){
                 var row = data.map(function(datos){
-                    return "<tr>"+"<td>"+datos["kode_produk"]+"</td>"+"<td>"+datos["nama_produk"]+"</td>"+"<td>"+datos["merk"]+"</td>"+"<td>"+datos["kategori"]+"</td>"+"<td>"+datos["harga"]+"</td>"+"<td align='center'><button class='btn btn-info mr-3 editbarang'><a href='' kode-produk='"+datos["kode_produk"]+"'><i class='fa fa-edit'></i></a></button><button class='btn btn-danger hapusbarang'><a href='' kode-produk = '"+datos["kode_produk"]+"'><i class='fa fa-trash'></i></a></button>"+"</tr>";
+                    return "<tr>"+"<td>"+datos["kode_produk"]+"</td>"+"<td>"+datos["nama_produk"]+"</td>"+"<td>"+datos["merk"]+"</td>"+"<td>"+datos["kategori"]+"</td>"+"<td>"+datos["harga"]+"<td>"+datos['stn']+"</td>"+"<td align='center'><button class='btn btn-info mr-3 editbarang'><a href='' kode-produk='"+datos["kode_produk"]+"'><i class='fa fa-edit'></i></a></button><button class='btn btn-danger hapusbarang'><a href='' kode-produk = '"+datos["kode_produk"]+"'><i class='fa fa-trash'></i></a></button>"+"</tr>";
                 });
-                $("#isiproduk").html(row);
+                $("#produkfiller").html(row);
             },
             error: function(response,){
                 alert("ada yang salah");
@@ -50,17 +54,21 @@ $(document).ready(function(){
     }
 
     
-    $("#submitter").submit(function(e){
-
+    $("#submitterproduk").submit(function(e){
+        
+        e.preventDefault();
+        let url = $(this).attr("action");
 
         var dataform = {
-            kode_produk : $("#kode").val(),
-            nama_produk : $("#nama").val(),
-            merek_produk : $("#merek").val(),
-            kategori_produk : $("#kategori").val(),
-            harga_produk : $("#harga").val(),
+            kode_produk : $("#kode-produk").val(),
+            nama_produk : $("#nama-produk").val(),
+            merek_produk : $("#merek-produk").val(),
+            kategori_produk : $("#kategori-produk").val(),
+            harga_produk : $("#harga-produk").val(),
+            satuan_produk : $("#satuan-produk").val(),
+
         };
-        e.preventDefault();
+      
 
         $.ajax({
             headers: {
@@ -69,20 +77,22 @@ $(document).ready(function(){
              data: dataform,
             
             type: "POST",
-            url: "/tambahbarang", 
+            url: url, 
             success: function(data){
-                Swal.fire(
-                    {
-                        title: "Produk berhasil ditambahkan berhasil"
-                    }
-                );
+                alert('berhasil');  
 
                 //clear the modal
-                $(".tambahbarangform input").val("");
+                if(url == "/updateproduk"){
+                
+                
+                $("#submitterproduk").modal("hide");
+                }else{
+                    $(".tambahbarangform input").val("");
+                }
                 loadProduk();
             },
-            error: function(response,){
-                alert("cek apache server");
+            error: function(err){
+                alert(err.responseText);
             }
         });
     });
@@ -119,7 +129,7 @@ $(document).ready(function(){
     }
 
 
-    $("#isiproduk").on("click", "tr td .hapusbarang", function(e){
+    $("#produkfiller").on("click", "tr td .hapusbarang", function(e){
         e.preventDefault();
         Swal.fire({
             title: 'Apakah anda yakin ingin menghapus',
@@ -141,47 +151,16 @@ $(document).ready(function(){
 
 
 
-    $("#isiproduk").on("click", "tr td .editbarang", function(e){
-        $("#modaledit").modal("show");
+    $("#produkfiller").on("click", "tr td .editbarang", function(e){
+        $("#modalproduk").modal("show");
+        $("#submitterproduk").attr('action', '/updateproduk');
 
         getProdukInfo($(e.target).children("a").attr('kode-produk'));
     });
 
-    $("#submitteredit").submit(function(e){
-        e.preventDefault();
-
-        var dataform = {
-            kode_produk : $("#kode-edit").val(),
-            nama_produk : $("#nama-edit").val(),
-            merek_produk : $("#merek-edit").val(),
-            kategori_produk : $("#kategori-edit").val(),
-            harga_produk : $("#harga-edit").val(),
-        };
-
-
-        $.ajax({
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-             }, 
-             data: dataform,
-            
-            type: "POST",
-            url: "/updateproduk", 
-            success: function(data){
-                Swal.fire(
-                    {
-                        title: "Produk berhasil  diedit"
-                    }
-                );
-
+    
                 //clear the modal
-                $(".tambahbarangform input").val("");
-                loadProduk();
-                $("#modaledit").modal("hide");
-            },
-            error: function(response,){
-                alert(dataform.harga_produk);
-            }
-        });
-    });
+               
+          
+    
 });

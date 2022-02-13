@@ -53,3 +53,5 @@ Route::post('/tambahpreorder', 'PreorderController@tambahtransaksi');
 Route::post('/loadsingletrans', 'transaksiController@showDetail');
 
 Route::post('/loaddatanb', 'PreorderController@loaddata');
+
+Route::get('/stok', 'StokController@index')->name('stok');

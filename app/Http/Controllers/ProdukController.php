@@ -33,8 +33,9 @@ class ProdukController extends Controller
         $merek_produk = $req->input('merek_produk');
         $id_kat = $req->input('kategori_produk');
         $harga_produk = $req->input('harga_produk');
+        $satuan_produk = $req->input('satuan_produk');
 
-        DB::table('produk')->insert(["kode_produk"=>$kode_produk,"nama_produk"=>$nama_produk,"merk" => $merek_produk, "id_kategori"=> $id_kat, "harga" => $harga_produk]);
+        DB::table('produk')->insert(["kode_produk"=>$kode_produk,"nama_produk"=>$nama_produk,"merk" => $merek_produk, "id_kategori"=> $id_kat, "harga" => $harga_produk, 'stn' => $satuan_produk]);
 
         $getProduk = DB::table('produk')->join('kategori', 'kategori.id_kategori', '=', 'produk.id_kategori')->get();
         return json_encode(["produk" => $getProduk]);
