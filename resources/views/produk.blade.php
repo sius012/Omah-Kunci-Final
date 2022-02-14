@@ -103,13 +103,13 @@
 <!-- tabs -->
 <ul class="nav nav-tabs" id="myTab" role="tablist">
   <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Produk</button>
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Merek</button>
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Kategori</button>
   </li>
 </ul>
 <div class="tab-content" id="myTabContent">
@@ -132,7 +132,31 @@
 
 
   </div>
-  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+  <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#modalmerek"> Tambah Merek Baru</button> 
+  
+  
+  <table class="table table-striped table-light mt-5">
+  <thead>
+    <tr>
+      <th>Nomor</th><th>Nama Merek</th><td></td>
+    </tr>
+  </thead>
+  <tbody id="merekfiller">
+  @foreach($merek as $merks)
+    <tr>
+      <td>{{$merks->nomer}}</td><td>{{$merks->merek}}</td><td align='right'><button class="btn btn-warning merekedit" nomer="{{$merks->nomer}}"><i class="fa fa-edit"></i></button><button class="btn btn-danger m-3 merekhapus" nomer="{{$merks->nomer}}"><i class="fa fa-trash"></i></button></td>
+    </tr>
+
+  @endforeach
+  </tbody>
+  </table>
+  
+  
+  
+  
+  
+  </div>
   <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
 </div>
 <!-- endtabs -->
@@ -145,7 +169,7 @@
 
 
 
-
+<!-- modal merek -->
 <div class="modal fade" id="modalmerek" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -154,14 +178,14 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-      <form action="/lol" id="submittermerek">
+      <form action="/tambahmerek" id="submittermerek">
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Nomer Merek</label>
-    <input type="text" class="form-control" id="nomermerek" aria-describedby="emailHelp" disabled>
+    <input type="text" class="form-control" id="nomermerek" aria-describedby="emailHelp">
   </div>
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Merek</label>
-    <input type="text" class="form-control" id="nomerba" aria-describedby="emailHelp" required>
+    <input type="text" class="form-control" id="namamerek" aria-describedby="emailHelp" required>
   </div>
   
 
@@ -200,7 +224,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Ubah</button>
+        <button type="submit" class="btn btn-primary">Tambah</button>
       </div>
       </form>
     </div>

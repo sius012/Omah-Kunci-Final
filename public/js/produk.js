@@ -2,6 +2,32 @@ $(document).ready(function(){
     $("button[data-target='#modalproduk']").click(function(e){
         $("#submitterproduk").attr('action', '/tambahbarang');
     });
+
+    function hapusmerek(nomer){
+        alert(nomer);
+        $.ajax({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             }, 
+            data:{
+                nomer: nomer
+            },
+            type: "POST",
+            dataType: "JSON",
+            url: "/hapusmerek", 
+            success: function(data){
+               Swal.fire({
+                   title: "Berhasil dihapus"
+               });
+                
+            },
+            error: function(response,){
+                alert(response.text);
+                produkInfo = "notshow";
+            }
+        });
+    }
+
     function getProdukInfo(id_produk){
         var produkInfo;
         $.ajax({
@@ -32,6 +58,31 @@ $(document).ready(function(){
         
         
     }
+
+    function getMerekInfo(id_merek){
+    
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN' : $("meta[name='csrf-token']").attr('content')
+            },
+            data: {
+              nomer : id_merek 
+            },
+            url: "/getmerekinfo",
+            type: "POST",
+            dataType: "JSON",
+            success: function(data){
+                $("#nomermerek").val(data[0]['nomer']),
+                $("#namamerek").val(data[0]['merek'])
+            },
+            error: function(){
+                alert('lil');
+            }
+
+        });
+    }
+
+
     function loadProduk(){
         $.ajax({
             headers: {
@@ -156,11 +207,69 @@ $(document).ready(function(){
         $("#submitterproduk").attr('action', '/updateproduk');
 
         getProdukInfo($(e.target).children("a").attr('kode-produk'));
+        
     });
 
     
                 //clear the modal
                
+    $("button[data-target='#modalmerek']").click(function(){
+        $(".tambahbarangform input").val("");
+        $("#nomermerek").removeAttr('disabled');
+        $("submittermerek").attr('action','/tambahmerek');
+    });
+
+    $("#submittermerek").submit(function(e){
+        let url = $(this).attr('action');
+        e.preventDefault();
+
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN" : $("meta[name='csrf-token']").attr('content')
+            },
+            data: { data:{
+               "nomer": $("#nomermerek").val(),
+                "merek": $("#namamerek").val()
+            }
+            },
+            url : url,
+            type : "POST",
+            dataType : "JSON",
+            success : function(){
+                if(url == "/ubahmerek"){
+                    alert('merek berhasil diubah');
+                }
+            },
+            error: function(err){
+                alert(err.responseText);
+            }
+        });
+    });
+
+    $("#merekfiller").on('click', '.merekedit', function(e){
+        getMerekInfo($(e.target).attr('nomer') == null ? $(e.target).closest('button').attr('nomer') : $(e.target).attr('nomer'));
+
+        $("#modalmerek").modal('show');
+        $("#nomermerek").attr('disabled', 'disabled');
+        $("#submittermerek").attr('action', '/ubahmerek');
+    });
+
+    $("#merekfiller").on('click', '.merekhapus', function(e){
+
+        Swal.fire({
+            title: 'Apakah anda yakin ingin menghapus',
+            showDenyButton: true,
+            confirmButtonText: 'Batalkan',
+            denyButtonText: `Hapus`,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                
+            } else if (result.isDenied) {
+                hapusmerek($(e.target).attr('nomer') == null ? $(e.target).closest('button').attr('nomer') : $(e.target).attr('nomer'));
+            }
+          });
+    });
           
     
 });

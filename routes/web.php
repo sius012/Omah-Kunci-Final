@@ -55,3 +55,9 @@ Route::post('/loadsingletrans', 'transaksiController@showDetail');
 Route::post('/loaddatanb', 'PreorderController@loaddata');
 
 Route::get('/stok', 'StokController@index')->name('stok');
+
+Route::post('/tambahmerek', 'ProdukController@tambahmerek');
+
+Route::post('/getmerekinfo', 'ProdukController@getmerekinfo');
+Route::post('/ubahmerek', 'ProdukController@ubahmerek');
+Route::post('/hapusmerek', 'ProdukController@hapusmerek');

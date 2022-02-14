@@ -10,12 +10,19 @@ use function GuzzleHttp\json_encode;
 
 
 
+
 class ProdukController extends Controller
 {
     public function loadSingleProduk(Request $req){
-        $produk = DB::table('produk')->join('kategori', 'produk.id_kategori', '=', 'kategori.id_kategori')->where('kode_produk', $req->input('kode_produk'))->first();
+        $produk = DB::table('produk')->join('kategori', 'produk.id_kategori', '=', 'kategori.id_kategori')->join('merek', 'produk.merk', '=','merek.nomer')->where('kode_produk', $req->input('kode_produk'))->first();
         return json_encode($produk);
     }
+
+    public function getmerekinfo(Request $req){
+        $datamerek = DB::table('merek')->where('nomer', $req->input('nomer'))->get();
+        return json_encode($datamerek);
+    }
+
     public function loadProduk(){
         $produk = DB::table('produk')->join('kategori', 'produk.id_kategori', '=', 'kategori.id_kategori')->get();
         return json_encode($produk);
@@ -57,6 +64,27 @@ class ProdukController extends Controller
         $data = $req->input('data');
 
         DB::table('transaksi')->insert(['id_kategori' => $data['id_kategori'], 'kategori' => $data['kategori']]);
+    }
+
+    public function tambahmerek(Request $req){
+        $data = $req->input('data');
+        DB::table('merek')->insert($data);
+
+        $getmerek =  DB::table('merek')->get();
+        return json_encode(['merek' => $getmerek]);
+    }
+
+    public function ubahmerek(Request $req){
+        $data = $req->input('data');
+        DB::table('merek')->where('nomer', $data['nomer'])->update($data);
+        $getmerek =  DB::table('merek')->get();
+        return json_encode(['merek' => $getmerek]);
+    }
+    public function hapusmerek(Request $req){
+        $data = $req->input('nomer');
+        DB::table('merek')->where('nomer', $data)->delete();
+        $getmerek =  DB::table('merek')->get();
+        return json_encode(['merek' => $getmerek]);
     }
 
 }
