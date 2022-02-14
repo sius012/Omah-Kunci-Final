@@ -61,9 +61,9 @@ class ProdukController extends Controller
     }
 
     public function tambahkategori(Request $req){
-        $data = $req->input('data');
+        $data = $req->input('kat');
 
-        DB::table('transaksi')->insert(['id_kategori' => $data['id_kategori'], 'kategori' => $data['kategori']]);
+        DB::table('kategori')->insert($data);
     }
 
     public function tambahmerek(Request $req){
@@ -86,5 +86,8 @@ class ProdukController extends Controller
         $getmerek =  DB::table('merek')->get();
         return json_encode(['merek' => $getmerek]);
     }
+
+
+
 
 }

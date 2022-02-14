@@ -5,7 +5,10 @@
 @section('content_header')
     <h1 class="m-0 text-dark">Tanda Terima</h1>
 @stop
-    
+@section('adminlte_js')
+<script src="{{ asset('js/transaksi.js') }}"></script>
+<script src="{{ asset('js/notabesar.js') }}"></script>
+@stop
 @section('content')
 <form id="preorderform">
 <div class="row" id="baseinputnb">
@@ -60,14 +63,15 @@
                         <button class="selesai ml-4" href="#" type="submit">Selesai</button>
                     </div>
                 </div>
+                </form>
                 <div class="row options">
                     <div class="col-2">
-                        <button class="reset ml-4" href="#" id="reset-button">Reset</button>
+                        <a href="" class="btn btn-danger" id="resetbutton">RESET</a>
                     </div>
                 </div>
             </div>
         </div>
-</form>
+
 
 
 @stop

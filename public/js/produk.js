@@ -3,6 +3,31 @@ $(document).ready(function(){
         $("#submitterproduk").attr('action', '/tambahbarang');
     });
 
+    $("#submitterkategori").submit(function(e){
+        let url = $(this).attr('action');
+        e.preventDefault();
+        let kat = {
+            'id_kategori' : $("#nokat-input").val(),
+            'kategori' : $('#kategori-input').val(),
+        }
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN' : $("meta[name='csrf-token'").attr('content')
+            },
+            data: {
+                kat: kat
+            },
+            url : url,
+            type: "POST",
+            success: function(data){
+                alert('databerhasilditambahkan');
+            },
+            error: function(err){
+                alert(err.responseText);
+            }
+        });
+    }); 
+
     function hapusmerek(nomer){
         alert(nomer);
         $.ajax({
@@ -271,5 +296,11 @@ $(document).ready(function(){
           });
     });
           
+    $('button[data-target="#modalkategori"]').click(function(){
+        $("#submitterkategori").attr('action','/tambahkategori');
+    });
+
+  
+
     
 });

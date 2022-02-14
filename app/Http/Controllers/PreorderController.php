@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+
 class PreorderController extends Controller
 {
     public function loaddata(Request $req){
@@ -37,14 +38,16 @@ class PreorderController extends Controller
 
         $judulopsi = $req->input('judulopsi');
         $ketopsi = $req->input('ketopsi');
-
+       
 
         $id;
         if($req->session()->has('id_nb')){
             $id = $req->session()->get('id_nb');
             DB::table('nota_besar')->where('id_transaksi', $id)->update($req->input('formData'));
         }else{
-            $id = DB::table('nota_besar')->insertGetId($req->input('formData'));
+            $counter = DB::table('nota_besar')->count();
+            $counter = str_pad($counter+1, 6, '0', STR_PAD_LEFT);
+            $id = DB::table('nota_besar')->insertGetId(array_merge($req->input('formData'),['no_nota' => $counter]));
         }
 
     
@@ -70,5 +73,9 @@ class PreorderController extends Controller
 
 
         
+    }
+
+    public function resettrans(Request $req){
+        $req->session()->forget('id_nb');
     }
 }

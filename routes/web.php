@@ -61,3 +61,17 @@ Route::post('/tambahmerek', 'ProdukController@tambahmerek');
 Route::post('/getmerekinfo', 'ProdukController@getmerekinfo');
 Route::post('/ubahmerek', 'ProdukController@ubahmerek');
 Route::post('/hapusmerek', 'ProdukController@hapusmerek');
+
+Route::post('/tambahkategori', 'ProdukController@tambahkategori');
+
+
+
+
+Route::post('/tambahstok', 'StokController@tambahstok');\
+Route::post('/loadsinglestok', 'StokController@loadsinglestok');
+
+Route::post('/editstok', 'StokController@editstok');
+
+
+Route::get('/transaksipreorder', 'TransaksiPreorder@index');
+Route::post('/resettrans', 'PreorderController@resettrans');

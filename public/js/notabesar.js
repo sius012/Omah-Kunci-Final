@@ -122,4 +122,21 @@ $(document).ready(function(){
         });
        
     });
+
+    $("#resetbutton").click(function(e){
+        e.preventDefault();
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN' : $("meta[name='csrf-token'").attr('content')
+            },
+            url: '/resettrans',
+            type: 'POST',
+            success: function(){
+                alert('hai');
+            },
+            error: function(err){
+                alert(err.responseText);
+            },
+        });
+    });
 });

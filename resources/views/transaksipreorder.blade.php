@@ -2,15 +2,13 @@
 @section('title', 'Transaksi || Omah Kunci')
 
 @section('content_header')
-    <h1 class="m-0 text-dark">Transaksi</h1>
+    <h1 class="m-0 text-dark">Transaksi Preoder</h1>
 @stop
 
 @section('adminlte_css')
     <link rel="stylesheet" href="{{ asset('css/transaksi.css') }}">
 @endsection
-@section('adminlte_js')
-    <script src="{{ asset('js/transaksi.js') }}"></script>
-@stop
+
 @section('content')
         <div class="row">
             <div class="col-6">
@@ -23,41 +21,32 @@
         </div>
 
         <div class="row">
-            <h5 class="date">Hari Ini</h5>
+            <h5 class="date">Today</h5>
         </div>
     
         @foreach($data as $datas)
-            <div class="card datatrans"  id_trans="{{$datas['kode_trans']}}">
+            <div class="card datatrans"  id_trans="{{$datas['id_transaksi']}}">
                 <input type="hidden" >
                 <table class="table table-borderless">
                     <tr>
-                        <th><div style="width: 40px; margin-left:9px;">No</div></th>
-                        <th><div style="width: 150px">Nama Pelanggan</div></th>
-                        <th><div style="width: 130px">Total Tagihan</div></th>
-                        <th><div style="width: 110px">DP</div></th>
-                        <th><div style="width: 110px">Tagihan 2</div></th>
-                        <th><div style="width: 110px">Tagihan 3</div></th>
-                        <th><div style="width: 90px">Status</div></th>
-                        <th><div style="width: 120px">Tanggal Transaksi</div></th>
+    
+                        <th><div style="width: 150px">No Nota</div></th>
+                        <th><div style="width: 130px">Telah Terima Dari</div></th>
+                        <th><div style="width: 110px">UP</div></th>
+                        <th><div style="width: 110px">Uang Sejumlah</div></th>
+                        <th><div style="width: 110px">Berupa</div></th>
+                        <th><div style="width: 90px">Guna Membayar</div></th>
+                        <th><div style="width: 120px">Total</div></th>
                     </tr>
                     <tr>
-                        <td><div style="width: 60px">001</div></td>
-                        <td><div>{{$datas["nama_pelanggan"]}}</div></td>
-                        <td><div>Rp. {{number_format($datas["subtotal"])}}</div></td>
-                        @if(isset($datas[0]))
-                        <td><div><i class="fa fa-check-circle"></i></div></td>
-                        <td><div>Rp.100.000</div></td>
-                        <td><div>Rp.100.000</div></td>
+                        <td><div>{{$datas["no_nota"]}}</div></td>
+                        <td><div>{{$datas["ttd"]}}</div></td>
+                        <td><div>{{$datas["up"]}}</div></td>
+                        <td><div>Rp. {{number_format($datas["us"])}}</div></td>
+                        <td><div> {{$datas["brp"]}}</div></td>
+                        <td><div>{{$datas["gm"]}}</div></td>
+                        <td><div>{{$datas["total"]}}</div></td>
 
-                        @else
-                        <td><div><i class="fa fa-check-circle selectless"></i></div></td>
-                        <td><div><i class="fa fa-check-circle selectless"></div></td>
-                        <td><div><i class="fa fa-check-circle selectless"></div></td>
-
-                        @endif
-
-                        <td><div class="{{$datas['status'] == 'belum lunas' ? 'bg-danger' : 'bg-success'}} rounded-pill ">{{$datas['status']}}</div></td>
-                        <td><div>27 Januari 2022, 10:30 WIB</div></td>
                     </tr>
                 </table>
                 <div class="card-clicker">

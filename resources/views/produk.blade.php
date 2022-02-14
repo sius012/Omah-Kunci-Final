@@ -157,7 +157,24 @@
   
   
   </div>
-  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+  <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#modalkategori"> Tambah Kategori</button> 
+
+<table class="table table-striped table-light mt-5">
+  <thead>
+    <tr>
+      <th>Nomer Kategori</th><th>Kategori</th><th></th>
+    </tr>
+  </thead>
+  <tbody id="produkfiller">
+      @foreach($kat as $kats)
+      <tr>
+        <td>{{$kats->id_kategori}}</td><td>{{$kats->kategori}}</td><td align="right"><button class="btn btn-warning mr-3"><i class="fa fa-edit"></i></button><button class="btn btn-danger"><i class="fa fa-edit"></i></button></td>
+      @endforeach
+  </tbody>
+</table>
+  
+  </div>
 </div>
 <!-- endtabs -->
 
@@ -210,10 +227,10 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-      <form action="/lol" id="submitterkategori">
+      <form action="/hel" id="submitterkategori">
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Nomor Kategori</label>
-    <input type="text" class="form-control" id="nokat-input" aria-describedby="emailHelp" disabled>
+    <input type="text" class="form-control" id="nokat-input" aria-describedby="emailHelp" required>
   </div>
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Kategori</label>
