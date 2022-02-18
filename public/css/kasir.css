@@ -1,0 +1,130 @@
+.row .col-6 .search-box{
+    border: 1px solid #C6C6C6;
+    padding: 5px;
+    width: 430px;
+
+    border-radius: 5px;
+}
+.row .col-6 .search-box::placeholder{
+    color: #8C8C8C;
+    font-size: 15px;
+}
+.row .col-6 .search-icon{
+    background-color: #1562AA;
+    color: white;
+
+    padding: 10px;
+    border-radius: 5px;
+}
+.row .col-6 .times{
+    background-color: #1562AA;
+    color: white;
+
+    width: 290px;
+    padding: 7px;
+    border-radius: 5px;
+
+    text-align: center;
+}
+
+.row .nomor-nota{
+    font-style: italic;
+    color: #747474;
+}
+
+.row .table tr th{
+    background-color: #1A79D0;
+    color: white;
+
+    text-align: left;
+}
+.row .table tr td{
+    text-align: left;
+}
+
+.row .col-4 .row .nama-pelanggan{
+    background-color: white;
+    color: #C6C6C6;
+    border: 1px solid #C6C6C6;
+
+    padding: 5px;
+    width: 290px;
+
+    border-radius: 6px;
+    margin-bottom: 6px;
+}
+.row .col-4 .row .subtotal-label, .row .col-4 .row .diskon-label{
+    background-color: #1A79D0;
+    color: white;
+
+    padding: 5px;
+    width: 80px;
+
+    text-align: center;
+    margin-right: 10px;
+}
+.row .col-4 .row .subtotal, .row .col-4 .row .diskon{
+    height: 35px;
+    width: 200px;
+
+    background-color: white;
+    color: black;
+    border: 1px solid #C6C6C6;
+
+    border-radius: 5px;
+}
+
+.row .col-4 .row .total-label{
+    background-color: #12518B;
+    color: white;
+
+    padding: 5px;
+    width: 80px;
+    height: 40px;
+
+    text-align: center;
+    margin-right: 10px;
+}
+.row .col-4 .row .total{
+    height: 43px;
+    width: 200px;
+
+    background-color: white;
+    color: black;
+    border: 1px solid #C6C6C6;
+
+    border-radius: 5px;
+}
+
+.row .col-4 .payment-method-tunai{
+    padding: 10px;
+}
+
+.row .col-4 .row .selesai{
+    background-color: #48BE00;
+    color: white;
+
+    padding: 11px;
+    text-align: center;
+    width: 300px;
+
+    margin-bottom: 10px;
+}
+.row .col-4 .row .tunda{
+    background-color: #247CCD;
+    color: white;
+
+    padding: 11px;
+    text-align: center;
+    width: 300px;
+
+    margin-bottom: 10px;
+}
+.row .col-4 .row .reset{
+    background-color: #EE3F3F;
+    color: white;
+
+    padding: 11px;
+    text-align: center;
+    width: 300px;
+}

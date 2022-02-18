@@ -1,0 +1,67 @@
+* {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.container-fluid .row .col-6 .search-box {
+    border: 1px solid #C6C6C6;
+    padding: 5px;
+    width: 450px;
+
+    border-radius: 100px;
+}
+
+.container-fluid .row .col-6 .search-box::placeholder {
+    color: #8C8C8C;
+    font-size: 15px;
+
+    padding-left: 10px;
+}
+
+.container-fluid .row .col-6 .search-icon {
+    background-color: #1562AA;
+
+    padding: 10px;
+    border-radius: 100px;
+}
+
+.container-fluid .row .col-6 .btn {
+    background-color: #1562AA;
+    color: white;
+    text-decoration: none;
+
+    border-radius: 100px;
+    font-size: small;
+}
+
+.row .col .card {
+    padding-bottom: 0;
+}
+
+.row .col .card .table {
+    margin-top: 15px;
+}
+
+.row .col .card .table .thead tr th {
+    font-weight: 400;
+
+    text-align: center;
+}
+
+.row .col .card .table .tbody tr td {
+    font-weight: bold;
+    font-size: 14px;
+
+    padding-bottom: 0;
+    text-align: center;
+}
+
+.row .col .card .table .tbody tr .status, .status2 {
+    background-color: #48BE00;
+    color: white;
+
+    font-size: 14px;
+    padding: 3px;
+    border-radius: 100px;
+
+    text-align: center;
+}

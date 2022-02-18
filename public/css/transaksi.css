@@ -66,3 +66,7 @@ input{
     border-radius: 10px;
 }
 
+
+.paid-off-content{
+    display: none;
+}

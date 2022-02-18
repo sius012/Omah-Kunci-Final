@@ -1,11 +1,13 @@
-@extends('adminlte::page')
+@php
+  $whoactive='produk';
+@endphp
+@extends('layouts.layout2')
 
-@section('title', 'AdminLTE')
+@section('titlepage', 'Produk')
 
-@section('content_header')
-    <h1 class="m-0 text-dark">Produk</h1>
+@section('js')
+<script src="{{ asset('js/produk.js') }}"></script>
 @stop
-
 @section('content')
 <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
   Launch demo moda

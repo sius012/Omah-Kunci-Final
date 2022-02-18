@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use function GuzzleHttp\json_encode;
-
+use PDF;
+use Auth;
 
 class KasirController extends Controller
 {
@@ -17,7 +18,7 @@ class KasirController extends Controller
     public function index(){
         $no = DB::table('transaksi')->get()->count();
         $no = str_pad($no+1, 6, '0', STR_PAD_LEFT);
-        return view('kasir.kasir', ['no_nota'=>$no]);
+        return view('kasir.kasir', ['no_nota'=>$no,'page'=>'kasir']);
     }
 
     public function loader(Request $req){
@@ -42,6 +43,7 @@ class KasirController extends Controller
     }
 
     public function tambahTransaksiDetail(Request $req){
+        $id_kasir = Auth::user()->id;   
         $data = $req->input('data');
         $id_trans = "";
         if($req->session()->has('transaksi')){
@@ -50,7 +52,7 @@ class KasirController extends Controller
         }else{
             $no = DB::table('transaksi')->get()->count();
             $no += 1;   
-            $id = DB::table('transaksi')->insertGetId(['no_nota' => $no]);
+            $id = DB::table('transaksi')->insertGetId(['no_nota' => str_pad($no+1, 6, '0', STR_PAD_LEFT), 'id_kasir' =>$id_kasir]);
             $req->session()->put('transaksi', ['id_transaksi' => $id, 'no_nota' => $no]);
             $id_trans = $id;
         }
@@ -94,7 +96,9 @@ class KasirController extends Controller
         $afterdiskon = $total * (100-$data['diskon'])/100; 
         $status = "lunas";
         if($data["metode"] == "kredit"){
-            DB::table("cicilan")->insert(['kode_transaksi' => $id_transaksi, 'termin' => 1, 'nominal' => $data["bayar"], 'via' => $data['via']]);
+            DB::table("cicilan")->insert(['kode_transaksi' => $id_transaksi, 'termin' => 1, 'nominal' => $data["bayar"], 'via' => $data['via'], 'id_kasir' => Auth::user()->id]);
+            DB::table("cicilan")->insert(['kode_transaksi' => $id_transaksi, 'termin' => 2,] );
+            DB::table("cicilan")->insert(['kode_transaksi' => $id_transaksi, 'termin' => 3,] );
             $status = "belum lunas";
         }
         DB::table('transaksi')->where('kode_trans', $id_transaksi)->update(["nama_pelanggan" => $data['nama_pelanggan'],"subtotal" => $afterdiskon, "status" => $status, "diskon" => $data["diskon"],"metode" => $data['metode'],"bayar" => $data["bayar"]]);
@@ -128,6 +132,35 @@ class KasirController extends Controller
         
         $req->session()->put('datadetail', $datadetail); 
         return(json_encode($datadetail));
+    }
+
+    public function bayarcicilan(Request $req){
+        $id = $req->input('kode_transaksi');
+        $termin = $req->input('termin');
+        $nominal = $req->input('nominal');
+        $via = $req->input('via');
+
+
+        DB::table('cicilan')->where('kode_transaksi', $id)->where('termin',$termin)->update(['nominal' => $nominal,'via' => $via,'id_kasir'=>Auth::user()->id]);
+        $checking = DB::table('cicilan')->where('kode_transaksi',$id)->whereNotNull('nominal')->count();
+        if($checking >= 3){
+            DB::table('transaksi')->where('kode_trans', $id)->update(['status' => 'lunas']);
+        }
+    }
+
+    public function cetaknotakecil(Request $req){
+        $id = $req->session()->get('transaksi')['id_transaksi'];
+        $data = DB::table('transaksi')->join('users', 'users.id', '=', 'transaksi.id_kasir')->where('kode_trans',$id)->get();
+        $data2 = DB::table('detail_transaksi')->join('produk', 'produk.kode_produk','=','detail_transaksi.kode_produk')->where('kode_trans',$id)->get();
+
+        $pdf = PDF::loadview('nota.notakecil', ["data" => $data,"data2"=>$data2]);
+        $path = public_path('pdf/');
+            $fileName =  date('mdy').'-'.$data[0]->kode_trans. '.' . 'pdf' ;
+            $pdf->save(storage_path("pdf/$fileName"));
+        $storagepath = storage_path("pdf/$fileName");
+        $base64 = chunk_split(base64_encode(file_get_contents($storagepath)));
+
+    	return response()->json(["filename" => $base64]);
     }
 
  

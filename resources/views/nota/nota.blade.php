@@ -14,14 +14,7 @@
             font-size: 35pt;
         
         }
-        .line{
-            border: none;
-            border-top: 2px solid black;
-            margin: 0px;
-            left: 0px;
-            width: 85%;
-            margin-top: 5px;
-        }
+       
         .trans:before{
             content: ' ';
             display: block;

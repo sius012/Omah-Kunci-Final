@@ -30,12 +30,5 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->register();
 
-        \Gate::define('cassiering', function ($user) {
-            if ($user->role_id == '3') {
-                dd($user->role_id);
-                return true;
-            }
-            return false;
-        });
     }
 }

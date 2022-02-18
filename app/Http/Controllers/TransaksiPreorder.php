@@ -11,7 +11,7 @@ class TransaksiPreorder extends Controller
     public function index(){
         $data = [];
         
-        $get = DB::table("nota_besar")->orderBy("updated_at" ,'asc')->get()->toArray();
+        $get = DB::table("nota_besar")->orderBy("id_transaksi" ,'desc')->get()->toArray();
         
 
         foreach($get as $d){
@@ -23,7 +23,7 @@ class TransaksiPreorder extends Controller
             
         }
      //   dd($data);
-        return view("transaksipreorder", compact('data'));
+        return view("transaksipreorder", ['data'=>$data,'page'=>'kasir']);
      
         
     }

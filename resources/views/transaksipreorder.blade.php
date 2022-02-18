@@ -1,11 +1,10 @@
-@extends('adminlte::page')
-@section('title', 'Transaksi || Omah Kunci')
+@php  $whoactive='transaksipreorder' @endphp
+@extends('layouts.layout2')
+@section('titlepage', 'Transaksi Preorder')
 
-@section('content_header')
-    <h1 class="m-0 text-dark">Transaksi Preoder</h1>
-@stop
 
-@section('adminlte_css')
+
+@section('css')
     <link rel="stylesheet" href="{{ asset('css/transaksi.css') }}">
 @endsection
 
@@ -57,30 +56,6 @@
 
 
 
-            <div class="card">
-                <table class="table table-borderless">
-                    <tr>
-                        <th><div style="width: 40px; margin-left:9px;">No</div></th>
-                        <th><div style="width: 150px">Nama Pelanggan</div></th>
-                        <th><div style="width: 130px">Total Tagihan</div></th>
-                        <th><div style="width: 110px">DP</div></th>
-                        <th><div style="width: 110px">Tagihan 2</div></th>
-                        <th><div style="width: 110px">Tagihan 3</div></th>
-                        <th><div style="width: 90px">Status</div></th>
-                        <th><div style="width: 120px">Tanggal Transaksi</div></th>
-                    </tr>
-                    <tr>
-                        <td><div style="width: 60px">001</div></td>
-                        <td><div>Johanes Sinalsal Purba</div></td>
-                        <td><div>Rp.300.000</div></td>
-                        <td><div><i class="fa fa-check-circle selectless"></i></div></td>
-                        <td><div><i class="fa fa-check-circle selectless"></i></div></td>
-                        <td><div><i class="fa fa-check-circle selectless"></i></div></td>
-                        <td><div style="background-color: #48BE00; border-radius:100px; color:white;">Lunas</div></td>
-                        <td><div>27 Januari 2022, 10:30 WIB</div></td>
-                    </tr>
-                </table>
-            </div>
 </div>
 
 <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

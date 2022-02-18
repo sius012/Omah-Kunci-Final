@@ -43,9 +43,6 @@ $(document).ready(function(){
 
 
 
-
-
-
     var id_trans = "{{session()->has('transaksi') ? Session::get('transaksi')['id_transaksi']:0}}";
     var subtotal1 = 0;
     var subtotalafterdiskon = 0;
@@ -56,26 +53,36 @@ $(document).ready(function(){
         $("#kredit input").attr("disabled","disabled");
     }
 
-    $("#kredit").click(function(){
-        $("#kredit div input").removeAttr("disabled");
-        $("#tunai div input").attr("disabled","disabled");
-        $(this).addClass("active");
-         $("#tunai").removeClass("active");
-         $("#kredit-input").addClass("usethis");
-         $("#cash-input").removeClass("usethis");
-         metode = "kredit";
-    });
+    // $("#kredit").click(function(){
+    //     $("#kredit div input").removeAttr("disabled");
+    //     $("#kredit div select").removeAttr("disabled");
+    //     $("#tunai div input").attr("disabled","disabled");
+    //     $("#tunai div select").attr("disabled","disabled");
+    //     $(this).addClass("active");
+    //      $("#tunai").removeClass("active");
+    //      $("#tunai").removeClass("active");
+    //      $("#kredit-input").addClass("usethis");
+    //      $("#kreditvia-input").addClass("usethisvia");
+    //      $("#cash-input").removeClass("usethis");
+    //      $("#cashvia-input").removeClass("usethisvia");
+    //      metode = "kredit";
+    // });
 
-     $("#tunai").click(function(){
-        $("#tunai input").removeAttr("disabled");
-        $("#kredit input").attr("disabled","disabled");
-        $(this).addClass("active");
-        $("#kredit").removeClass("active");
-        $("#cash-input").addClass("usethis");
-        $("#cash-input").addClass("usethis");
-        $("#kredit-input").removeClass("usethis");
-        metode = "cash";
-    });
+    //  $("#tunai").click(function(){
+    //     $("#tunai input").removeAttr("disabled");
+    //     $("#tunai select").removeAttr("disabled");
+    //     $("#kredit input").attr("disabled","disabled");
+    //     $("#kredit select").attr("disabled","disabled");
+    //     $(this).addClass("active");
+    //     $("#kredit").removeClass("active");
+    //     $("#cash-input").addClass("usethis");
+    //     $("#cashvia-input").addClass("usethisvia");
+    //     $("#kredit-input").removeClass("usethis");
+    //     $("#kreditvia-input").removeClass("usethisvia");
+    //     metode = "cash";    
+    // });
+
+    $('input[name=payment]:checked')
 
 
 
@@ -90,6 +97,7 @@ $(document).ready(function(){
 
     $(".drop").hide();
     $("#searcher").keyup(function(){
+        
             kw = $(this).val();
             
             $.ajax({
@@ -135,8 +143,8 @@ $(document).ready(function(){
                 console.log(data.length);
                 
                 },
-                error: function(response,){
-                    alert("cek apache server");
+                error: function(err,response,){
+                    alert(err.responseText);
                 }
             });
     });
@@ -188,8 +196,8 @@ $(document).ready(function(){
                 $("#kodetrans").val(data['datadetail'][0]['kode_trans']);
               
             },
-            error: function(error,response, errorThrown, jqXHR){
-                alert(error.text);
+            error: function(err,response, errorThrown, jqXHR){
+                alert(err.responseText);
             }
         });
 
@@ -205,12 +213,13 @@ $(document).ready(function(){
     });
 
     $("#selesai").click(function(){
-        if(parseInt($(".usethis").val()) < subtotalafterdiskon){
+        
+        if(parseInt($(".usethis").val()) < subtotalafterdiskon && $('input[name=payment]:checked').val() == "cash"){
             alert("uang kurang");
         }else{
             id_trans = $("#kodetrans").val();
-        if($("#nama").val() == null || $("#nama").val() == ""){
-            alert('harap masukan nama');
+        if($("#nama").val() == null || $("#nama").val() == "" || $(".usethis").val() == "" || $(".usethis").val()==null || $('input[name=payment]:checked').val() == "" || $('input[name=payment]:checked').val() == null || $(".usethisvia").val() == " "){
+            Swal.fire("Pastikan Semua Kolom terisi(kecuali diskon)","","info");
         }else{
             $.ajax({
             headers: {
@@ -221,7 +230,8 @@ $(document).ready(function(){
                         nama_pelanggan: $("#nama").val(),
                         diskon: $("#diskon").val(),
                         bayar: $(".usethis").val(),
-                        metode: metode
+                        metode: $('input[name=payment]:checked').val(),
+                        via: $(".usethisvia").val(),
                     } 
                 },
                 type: "POST",
@@ -232,10 +242,10 @@ $(document).ready(function(){
                         'You clicked the button!',
                         'success'
                     );
-                    window.location = "/selesai";
+                    print();
                 },
-                error: function(error,response, errorThrown, jqXHR){
-                    alert($(".usethis").val());
+                error: function(err,response, errorThrown, jqXHR){
+                    alert(err.responseText);
                 }
             });
             //window.location = "{{url('/selesai')}}";
@@ -330,5 +340,21 @@ $(document).ready(function(){
       
     });
 
+     function print(){
+
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN" : $("meta[name='csrf-token']").attr('content')
+            },
+            url: "/cetaknotakecil",
+            type: "post",
+            success: function(response){
+                printJS({printable: response['filename'], type: 'pdf', base64: true});
+            },  
+            error: function(err){
+                alert(err.responseText);
+            }
+        });
+    };
 
 });

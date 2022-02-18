@@ -1,83 +1,109 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
-*{
+
+* {
     font-family: 'Open Sans', sans-serif;
 }
 
-.content-wrapper{
+.content-wrapper {
     background-color: #E5E5E5;
-  
+
 
 }
 
-.bg{
+.bg {
     background-color: #0D5497;
     color: white;
     border: none;
 }
 
 
-.bgnavbar{
-    background-color:none;
-    border:none;
+.bgnavbar {
+    background-color: none;
+    border: none;
 }
 
-.brand-link{
+.brand-link {
     background-color: #1A79D0;
     border: none;
 }
 
-.sidebar{
+.sidebar {
     border: none;
     font-weight: bold;
 }
 
-.main-sidebar{
+.main-sidebar {
     background-color: #1A79D0;
     text-align: center;
 }
-.brand-text{
+
+.brand-text {
     color: white;
     font-weight: bold;
     margin-left: 10px;
     font-family: 'Open Sans', sans-serif;
 }
-.brand-image{
+
+.brand-image {
     margin-left: 90px;
 }
 
-/* CSS UNTUK HALAMAN KASIR */
-.row .col-6 .search-box{
-    border: 1px solid #C6C6C6;
-    padding: 5px;
-    width: 450px;
-}
-.row .col-6 .search-icon{
-    background-color: #1562AA;
+li .nav-item .active {
 
+    background-color: red;
+}
+
+.nav-link {
+
+    border-radius: 20px;
+}
+
+.navbar-nav>.active>a {
+    background-color: #C0C0C0;
+    color: green;
+}
+
+
+
+.active {}
+
+.nav-link-custom {
+    display: block;
+    padding: 0px;
+    margin: 0px;
+    border-radius: 50px;
+}
+
+.nav-link-custom:hover {
+    color: rgb(50, 46, 248);
+}
+
+.nav-link-custom p:hover {
+    background: white
+}
+
+.nav-link-custom p {
+    margin: 0px;
+    color: white;
+
+    border-radius: 30px;
+    transition: .2s;
+}
+
+.nav-link-custom p:hover {
+    margin: 0px;
+    color: #247CCD;
     padding: 10px;
-}
-.row .col-6 .times{
-    background-color: #1562AA;
-    color: white;
-
-    width: 320px;
-    padding: 7px;
-    margin-left: 150px;
-
-    text-align: center;
+    border-radius: 30px;
 }
 
-.row .nomor-nota{
-    font-style: italic;
-    color: #747474;
-}
-.row .table tr th{
-    background-color: #1A79D0;
-    color: white;
-}
+/* CSS UNTUK HALAMAN KASIR */
 
+
+/* 
 .row .col-4 .row .nama-pelanggan{
     border: 1px solid #C6C6C6;
+    border-radius: 100px;
 
     padding: 5px;
     width: 320px;
@@ -170,116 +196,52 @@
     padding: 10.5px;
     width: 290px;
     font-size: 25px;
-}
-.option .options{
+} */
+
+
+/* .option .options {
     margin-top: 8px;
 }
 
 
 
-.drop{
+.drop {
     position: absolute;
     background-color: white;
     z-index: 5;
 }
 
-.drop ul{
+.drop ul {
     list-style-type: none;
     margin: 0px;
-    padding:0px;
+    padding: 0px;
     display: block;
 }
 
-.drop ul li{
-    border:1px solid black;
+.drop ul li {
+    border: 1px solid black;
     margin: 0px;
 
 }
 
-.drop ul li div{
+.drop ul li div {
     padding: 10px;
 }
 
-
-
-*{
-
-}
-
-.goodtr{
+.goodtr {
     transition: .2s;
 }
 
 
 
-.nav-link{
-    border-radius: 50px;
-}
 
-ul li .active{
-   background-color: #E5E5E5;   
-   border-radius: 10px;
-}
+ul li .active {
+    background-color: #E5E5E5;
+    border-radius: 200px !important;
+} */
 
 /* CSS UNTUK HALAMAN TRANSAKSI */
 
 
 
-li .nav-item .active{
-    
-    background-color: red;
-}
 
-.nav-link{
-    padding: 20px;
-    border-radius: 10px;
-}
-
-.navbar-nav>.active>a {
-    background-color: #C0C0C0;
-    color: green;
-}
-
-.payment-method  div{
-    background-color: white;
-    border-radius: 20px;
-}
-
-.payment-method > div p{
-    color: black;
-    border-radius: 20px;
-}
-
-.active{
-    
-}
-
-.nav-link-custom{
-    display: block;
-    padding: 0px;
-    margin: 0px;
-    border-radius: 50px;
-}
-
-.nav-link-custom:hover{
-    color: rgb(50, 46, 248);
-}
-
-.nav-link-custom p:hover{
-  background: white
-}
-
-.nav-link-custom p{
-   margin: 0px;
-    color: white;
-    padding: 10px;
-    border-radius: 30px;
-    transition: .2s;
-}
-
-.nav-link-custom p:hover{
-    margin: 0px;
-     color: #247CCD;
-     padding: 10px;
-     border-radius: 30px;
- }

@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -75,3 +78,34 @@ Route::post('/editstok', 'StokController@editstok');
 
 Route::get('/transaksipreorder', 'TransaksiPreorder@index');
 Route::post('/resettrans', 'PreorderController@resettrans');
+
+Route::post('/bayarcicilan', 'KasirController@bayarcicilan');
+
+
+//cetak
+Route::post('/cetaknotakecil', 'KasirController@cetaknotakecil');
+
+Route::get('/notakecil', function(){
+    return view('nota.notakecil');
+});
+
+Route::get('/rolesinject', function(){
+    $role = Role::create(['name' => 'manager']);
+    $permission = Permission::create(['name' => 'managing']);
+
+});
+
+Route::get('/layout', function(){
+    return view("layouts.layout2");
+});
+
+Route::post('/hapusstok', 'StokController@hapusstok');
+
+Route::get('/detailstok', 'DetailStokController@index');
+Route::post('/loaddatadetailstok', 'DetailStokController@loaddatadetailstok');
+Route::post('/tambahdetailstok', 'DetailStokController@tambahdetailstok');
+
+Route::get('/dsm', 'DSMController@index');
+Route::post('/loaddsm', 'DSMController@loaddatadetailstok');
+Route::post('/verifiying', 'DSMController@verifiying');
+Route::post('/rejecting', 'DSMController@rejecting');

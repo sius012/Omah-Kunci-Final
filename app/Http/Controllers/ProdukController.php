@@ -76,7 +76,7 @@ class ProdukController extends Controller
 
     public function ubahmerek(Request $req){
         $data = $req->input('data');
-        DB::table('merek')->where('nomer', $data['nomer'])->update($data);
+        DB::table('merek')->where('nomer', $data['nomer'])->update(['jumlah' => $data['jumlah']]);
         $getmerek =  DB::table('merek')->get();
         return json_encode(['merek' => $getmerek]);
     }

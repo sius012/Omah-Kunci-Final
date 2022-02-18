@@ -1,11 +1,10 @@
-@extends('adminlte::page')
+@php $whoactive='notabesar' @endphp
+@extends('layouts.layout2')
 
-@section('title', 'AdminLTE')
+@section('titlepage', 'Nota Besar')
 
-@section('content_header')
-    <h1 class="m-0 text-dark">Tanda Terima</h1>
-@stop
-@section('adminlte_js')
+
+@section('js')
 <script src="{{ asset('js/transaksi.js') }}"></script>
 <script src="{{ asset('js/notabesar.js') }}"></script>
 @stop

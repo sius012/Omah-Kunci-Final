@@ -1,4 +1,26 @@
 $(document).ready(function(){
+    
+    function hapusStok(kode_stok){
+        $.ajax({
+            headers:{
+                "X-CSRF-TOKEN" : $("meta[name='csrf-token']").attr('content')
+            },
+            data: {
+               kode_stok : kode_stok
+            },
+            url: "/hapusstok",
+            type: "POST",
+            success: function(data){
+                Swal.fire('Permintaan diterima', '', 'success').then(function(){
+                    window.location = '/stok';
+                });
+            },
+            error: function(err){
+                alert(err.responseText);
+            }
+        });
+    }
+
     function loadsinglestok(id){
         $.ajax({
             headers:{
@@ -66,13 +88,38 @@ $(document).ready(function(){
         $("#tgl-input").attr('disabled','disabled');
        loadsinglestok($(e.target).attr('kode_stok') == undefined ? $(e.target).closest('button').attr('kode_stok') : $(e.target).attr('kode_stok'));
         $("#modalstok").modal('show');
+        $(".tombolsubmit").text("Ubah");
  
     });
+
+
+    $("#stokfiller").on('click', '.hapusstok', function(e){
+        e.preventDefault();
+        Swal.fire({
+            title: 'Apakah anda yakin ingin menghapus',
+            showDenyButton: true,
+            confirmButtonText: 'Batalkan',
+            denyButtonText: `Hapus`,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+            } else if (result.isDenied) {
+              hapusStok($(e.target).attr('kode_stok') == undefined ? $(e.target).closest("button").attr('kode_stok'): $(e.target).attr('kode_stok') );
+            }
+          });
+ 
+    });
+
+
+
+
+
 
     $("button[ data-target='#modalstok'").click(function(e){
         $("#kodeproduk-input").val("");
         $("#jumlahproduk-input").val("");
         $("#kodeproduk-input").removeAttr('disabled');
         $("#tgl-input").removeAttr('disabled','disabled');
+        $(".tombolsubmit").text("Tambah");
     });
 });

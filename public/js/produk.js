@@ -223,15 +223,17 @@ $(document).ready(function(){
     });
 
    
+   
 
 
 
 
     $("#produkfiller").on("click", "tr td .editbarang", function(e){
+        e.preventDefault();
         $("#modalproduk").modal("show");
         $("#submitterproduk").attr('action', '/updateproduk');
-
-        getProdukInfo($(e.target).children("a").attr('kode-produk'));
+        alert($(e.target).children("a").attr('kode-produk'))
+        getProdukInfo($(e.target).children("a").attr('kode-produk') == undefined ? $(e.target).attr('kode-produk') : $(e.target).children("a").attr('kode-produk'));
         
     });
 

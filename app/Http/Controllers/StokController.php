@@ -8,6 +8,7 @@ use function GuzzleHttp\json_encode;
 
 
 
+
 class StokController extends Controller
 {
     public function index(){
@@ -39,5 +40,10 @@ class StokController extends Controller
     public function editstok(Request $req){
         $data = $req->input('data');
         DB::table('stok')->where('kode_produk', $data['kode_produk'])->update($data);
+    }
+
+    public function hapusstok(Request $req){
+        $data = $req->input('kode_stok');
+        DB::table('stok')->where('id', $data)->delete();
     }
 }
