@@ -3,16 +3,34 @@
 
 @section('titlepage', 'Nota Besar')
 
-
 @section('js')
 <script src="{{ asset('js/transaksi.js') }}"></script>
 <script src="{{ asset('js/notabesar.js') }}"></script>
 @stop
+
+@section('css')
+<link rel="stylesheet" href="{{asset('css/notabesar.css')}}">
+@stop
+
 @section('content')
-<form id="preorderform">
+<div class="container-fluid ">
+  <div class="col">
+  <div class="form-group">
+      <input type="text" id="searcher-nota" class="form-control" placeholder="Cari Nomer Nota">
+      <ul id="myUL">
+      </ul>
+    </div>
+  </div>
+   
+    <div class="col">
+    <form id="preorderform" action="/tambahpreorder">
+    <input type="hidden" id="id_trans" val="0">
+    <h4 id="tt">Tanda Terima</h4>
+    <i><h4 style="color:#747474;" id="nn">No Nota : 001</h4></i>
+    <br>
 <div class="row" id="baseinputnb">
 <div class="col">
-
+  
   <div class="form-group">
     <label for="exampleInputEmail1">Telah diterima dari</label>
     <input type="text" class="form-control" id="ttd" aria-describedby="emailHelp">
@@ -20,6 +38,10 @@
   <div class="form-group">
     <label for="exampleInputPassword1">UP</label>
     <input type="text" class="form-control" id="up" >
+  </div>
+  <div class="form-group td">
+    <label for="exampleInputPassword1">Telah Dibayar</label>
+    <input type="number" class="form-control" id="td" >
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Uang sejumlah</label>
@@ -50,27 +72,21 @@
   <a class="btn btn-primary" id="addopsi">+</a>
 </div>
 <div class="col">
-</div>
-</div>
+ 
 
+</div>
+</div>
+    </div>
+</div>
 <div class="row">
-            
 
-            <div class="col-4 option">
-                <div class="row options">
-                    <div class="col-2 mt-3">
-                        <button class="selesai ml-4" href="#" type="submit">Selesai</button>
-                    </div>
-                </div>
-                </form>
-                <div class="row options">
-                    <div class="col-2">
-                        <a href="" class="btn btn-danger" id="resetbutton">RESET</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
+ <button class="btn btn-primary m-3" id="buttonsubmit">Tambah</button>
+</div>
+</form>
+<div class="row">
+<button class="btn btn-warning m-3" id="buttonprint" ><i class="fa fa-print"></i></button>
+</div>
+<div class="row">
+<button class="btn btn-primary m-3" id="resetbutton"><i class="fa fa-back"></i>Kembali</button>
+</div>
 @stop

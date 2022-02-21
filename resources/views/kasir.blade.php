@@ -48,7 +48,9 @@
                         <th>No.</th>
                         <th>Item</th>
                         <th>Jumlah</th>
-                        <th>Subtotal</th>
+                        <th>Harga(/pcs)</th>
+                        <th>Potongan(/pcs)</th>
+                        <th>Total</th>
                         <th>Aksi</th>
                     </tr>
                     <tbody id="tabling">
@@ -70,7 +72,7 @@
                     </div>
                     <div class="row">
                         <label class="subtotal-label" for="subtotal">Subtotal</label>
-                        <input type="text" class="subtotal" id="subtotal" name="subtotal">
+                        <input type="text" class="subtotal" id="subtotal" name="subtotal" readonly>
                     </div>
                     <div class="row">
                         <label class="diskon-label" for="diskon">Diskon</label>
@@ -78,19 +80,14 @@
                     </div>
                     <div class="row">
                         <label class="total-label" for="total">Total</label>
-                        <input type="text" class="total" id="totality" name="total" >
+                        <input type="text" class="total" id="totality" name="total" readonly>
                     </div>
                 </div>
 
                 <div class="col-4">
                     <div class="card" id="tunai">
                         <div class="card-header mb-3" >
-                            <input type="radio" name="payment" value="cash">
-                            <label for="radio-tunai">Tunai</label>
-                            <div class="float-right mr-2">
-                                <input type="radio" name="payment" value="kredit">
-                                <label for="radio-tunai">Kredit</label>
-                            </div>
+                            <p class="card-title">Pembayaran</p>         
                         </div>
                         <div class="card-body">
                             <div class="form-group d-inline-flex">
@@ -112,8 +109,12 @@
                         <div class="row">
                             <button class="btn selesai" id="selesai">Selesai</button>
                         </div>
+                        
                         <div class="row">
                             <button class="btn reset " id="reset-button" >Reset</button>
+                        </div>
+                        <div class="row">
+                            <button class="btn next" id="next-button" >Next</button>
                         </div>
                     </div>
                 </div>

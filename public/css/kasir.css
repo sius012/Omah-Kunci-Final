@@ -1,3 +1,6 @@
+input:focus, textarea:focus, select:focus{
+    outline: none;
+}
 .row .col-6 .search-box{
     border: 1px solid #C6C6C6;
     padding: 5px;
@@ -44,7 +47,7 @@
 
 .row .col-4 .row .nama-pelanggan{
     background-color: white;
-    color: #C6C6C6;
+    color: black;
     border: 1px solid #C6C6C6;
 
     padding: 5px;
@@ -127,4 +130,47 @@
     padding: 11px;
     text-align: center;
     width: 300px;
+    margin-bottom: 10px;
+}
+
+.next{
+    padding: 11px;
+    width: 300px;
+    background-color:#3532fa;
+}
+
+
+.drop {
+    position: absolute;
+    background-color: white;
+    z-index: 5;
+}
+
+.drop ul {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    display: block;
+}
+
+.drop ul li {
+    border: 1px solid black;
+    margin: 0px;
+
+}
+
+.drop ul li div {
+    padding: 10px;
+}
+
+.goodtr {
+    transition: .2s;
+}
+
+
+
+
+ul li .active {
+    background-color: #E5E5E5;
+    border-radius: 200px !important;
 }

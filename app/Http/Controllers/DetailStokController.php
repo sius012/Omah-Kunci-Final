@@ -27,12 +27,12 @@ class DetailStokController extends Controller
         DB::table('detail_stok')->insert($data);
         if($data['status'] = 'masuk'){
             $jml = DB::table('stok')->where('kode_produk', $data['kode_produk'])->pluck('jumlah');
-            $jml = $jml[0];
-            DB::table('stok')->where('kode_produk', $data['kode_produk'])->update(['jumlah'=> $jml + $data['jumlah']]);
+            // $jml = $jml[0];
+            // DB::table('stok')->where('kode_produk', $data['kode_produk'])->update(['jumlah'=> $jml + $data['jumlah']]);
         }else{
             $jml = DB::table('stok')->where('kode_produk', $data['kode_produk'])->pluck('jumlah');
-            $jml = $jml[0];
-            DB::table('stok')->where('kode_produk', $data['kode_produk'])->update(['jumlah'=> $jml - $data['jumlah']]);
+            // $jml = $jml[0];
+            // DB::table('stok')->where('kode_produk', $data['kode_produk'])->update(['jumlah'=> $jml - $data['jumlah']]);
         }   
     }
 }

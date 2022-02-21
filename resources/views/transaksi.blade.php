@@ -29,6 +29,9 @@
     
         @foreach($data as $datas)
             <div class="card datatrans"  id_trans="{{$datas['kode_trans']}}">
+                <div class="card-header">
+                    <h6 class="card-title float-right mr-2">27 Januari 2022, 10:30 WIB</h6>
+                </div>
                 <input type="hidden" >
                 <table class="table table-borderless">
                     <tr>
@@ -58,7 +61,7 @@
                         @endif
 
                         <td><div class="{{$datas['status'] == 'belum lunas' ? 'bg-danger' : 'bg-success'}} rounded-pill ">{{$datas['status']}}</div></td>
-                        <td><div>27 Januari 2022, 10:30 WIB</div></td>
+                        <td><div><i style="background-color:#1562AA; color:white; padding:10px; border-radius:100%;" class="fa fa-list"></i></div></td>
                     </tr>
                 </table>
                 <div class="card-clicker">
@@ -191,7 +194,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text">Rp.</span>
                         </div>
-                        <input type="text" class="form-control nominaltermin3" aria-label="Dollar amount (with dot and two decimal places)">
+                        <input type="text" class="form-control nominaltermin3" aria-label="Dollar amount (with dot and two decimal laces)">
                       </div>
                       <p class="card-text d-flex align-items-left justify-content-left ml-1">No Nota : </p>
                       <p class="card-text d-flex align-items-left justify-content-left ml-1">Status : </p>

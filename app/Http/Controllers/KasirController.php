@@ -65,11 +65,13 @@ class KasirController extends Controller
 
         $counter = DB::table('detail_transaksi')->where('kode_trans', $id_trans)->where('kode_produk', $data['kode_produk'])->count();
         if($counter < 1){
-            DB::table('detail_transaksi')->insert(['kode_trans' => $id_trans, 'kode_produk' => $data['kode_produk'], "jumlah" => $data["jumlah"],"total" => $data["jumlah"]*$data["harga"]]);
+            DB::table('detail_transaksi')->insert(['kode_trans' => $id_trans, 'kode_produk' => $data['kode_produk'], "jumlah" => $data["jumlah"],"potongan" => $data["potongan"]]);
         }else{
             $jumlah = DB::table('detail_transaksi')->where('kode_trans', $id_trans)->where('kode_produk', $data['kode_produk'])->pluck('jumlah')->first();
+            $potongan = DB::table('detail_transaksi')->where('kode_trans', $id_trans)->where('kode_produk', $data['kode_produk'])->pluck('potongan')->first();
             $jml = $data['harga']  * ((int)$jumlah + $data['jumlah']);
-            DB::table('detail_transaksi')->where('kode_trans', $id_trans)->where('kode_produk', $data['kode_produk'])->update(['jumlah' => $jumlah + $data['jumlah'], 'total' => $jml]);
+            $ptg = $data['potongan'];
+            DB::table('detail_transaksi')->where('kode_trans', $id_trans)->where('kode_produk', $data['kode_produk'])->update(['jumlah' => $jumlah + $data['jumlah'], 'potongan' => $ptg]);
         }
         
         $datadetail = DB::table('detail_transaksi')->join('produk','detail_transaksi.kode_produk','=','produk.kode_produk')->where('kode_trans',$id_trans)->get()->toArray();
@@ -77,7 +79,7 @@ class KasirController extends Controller
         $subtotal = 0;
         
         foreach($datadetail as $dts){
-            $subtotal += $dts->total;
+            $subtotal += $dts->jumlah * ($dts->harga - $dts->potongan);
         }
 
          DB::table('transaksi')->where('kode_trans', $id_trans)->update(['subtotal' => $subtotal]);
@@ -93,25 +95,40 @@ class KasirController extends Controller
   
 
         $total = DB::table("transaksi")->where('kode_trans', $id_transaksi)->pluck("subtotal")->first();
-        $afterdiskon = $total * (100-$data['diskon'])/100; 
+
+
+        $stok = DB::table("detail_transaksi")->where('kode_trans', $id_transaksi)->get();
+
+
+        $afterdiskon = $total - $data['diskon']; 
         $status = "lunas";
         if($data["metode"] == "kredit"){
             DB::table("cicilan")->insert(['kode_transaksi' => $id_transaksi, 'termin' => 1, 'nominal' => $data["bayar"], 'via' => $data['via'], 'id_kasir' => Auth::user()->id]);
             DB::table("cicilan")->insert(['kode_transaksi' => $id_transaksi, 'termin' => 2,] );
-            DB::table("cicilan")->insert(['kode_transaksi' => $id_transaksi, 'termin' => 3,] );
+            DB::table("cicilan")->insert(['kode_transaksi' => $id_trasaksi, 'termin' => 3,] );
             $status = "belum lunas";
         }
+
+        foreach($stok as $produks){
+            $currentstok = DB::table("stok")->where('kode_produk', $produks->kode_produk)->get();
+            DB::table("stok")->where('kode_produk', $produks->kode_produk)->update(["jumlah" => (int) $currentstok[0]->jumlah - (int) $produks->jumlah]);
+        }
+
+
+
         DB::table('transaksi')->where('kode_trans', $id_transaksi)->update(["nama_pelanggan" => $data['nama_pelanggan'],"subtotal" => $afterdiskon, "status" => $status, "diskon" => $data["diskon"],"metode" => $data['metode'],"bayar" => $data["bayar"]]);
         
+
     }
 
-    public function reset(Request $req){
+    public function forgoting(Request $req){
         $req->session()->forget('transaksi');
         $req->session()->forget('datadetail');
 
         return redirect()->route('kasir');
     }
 
+    
     public function resetTransaction(Request $req){
         $id_trans = $req->session()->get('transaksi')['id_transaksi'];
 
@@ -128,7 +145,14 @@ class KasirController extends Controller
         $id_detail = $req->input('id_detail');
         DB::table("detail_transaksi")->where("id",$id_detail)->delete();
         $req->session()->forget('datadetail');
-        $datadetail = DB::table('detail_transaksi')->join('produk','detail_transaksi.kode_produk','=','produk.kode_produk')->where('kode_trans',$id_trans)->get()->toArray();
+        $datadetail = DB::table('detail_transaksi')->join('produk','detail_transaksi.kode_produk','=','produk.kode_produk')->where('kode_trans',$id_trans)->get();
+
+        $subtotal = 0;
+        foreach($datadetail as $ds){
+            $subtotal += $ds->jumlah * ($ds->harga - $ds->potongan);
+        }
+
+        DB::table("transaksi")->where("kode_trans", $id_trans)->update(['subtotal' => $subtotal]);
         
         $req->session()->put('datadetail', $datadetail); 
         return(json_encode($datadetail));

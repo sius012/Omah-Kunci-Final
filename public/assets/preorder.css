@@ -1,0 +1,7 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.container-fluid .col form .row .col .form-group label{
+    color: #8C8C8C;
+}

@@ -1,5 +1,23 @@
+function formatRupiah(angka, prefix){
+    var number_string = angka.replace(/[^,\d]/g, '').toString(),
+    split   		= number_string.split(','),
+    sisa     		= split[0].length % 3,
+    rupiah     		= split[0].substr(0, sisa),
+    ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+    // tambahkan titik jika yang di input sudah menjadi angka ribuan
+    if(ribuan){
+        separator = sisa ? '.' : '';
+        rupiah += separator + ribuan.join('.');
+    }
+
+    rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+    return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+}
+
+
 $(document).ready(function(){
-    
+    $("#next-button").attr("disabled","disabled");
     //loader
     function loader(){
         $("#tabling").hide();
@@ -17,17 +35,27 @@ $(document).ready(function(){
                 var no = 1;
                 var row ="";
                 var subtotal =0;
-                for(var tr = 0; tr < data['datadetail'].length ;tr++){
-                    row+="<tr class='goodtr'>";
-                    row+='<td>'+no+'</td><td>'+data['datadetail'][tr]['nama_produk']+'</td><td>'+data['datadetail'][tr]['jumlah']+'</td><td>'+data['datadetail'][tr]['total']+'</td>'+'<td><button class="btn btn-danger buang"><a id_detail="'+data['datadetail'][tr]['id']+'"><i class="fa fa-trash"></i></a></button></td>';
-                    row+="</tr>";
-                    no++;
-                    subtotal += data['datadetail'][tr]['total'];
-                }
+                var row = data['datadetail'].map(function(dato,i){
+                    subtotal += parseInt(dato['jumlah']) * (parseInt(dato['harga']) - parseInt(dato['potongan']));
+                    return `
+                        <tr>
+                            <td>${i+1}</td>
+                            <td>${dato['nama_produk']}</td>
+                            <td>${dato['jumlah']}</td>
+                            <td>Rp. ${parseInt(dato['harga']).toLocaleString()}</td>
+                            <td>Rp. ${parseInt(dato['potongan']).toLocaleString() }</td>
+                            <td> Rp. ${parseInt(dato['jumlah'] * (dato['harga'] - dato['potongan'])).toLocaleString()}</td>
+                            <td><button class="btn btn-danger buang"><a id_detail="${dato['id']}"><i class="fa fa-trash"></i></a></button></td>
+                        </tr>
+                    `
+                
+                });
+                
                 $('#tabling').html(row);
                 $("#tabling").show("slow");
-                $('#subtotal').val(subtotal);
+                $('#subtotal').val(subtotal.toLocaleString());
                 subtotal1 = subtotal;
+   
             },
             error: function(response,){
             
@@ -82,7 +110,6 @@ $(document).ready(function(){
     //     metode = "cash";    
     // });
 
-    $('input[name=payment]:checked')
 
 
 
@@ -116,10 +143,10 @@ $(document).ready(function(){
                     if(data.length > 0){
                     var li = "";
                     for(var i = 0;i < data.length;i++){
-                        li += `<li><a href="#">
-                                <div>
-                                <div class="row">
-                                    <div class="col-sm">
+                        li += `<li>
+                                <div class="bungkuser"> 
+                                    <div class="row">
+                                        <div class="col-sm">
                                         ${data[i]['nama_produk']}
                                         </div>
                                         <div class="col-sm">
@@ -129,11 +156,15 @@ $(document).ready(function(){
                                         ${data[i]['harga']}
                                         </div>
                                         <div class="col-sm">
+                                        <input class="potongan" value=0>
+                                        </div>
+                                        <div class="col-sm">
                                         <input class="jml" value=1>
                                         </div>
                                     </div>
-                                    <a kode=" ${data[i]['kode_produk']}" harga="${data[i]['harga']}" jumlah="1" class="sear">Tambah</a></div>
-                               </a> 
+                                    <a kode=" ${data[i]['kode_produk']}" harga="${data[i]['harga']}" jumlah="1" potongan="0" class="sear">Tambah</a>
+                                </div>
+                            
                             </li>`;
                     }
                     $(".drop ul").html(li);
@@ -161,7 +192,7 @@ $(document).ready(function(){
  
 
 
-    function tambahItem(id,harga,jumlah){
+    function tambahItem(id,harga,jumlah,potongan){
         $("#tabling").hide("slow");
         $.ajax({
             headers: {
@@ -172,29 +203,38 @@ $(document).ready(function(){
                         kode_produk : id,
                         harga: harga,
                         jumlah: jumlah,
+                        potongan: potongan
                     } 
             },
             type: "POST",
             dataType: "JSON",
             url: "/tambahItem",
-            success: function(data){
-                var no = 1;
-                var row ="";
+            success: function(data,response){
+                console.log(data['datadetail']);
                 var subtotal =0;
-                for(var tr = 0; tr < data['datadetail'].length ;tr++){
-                    row+="<tr class='goodtr'    >";
-                    row+='<td>'+no+'</td><td>'+data['datadetail'][tr]['nama_produk']+'</td><td>'+data['datadetail'][tr]['jumlah']+'</td><td>'+data['datadetail'][tr]['total']+'</td>'+'<td><button class="btn btn-danger buang"><a id_detail="'+data['datadetail'][tr]['id']+'"><i class="fa fa-trash"></i></a></button></td>';
-                    row+="</tr>";
-                    no++;
-                    subtotal += data['datadetail'][tr]['total'];
-                }
+                var no = 1;
+                let row = data['datadetail'].map(function(dato,i){
+                    subtotal += parseInt(dato['jumlah']) * (parseInt(dato['harga']) - parseInt(dato['potongan']));
+                    return `
+                        <tr>
+                            <td>${i+1}</td>
+                            <td>${dato['nama_produk']}</td>
+                            <td>${dato['jumlah']}</td>
+                            <td>Rp. ${parseInt(dato['harga']).toLocaleString()}</td>
+                            <td>Rp. ${parseInt(dato['potongan']).toLocaleString() }</td>
+                            <td> Rp. ${parseInt(dato['jumlah'] * (dato['harga'] - dato['potongan'])).toLocaleString()}</td>
+                            <td><button class="btn btn-danger buang"><a id_detail="${dato['id']}"><i class="fa fa-trash"></i></a></button></td>
+                        </tr>
+                    `;
+                
+                });
                 $('#tabling').html(row);
                 $("#tabling").show("slow");
-                $('#subtotal').val(subtotal);
+                $('#subtotal').val(subtotal.toLocaleString());
                 subtotal1 = subtotal;
                 id_trans = data['datadetail'][0]['kode_trans'];
                 $("#kodetrans").val(data['datadetail'][0]['kode_trans']);
-              
+         
             },
             error: function(err,response, errorThrown, jqXHR){
                 alert(err.responseText);
@@ -205,11 +245,19 @@ $(document).ready(function(){
     }
 
     $(".drop").on("click", ".sear",function(event){
-        tambahItem($(event.target).attr("kode"),$(event.target).attr("harga"),$(event.target).attr("jumlah"));
+        tambahItem($(event.target).attr("kode"),
+        $(event.target).attr("harga"),
+        $(event.target).attr("jumlah"),
+        $(event.target).attr("potongan")
+        );
     });
 
     $(".drop").on("keyup", ".jml", function(){
-        $(event.target).parent().parent().parent().parent().children(".sear").attr("jumlah", $(event.target).val());
+        $(event.target).closest(".bungkuser").children(".sear").attr("jumlah", $(event.target).val());
+    });
+
+    $(".drop").on("keyup", ".potongan", function(){
+        $(event.target).closest(".bungkuser").children(".sear").attr("potongan", $(event.target).val());
     });
 
     $("#selesai").click(function(){
@@ -218,7 +266,7 @@ $(document).ready(function(){
             alert("uang kurang");
         }else{
             id_trans = $("#kodetrans").val();
-        if($("#nama").val() == null || $("#nama").val() == "" || $(".usethis").val() == "" || $(".usethis").val()==null || $('input[name=payment]:checked').val() == "" || $('input[name=payment]:checked').val() == null || $(".usethisvia").val() == " "){
+        if($("#nama").val() == null || $("#nama").val() == "" || $(".usethis").val() == "" || $(".usethis").val()==null || $('input[name=payment]:checked').val() == "" ||  $(".usethisvia").val() == " "){
             Swal.fire("Pastikan Semua Kolom terisi(kecuali diskon)","","info");
         }else{
             $.ajax({
@@ -230,7 +278,7 @@ $(document).ready(function(){
                         nama_pelanggan: $("#nama").val(),
                         diskon: $("#diskon").val(),
                         bayar: $(".usethis").val(),
-                        metode: $('input[name=payment]:checked').val(),
+                        metode: "cash",
                         via: $(".usethisvia").val(),
                     } 
                 },
@@ -243,6 +291,7 @@ $(document).ready(function(){
                         'success'
                     );
                     print();
+                    $("#next-button").removeAttr("disabled");
                 },
                 error: function(err,response, errorThrown, jqXHR){
                     alert(err.responseText);
@@ -259,8 +308,8 @@ $(document).ready(function(){
 
     //input diskon
     $("#diskon").keyup(function(){
-       subtotalafterdiskon = subtotal1 * (100 - parseInt($(this).val())) / 100; 
-       $("#totality").val(subtotalafterdiskon);
+       subtotalafterdiskon = subtotal1 - $(this).val(); 
+       $("#totality").val(subtotalafterdiskon.toLocaleString());
     }); 
 
     $("#reset-button").click(function(){
@@ -303,6 +352,22 @@ $(document).ready(function(){
         });
     }
 
+    //NEXt TRANSACTION
+    $("#next-button").click(function(e){
+        window.location ="/selesaitrans";
+    });
+
+
+
+
+
+
+
+
+
+
+
+
     $(document).on("click", "tr td .buang", function(e){
         // $.ajax({
         //     headers: {
@@ -333,6 +398,7 @@ $(document).ready(function(){
               Swal.fire('Saved!', '', 'success')
             } else if (result.isDenied) {
               Swal.fire('Changes are not saved', '', 'info');
+              alert($(e.target).children("a").attr("id_detail"));
               hapusdetail($(e.target).children("a").attr("id_detail"));
             }
           })

@@ -19,7 +19,6 @@ Route::get('/', function(){
     return view('welcome');
 });
 
-
 Auth::routes();
 // Route Untuk Omah Kunci
 
@@ -35,6 +34,7 @@ Route::post('/tambahItem', 'KasirController@tambahTransaksiDetail');
 
 Route::post('/selesaitransaksi', 'KasirController@selesai')->name('selesai');
 Route::get('/selesai', 'KasirController@reset');
+Route::get('/selesaitrans', 'KasirController@forgoting');
 Route::post('/loader', 'KasirController@loader');
 Route::get('/resettransaction', 'KasirController@resetTransaction');
 Route::post('/removedetail', 'KasirController@removedetail');
@@ -109,3 +109,22 @@ Route::get('/dsm', 'DSMController@index');
 Route::post('/loaddsm', 'DSMController@loaddatadetailstok');
 Route::post('/verifiying', 'DSMController@verifiying');
 Route::post('/rejecting', 'DSMController@rejecting');
+
+
+// Theodhore 19 Februari 2022
+
+Route::get('request', function(){
+    return view('request');
+});
+
+
+
+Route::post("/searchnotapreorder", "PreorderController@search");
+Route::post("/getnb", "PreorderController@getnb");
+Route::post("/bayarpreorder", "PreorderController@bayarpreorder");
+ROute::post("/cetaknotabesar", "PreorderController@cetaknotabesar");
+
+
+Route::get('/nota_besar_final', function(){
+    return view('nota_besar');
+});

@@ -205,10 +205,19 @@ img{
                           
 
                         </tr>
+                        
                         <tr>
                         <td>{{$dats->jumlah}} {{$dats->stn}} x Rp. {{number_format($dats->harga)}}</td>
-                        <td align="right">Rp. {{number_format($dats->total)}}</td>
-                        @php $no++; $subtotal+=$dats->total; @endphp
+                        <td align="right">Rp. {{number_format($dats->jumlah * $dats->harga )}}</td>
+                        @php $no++; $subtotal+=$dats->jumlah * ($dats->harga - $dats->potongan); @endphp
+                        </tr>
+                        <tr>
+                            <td>Diskon :</td>
+                            <td align="right">Rp. {{number_format($dats->jumlah * $dats->potongan)}}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td align="right">Rp. {{number_format($dats->jumlah * ($dats->harga - $dats->potongan))}}</td>
                         </tr>
                                                 @endforeach
                       
@@ -223,8 +232,8 @@ img{
                             
                         </tr>
                         <tr >
-                           <td >Diskon</td>
-                            <td align="right" >{{$data[0]->diskon == null ? '-' : $data[0]->diskon."%"}}</td>
+                           <td >Potongan</td>
+                            <td align="right" >Rp. {{number_format($data[0]->diskon)}}</td>
                             
                         </tr>
                         <tr >
