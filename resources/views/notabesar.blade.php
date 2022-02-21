@@ -4,6 +4,7 @@
 @section('titlepage', 'Nota Besar')
 
 @section('js')
+<script src="{{ asset('js/print.js') }}"></script>
 <script src="{{ asset('js/transaksi.js') }}"></script>
 <script src="{{ asset('js/notabesar.js') }}"></script>
 @stop
@@ -25,8 +26,16 @@
     <div class="col">
     <form id="preorderform" action="/tambahpreorder">
     <input type="hidden" id="id_trans" val="0">
-    <h4 id="tt">Tanda Terima</h4>
-    <i><h4 style="color:#747474;" id="nn">No Nota : 001</h4></i>
+    <h4 id="tt" class="mt-5">Tanda Terima</h4>
+    <i><h4 style="color:#747474;" id="nn" class="mb-5">No Nota : 001</h4></i>
+
+
+
+
+     <div class="form-group">
+    <label for="exampleInputEmail1">Tanggal </label>
+    <input type="date" class="form-control form-control-" id="tgl" value="{{date('Y-m-d')}}">
+  </div>
     <br>
 <div class="row" id="baseinputnb">
 <div class="col">
@@ -84,7 +93,7 @@
 </div>
 </form>
 <div class="row">
-<button class="btn btn-warning m-3" id="buttonprint" ><i class="fa fa-print"></i></button>
+<button class="btn btn-warning m-3" id="printbutton" ><i class="fa fa-print"></i></button>
 </div>
 <div class="row">
 <button class="btn btn-primary m-3" id="resetbutton"><i class="fa fa-back"></i>Kembali</button>

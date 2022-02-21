@@ -11,18 +11,18 @@ class TransaksiPreorder extends Controller
     public function index(){
         $data = [];
         
-        $get = DB::table("nota_besar")->orderBy("id_transaksi" ,'desc')->get()->toArray();
+        $get = DB::table("nota_besar")->groupBy("no_nota")->get()->toArray();
         
 
         foreach($get as $d){
             $row = (array) $d;
           
-                 $opsi = DB::table("nb_detail")->where("id_nb", $d->id_transaksi)->get();
+                 $opsi = DB::table("nota_besar")->where("no_nota", $d->no_nota)->select("us", "brp", "total", "updated_at", "status","id_transaksi")->where('termin', ">", $d->termin)->get()->toArray();
                  array_push($row, (array) $opsi);
                  array_push($data, $row);
             
         }
-     //   dd($data);
+     
         return view("transaksipreorder", ['data'=>$data,'page'=>'kasir']);
      
         

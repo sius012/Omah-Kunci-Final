@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/toko_kunci/request.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/request.css') }}">
 
     <title>Omah Kunci || Account Request</title>
 </head>

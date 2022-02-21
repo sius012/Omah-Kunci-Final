@@ -16,7 +16,7 @@ $(document).ready(function(){
                 "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content')
             },
             data: {
-                kw : $(this).val()
+                kw : $("#searcher-nota").val()
             },
             url: "/searchnotapreorder",
             type: "post",
@@ -25,10 +25,11 @@ $(document).ready(function(){
                 console.log(data);
                 let row = data.map(function(datas){
                     return `
-                <li><a href="#"  id_nb = ${datas['id_transaksi']} class='${datas['us'] == null && datas['termin'] == 3 ? "cc" :  "cc"}'>${datas['no_nota'] + "  " + "Termin: " + datas['termin']}</a></li>
+                <li><a href="#"  id_nb = ${datas['id_transaksi']} class='${datas['us'] == null && datas['status'] == "menunggu" ? "disab" :  "cc"}'>${datas['no_nota'] + "  " + "Termin: " + datas['termin']}</a></li>
 
                     `;
                 });
+
                 $("#myUL").html(row);
             },
             error: function(err){
@@ -82,7 +83,18 @@ $(document).ready(function(){
                 $(".td").show();
                 $(".td").children("input").val(data["td"]);
                 $("#addopsi").hide();
-              
+                if(data["nb"][0]["status"] == "dibayar"){
+                    $("#buttonsubmit").attr("disabled", "disabled");
+                    $("#buttonsubmit").text("Sudah Lunas");
+                    $("#buttonsubmit").removeClass("btn-primary");
+                    $("#buttonsubmit").addClass("btn-success");
+                
+                }else{
+                    $("#buttonsubmit").removeAttr("disabled");
+                    $("#buttonsubmit").removeClass("btn-success");
+                    $("#buttonsubmit").addClass("btn-primary");
+                    $("#buttonsubmit").text("Bayar");
+                }
             },
             error: function(err){
                 alert(err.responseText);
@@ -202,10 +214,18 @@ $(document).ready(function(){
             url: url,
             success: function(data){
                 Swal.fire({
-                    title: "transaksi berhasil ditambahkan"
+                    title: url == "/bayarpreorder" ? "Pembayaran dilunasi" : "Transaksi Berhasi Ditambahkan" 
                 });
              //   $("#preorderform input").val("");
                 $("#preorderform").attr("disabled", "disabled");
+               
+                $("#buttonsubmit").attr("disabled", "disabled");
+                $("#buttonsubmit").text("Sudah Lunas");
+                $("#buttonsubmit").removeClass("btn-primary");
+                $("#buttonsubmit").addClass("btn-success");
+
+                $("#searcher-nota").val("");
+            
             },
             error: function(err){
                 alert(err.responseText);
@@ -229,8 +249,11 @@ $(document).ready(function(){
             },
             url: "/cetaknotabesar",
             type: "post",
-            success: function(data){
-                alert("success");
+            success: function(response){
+                printJS({printable: response['filename'], type: 'pdf', base64: true});
+                alert("berhasil");
+            },error: function(err){
+                alert(err.responseText);
             }
         });
     });

@@ -27,8 +27,23 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-6">
-                    <input class="search-box" type="text" id="searcher" placeholder="Cari Barang Disini...">
-                    <i class="fas fa-search ml-1 search-icon"></i>
+                    <div class="row">
+                        <div class="card w-100">
+                            <div class="card-header">
+                                Pilih Product
+                            </div>
+                            <div style="border-bottom:1px solid lightgray;" class="card-body d-inline-flex">
+                                <input class="search-box form-control mr-2" type="text" id="searcher" placeholder="Cari Barang Disini...">
+                                <ul>
+                                    <li></li>
+                                </ul>
+                                <input class="qty form-control w-25" id="qty" placeholder="Quantity" type="number">
+                            </div>
+                            <div class="card-footer">
+                                <a href="#" class="btn btn-success">Tambah Product</a>
+                            </div>
+                        </div>
+                    </div>
                     <div class="drop">
                         <ul>
                         </ul>

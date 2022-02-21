@@ -24,35 +24,49 @@
         </div>
     
         @foreach($data as $datas)
-            <div class="card datatrans"  id_trans="{{$datas['id_transaksi']}}">
+        
+
+
+             <div class="card datatrans"  id_trans="{{$datas['no_nota']}}">
+                <div class="card-header">
+                    <h6 class="card-title float-right mr-2">{{$datas["created_at"]}}</h6>
+                </div>
                 <input type="hidden" >
                 <table class="table table-borderless">
-                    <tr>
-    
-                        <th><div style="width: 150px">No Nota</div></th>
-                        <th><div style="width: 130px">Telah Terima Dari</div></th>
-                        <th><div style="width: 110px">UP</div></th>
-                        <th><div style="width: 110px">Uang Sejumlah</div></th>
-                        <th><div style="width: 110px">Berupa</div></th>
-                        <th><div style="width: 90px">Guna Membayar</div></th>
-                        <th><div style="width: 120px">Total</div></th>
-                    </tr>
-                    <tr>
-                        <td><div>{{$datas["no_nota"]}}</div></td>
-                        <td><div>{{$datas["ttd"]}}</div></td>
-                        <td><div>{{$datas["up"]}}</div></td>
-                        <td><div>Rp. {{number_format($datas["us"])}}</div></td>
-                        <td><div> {{$datas["brp"]}}</div></td>
-                        <td><div>{{$datas["gm"]}}</div></td>
-                        <td><div>{{$datas["total"]}}</div></td>
-
-                    </tr>
+                    <thead class="text-center">
+                      <tr>
+                          <th><div style="width: 40px; margin-left:9px;">No</div></th>
+                          <th><div style="width: 150px">Telah diterima dari</div></th>
+                          <th><div style="width: 110px">Total</div></th>
+                          <th><div style="width: 110px">Tagihan 1</div></th>
+                          <th><div style="width: 110px">Tagihan 2</div></th>
+                          <th><div style="width: 110px">Tagihan 3</div></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                          <td><div >{{$datas["no_nota"]}}</div></td>
+                          <td><div>{{$datas["ttd"]}}</div></td>
+                          <td><div>Rp. {{number_format( $datas["total"] )}}</div></td>
+                      
+                          <td><div><i class="fa fa-check-circle"></i></div></td>
+                          <td><div>@If($datas[0][0]->status == "dibayar")<div><i class="fa fa-check-circle"></i></div>@else <div><a class="btn btn-success text-light" href="{{url('/notabesar?id_trans='.$datas[0][0]->id_transaksi)}}">Bayar</a></div>@endif</td>
+                          <td><div>@If($datas[0][1]->status == "dibayar")<div><i class="fa fa-check-circle"></i></div>@else <div><a class="btn btn-success text-light" href="{{url('/notabesar?id_trans='.$datas[0][1]->id_transaksi)}}">Bayar</a></div>@endif</td>
+                          <td><div><i style="background-color:#1562AA; color:white; padding:10px; border-radius:100%;" class="fa fa-list"></i></div></td>
+                      </tr>
+                    </tbody>
                 </table>
                 <div class="card-clicker">
 
                 </div>
             </div>
+
             @endforeach
+
+
+
+              
+
 
 
 
