@@ -201,7 +201,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index2.html" class="nav-link {{$whoactive =='stoktrafic' ? 'active' : ''}}">
+                <a href="{{url('/dsm')}}" class="nav-link {{$whoactive =='stoktrafic' ? 'active' : ''}}">
         
                   <p>Stok Trafic</p>
                 </a>

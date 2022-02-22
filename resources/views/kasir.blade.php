@@ -29,20 +29,29 @@
                 <div class="col-6">
                     <div class="row">
                         <div class="card w-100">
+                            <form action="" id="formsubmitter">
                             <div class="card-header">
                                 Pilih Product
                             </div>
-                            <div style="border-bottom:1px solid lightgray;" class="card-body d-inline-flex">
-                                <input class="search-box form-control mr-2" type="text" id="searcher" placeholder="Cari Barang Disini...">
-                                <ul>
-                                    <li></li>
-                                </ul>
-                                <input class="qty form-control w-25" id="qty" placeholder="Quantity" type="number">
+                            <div style="border-bottom:1px solid lightgray;" class="card-body ">
+                                <div class="row d-inline-flex">
+                                    <input required class="search-box form-control mr-2" type="text" id="searcher" placeholder="Cari Barang Disini...">
+                                    <ul id="myUL">
+                                      </ul>
+                                    <input  min="1" required class="qty form-control w-25" id="qty" placeholder="Quantity" type="number">
+                                    <input  required class="qty form-control w-25" id="hrg" placeholder="Quantity" type="hidden">
+                                </div>
+                              
+                                <div class="row m-0">
+                                    <p class="m-0 mt-3"><b>Harga  </b></p><p class="m-0 mt-3" id="hrg-nominal">: -</p>
+                                </div>
                             </div>
+                          
                             <div class="card-footer">
-                                <a href="#" class="btn btn-success">Tambah Product</a>
+                                <button href="#" class="btn btn-success">Tambah Product</button>
                             </div>
                         </div>
+                         </form>
                     </div>
                     <div class="drop">
                         <ul>
@@ -106,7 +115,7 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group d-inline-flex">
-                                <input style="width:170px;" class="form-control mr-4 usethis" type="text">
+                                <input style="width:170px;" class="form-control mr-4 usethis" type="number" >
                                 <select class="custom-select form-control w-25 usethisvia">
                                     <option selected>Via</option>
                                     <option value="Langsung">Langsung</option>

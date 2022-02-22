@@ -142,7 +142,8 @@ $(document).ready(function(){
             kategori_produk : $("#kategori-produk").val(),
             harga_produk : $("#harga-produk").val(),
             satuan_produk : $("#satuan-produk").val(),
-
+            code_type : $("#tipe-kode").val(),
+            nomermerek : $("#nomer-merek").val(),
         };
       
 
@@ -155,7 +156,9 @@ $(document).ready(function(){
             type: "POST",
             url: url, 
             success: function(data){
-                alert('berhasil');  
+                Swal.fire("Barang Berhasil ditambahkan", "Barang telah tersimpan","success").then(function(){
+                    window.location = "/produk";
+                });
 
                 //clear the modal
                 if(url == "/updateproduk"){
@@ -165,7 +168,7 @@ $(document).ready(function(){
                 }else{
                     $(".tambahbarangform input").val("");
                 }
-                loadProduk();
+
             },
             error: function(err){
                 alert(err.responseText);

@@ -28,10 +28,11 @@ class ProdukController extends Controller
         return json_encode($produk);
     }
     public function index(){
-        $kategori = DB::table('kategori')->get();
-        $produk = DB::table('produk')->join('kategori', 'produk.id_kategori', '=', 'kategori.id_kategori')->get();
-        $merek =  DB::table('merek')->get();
-        return view("produk", ["kat" => $kategori, "produk" => $produk, "merek" => $merek]);
+        $kategori = DB::table('produk')->groupBy("id_kategori")->get();
+        $kodetype = DB::table('produk')->groupBy("id_ct")->get();
+        $merek = DB::table('produk')->groupBy("merk")->get();
+        $produk = DB::table('produk')->take(50)->get();
+        return view("produk", ["kat" => $kategori, "produk" => $produk, "merek" => $merek, "kodetype" => $kodetype]);
     }
 
     public function tambahbarang(Request $req){
@@ -41,8 +42,15 @@ class ProdukController extends Controller
         $id_kat = $req->input('kategori_produk');
         $harga_produk = $req->input('harga_produk');
         $satuan_produk = $req->input('satuan_produk');
+        $codetype = $req->input('code_type');
 
-        DB::table('produk')->insert(["kode_produk"=>$kode_produk,"nama_produk"=>$nama_produk,"merk" => $merek_produk, "id_kategori"=> $id_kat, "harga" => $harga_produk, 'stn' => $satuan_produk]);
+        $nmerek = $req->input("nomermerek");
+
+        $count = DB::table("produk")->where("id_kategori", $id_kat)->where("id_ct", $codetype)->where("merk",$merek_produk)->count();
+
+        $kodebarcode = $id_kat.str_pad($codetype, 2, '0', STR_PAD_LEFT).str_pad($nmerek, 2, '0', STR_PAD_LEFT).str_pad($count+1, 3, '0', STR_PAD_LEFT);
+        
+        DB::table('produk')->insert(["kode_produk"=>$kodebarcode,"nama_produk"=>$nama_produk,"merk" => $merek_produk, "id_kategori"=> $id_kat, "harga" => $harga_produk, 'stn' => $satuan_produk]);
 
         $getProduk = DB::table('produk')->join('kategori', 'kategori.id_kategori', '=', 'produk.id_kategori')->get();
         return json_encode(["produk" => $getProduk]);

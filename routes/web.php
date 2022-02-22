@@ -128,3 +128,5 @@ ROute::post("/cetaknotabesar", "PreorderController@cetaknotabesar");
 Route::get('/nota_besar_final', function(){
     return view('nota_besar');
 });
+
+Route::get('/injectproduk', "SeederJoy@inject");

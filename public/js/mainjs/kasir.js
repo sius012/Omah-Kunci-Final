@@ -124,7 +124,7 @@ $(document).ready(function(){
 
     $(".drop").hide();
     $("#searcher").keyup(function(){
-        
+        $("#myUL").show();
             kw = $(this).val();
             
             $.ajax({
@@ -144,33 +144,18 @@ $(document).ready(function(){
                     var li = "";
                     for(var i = 0;i < data.length;i++){
                         li += `<li>
-                                <div class="bungkuser"> 
-                                    <div class="row">
-                                        <div class="col-sm">
-                                        ${data[i]['nama_produk']}
-                                        </div>
-                                        <div class="col-sm">
-                                        ${data[i]['kategori']}
-                                        </div>
-                                        <div class="col-sm">
-                                        ${data[i]['harga']}
-                                        </div>
-                                        <div class="col-sm">
-                                        <input class="potongan" value=0>
-                                        </div>
-                                        <div class="col-sm">
-                                        <input class="jml" value=1>
-                                        </div>
-                                    </div>
-                                    <a kode=" ${data[i]['kode_produk']}" harga="${data[i]['harga']}" jumlah="1" potongan="0" class="sear">Tambah</a>
+
+                                   <a kode="${data[i]['kode_produk']}" harga="${data[i]['harga']}" jumlah="1" potongan="0" class="sear">${data[i]["kode_produk"] + " " + data[i]["nama_produk"]}</a>
                                 </div>
                             
                             </li>`;
                     }
-                    $(".drop ul").html(li);
+                    $("#myUL").html(li);
+        
                 }else{
                     $(".drop").hide();
                 }
+               
                 console.log(data.length);
                 
                 },
@@ -181,10 +166,10 @@ $(document).ready(function(){
     });
 
     $(document).click(function(){
-        $(".drop").hide();
+        $("#myUL").hide();
     });
 
-    $(".drop").click(function(e){
+    $("#myUL").click(function(e){
     e.stopPropagation(); 
     });
 
@@ -230,7 +215,7 @@ $(document).ready(function(){
                 });
                 $('#tabling').html(row);
                 $("#tabling").show("slow");
-                $('#subtotal').val(subtotal.toLocaleString());
+          $('#subtotal').val(subtotal.toLocaleString());
                 subtotal1 = subtotal;
                 id_trans = data['datadetail'][0]['kode_trans'];
                 $("#kodetrans").val(data['datadetail'][0]['kode_trans']);
@@ -244,13 +229,25 @@ $(document).ready(function(){
          $("#selesai").removeAttr('disabled');
     }
 
-    $(".drop").on("click", ".sear",function(event){
-        tambahItem($(event.target).attr("kode"),
-        $(event.target).attr("harga"),
-        $(event.target).attr("jumlah"),
-        $(event.target).attr("potongan")
+    $("#myUL").on("click", ".sear",function(event){
+        $("#searcher").val($(event.target).attr("kode"));
+        $("#hrg").val($(event.target).attr("harga")     );
+        $("#hrg-nominal").html(":  RP. " + parseInt($(event.target).attr("harga")).toLocaleString());
+     
+    }); 
+
+
+    $("#formsubmitter").submit(function(e){
+        e.preventDefault();
+        tambahItem(
+            $("#searcher").val(),
+            $("#hrg").val(),
+            $("#qty").val(),
+            0,
         );
     });
+
+
 
     $(".drop").on("keyup", ".jml", function(){
         $(event.target).closest(".bungkuser").children(".sear").attr("jumlah", $(event.target).val());

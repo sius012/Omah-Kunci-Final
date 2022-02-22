@@ -14,7 +14,7 @@ class DetailStokController extends Controller
         return json_encode($data);
     }
     public function index(){
-        $produk = DB::table('produk')->join('kategori','kategori.id_kategori','=','produk.id_kategori')->join('merek','merek.nomer','=','produk.merk')->get();
+        $produk = DB::table('produk')->join('kategori','kategori.id_kategori','=','produk.id_kategori')->get();
 
 
         $data = DB::table('detail_stok')->get();
