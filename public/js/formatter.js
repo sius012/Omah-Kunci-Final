@@ -17,7 +17,4 @@ $(document).ready(function(){
         }
 
 
-    $(".uang").keyup(function(){
-        $(this).val(rp($(this).val(),"Rp."));
-    });
 });

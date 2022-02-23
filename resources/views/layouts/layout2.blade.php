@@ -32,7 +32,7 @@
   <script src="{{asset('plugins/jquery/jquery.js')}}"> </script>
  
   <script src="{{ asset('js/sweetalert2.all.min.js')}}"></script>
-  <script src="{{asset('js/formatter.js')}}"> </script>
+
 
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
   @yield('css')
@@ -69,10 +69,10 @@
       </li>
       <li>
 
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                    <a class="dropdown-item mt-1" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        <p>Logout <i class="fa fa-sign-out"></i></p>
+                                        <p><b>Logout<b> <i class="fa fa-sign-out"></i></p>
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -95,13 +95,17 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
+        <a href="index3.html" class="brand-link p-3 m-0" style="border-bottom:4px solid white">
+            <img src="{{asset('assets/Group 1.svg')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" >
+            <span class="brand-text font-weight-light">OmahKunci</span>
+          </a>
       <!-- Sidebar user panel (optional) -->
       <div class="mt-3 pb-3 mb-3 d-block ">
         <div class="image">
           <img src="{{asset('assets/Group 1.svg')}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block">{{Auth::user()->name}}</a>
         </div>
       </div>
 
@@ -123,7 +127,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           @if(auth()->user()->roles[0]['name'] == 'kasir'  or  auth()->user()->roles[0]['name'] == 'manager' )
-          <li class="nav-item menu-open">
+          <li class="nav-itemn">
             <a href="#" class="nav-link {{$whoactive=='kasir' ? 'active' : ''}}">
               <p>
                 Kasir
@@ -158,7 +162,7 @@
 
 
            @if(auth()->user()->roles[0]['name'] == 'admin gudang' or auth()->user()->roles[0]['name'] == 'manager')
-            <li class="nav-item menu-open">
+            <li class="nav-item">
             <a href="#" class="nav-link {{$whoactive =='admingudang' ? 'active' : ''}}">
               <p>
                 Admin Gudang
@@ -182,7 +186,7 @@
           @endif
 
                @if(auth()->user()->roles[0]['name'] == 'manager' )
-            <li class="nav-item menu-open">
+            <li class="nav-item menuopen">
             <a href="#" class="nav-link {{$whoactive=='manager' ? 'active' : ''}}">
               <p>
                 Manager

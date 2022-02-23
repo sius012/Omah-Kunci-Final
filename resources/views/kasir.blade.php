@@ -17,7 +17,7 @@
 
     @section('content')
     @php
-        $date = \Carbon\Carbon::parse('2021-03-16 08:27:00')->locale('id');
+        $date = \Carbon\Carbon::parse(date('Y-m-d h:i:s'))->locale('id');
 
         $date->settings(['formatFunction' => 'translatedFormat']);
 
@@ -28,7 +28,7 @@
             <div class="row">
                 <div class="col-6">
                     <div class="row">
-                        <div class="card w-100">
+                        <div class="card w-200">
                             <form action="" id="formsubmitter">
                             <div class="card-header">
                                 Pilih Product
@@ -320,9 +320,10 @@
     </section>
     <script> 
     $(document).ready(function(){
-    
+       
 
     $(".uang").keyup(function(){
+  
         $(this).val(rp($(this).val(),"Rp."));
     });
 });
