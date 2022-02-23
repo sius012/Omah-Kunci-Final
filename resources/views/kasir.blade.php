@@ -100,7 +100,7 @@
                     </div>
                     <div class="row">
                         <label class="diskon-label" for="diskon">Diskon</label>
-                        <input type="text" class="diskon" id="diskon" name="diskon">
+                        <input type="number" class="diskon uang" id="diskon" name="diskon">
                     </div>
                     <div class="row">
                         <label class="total-label" for="total">Total</label>
@@ -115,7 +115,7 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group d-inline-flex">
-                                <input style="width:170px;" class="form-control mr-4 usethis" type="number" >
+                                <input style="width:170px;" class="form-control mr-4 usethis uang" type="text" >
                                 <select class="custom-select form-control w-25 usethisvia">
                                     <option selected>Via</option>
                                     <option value="Langsung">Langsung</option>
@@ -318,4 +318,14 @@
         </div>
      </div> -->
     </section>
+    <script> 
+    $(document).ready(function(){
+    
+
+    $(".uang").keyup(function(){
+        $(this).val(rp($(this).val(),"Rp."));
+    });
+});
+    </script>
+
     @stop

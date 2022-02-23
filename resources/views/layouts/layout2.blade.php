@@ -30,7 +30,9 @@
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
   <script src="{{asset('plugins/jquery/jquery.js')}}"> </script>
+ 
   <script src="{{ asset('js/sweetalert2.all.min.js')}}"></script>
+  <script src="{{asset('js/formatter.js')}}"> </script>
 
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
   @yield('css')
@@ -253,6 +255,7 @@
 <!-- ./wrapper -->
 
 <!-- jQuery -->
+
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
