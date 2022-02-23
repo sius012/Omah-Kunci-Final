@@ -132,7 +132,7 @@
             </tr>
             <tr>
                 <td>
-                    <h4>up</h4>
+                    <h4>Untuk Proyek</h4>
                 </td>
                 <td> : {{ $data->up }}</td>
                 <td></td>

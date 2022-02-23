@@ -21,7 +21,7 @@
                 <i class="fas fa-search ml-1 search-icon"></i>
             </div>
             <div class="col-6">
-                <button type="button" class="btn" data-toggle="modal" data-target="#exampleModal">Tambah Data</button>
+            <button  type="button" class="btn" data-toggle="modal" data-target=""><a href="{{url('detailstok')}}">Tambah Data</a> </button>
             </div>
         </div>
     </div>

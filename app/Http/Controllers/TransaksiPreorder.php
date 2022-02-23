@@ -8,11 +8,16 @@ use function GuzzleHttp\json_encode;
 
 class TransaksiPreorder extends Controller
 {
-    public function index(){
+    public function index(Request $req){
         $data = [];
         
         $get = DB::table("nota_besar")->groupBy("no_nota")->get()->toArray();
-        
+        if($req->has("no_nota")){
+            if($req->no_nota != ""){
+                $get = DB::table("nota_besar")->where("no_nota", $req->no_nota)->groupBy("no_nota")->get()->toArray();
+            }
+           
+        }
 
         foreach($get as $d){
             $row = (array) $d;

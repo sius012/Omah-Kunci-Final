@@ -1,4 +1,23 @@
-$(document).ready(function(){   
+$(document).ready(function(){  
+    $(".hapusproduk").click(function(e){
+        e.preventDefault();
+        Swal.fire({
+            title: 'Apakah anda yakin ingin menghapus',
+            showDenyButton: true,
+            confirmButtonText: 'Batalkan',
+            denyButtonText: `Hapus`,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                
+            } else if (result.isDenied) {
+               window.location = $(e.target).attr('href');
+            }
+          });
+    });
+
+
+    $("#modalprodukedit").modal("show"); 
     $("button[data-target='#modalproduk']").click(function(e){
         $("#submitterproduk").attr('action', '/tambahbarang');
     });

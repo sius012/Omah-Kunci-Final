@@ -212,6 +212,7 @@ $(document).ready(function(){
             },
             type: "POST",
             url: url,
+            dataType: "json",
             success: function(data){
                 Swal.fire({
                     title: url == "/bayarpreorder" ? "Pembayaran dilunasi" : "Transaksi Berhasi Ditambahkan" 
@@ -223,12 +224,14 @@ $(document).ready(function(){
                 $("#buttonsubmit").text("Sudah Lunas");
                 $("#buttonsubmit").removeClass("btn-primary");
                 $("#buttonsubmit").addClass("btn-success");
-
+                $("#id_trans").val(data["id_trans"]);
+                $("#nn").text("No Nota: "+data["no_nota"]);
                 $("#searcher-nota").val("");
             
             },
             error: function(err){
                 alert(err.responseText);
+                Swal.fire("terjadi kesalahan");
             }
 
 

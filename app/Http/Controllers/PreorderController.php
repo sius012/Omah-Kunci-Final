@@ -20,12 +20,26 @@ class PreorderController extends Controller
         }
         return json_encode(['data' => (array)$data, 'dataopsi' => (array) $dataopsi, 'isEmpty'  => $isEmpty,'page'=>'kasir']);
     }
-    public function index(Request $req){
-
+    public function index(Request $req,$id = null){
+        if($id != null){
+            return view("notabesar", ["id"=>$id]);
+        }else{
             return view("notabesar");
+        }
+            
+          
         
      
     }
+
+    public function bayaring($id){
+
+        return view("notabesar");
+        
+}
+
+
+
 
 
     public function tambahtransaksi(Request $req){
@@ -43,13 +57,14 @@ class PreorderController extends Controller
         $id;
         $id2 = "";
         $id3;
+        $no;
         if($req->session()->has('id_nb')){
             $id = $req->session()->get('id_nb');
             DB::table('nota_besar')->where('id_transaksi', $id)->update($req->input('formData'));
         }else{
             $counter = DB::table('nota_besar')->count();
             $counter = $counter+1;
-            $no = date("yymmdd").$counter;
+            $no = date("ymmd").$counter;
             $counting = DB::table('nota_besar')->where("no_nota",$no)->count();
             if($counting < 1){
                 $id = DB::table('nota_besar')->insertGetId(array_merge($req->input('formData'),['no_nota' => $no, 'termin' => 1, "status" => "dibayar"]));
@@ -113,7 +128,7 @@ class PreorderController extends Controller
 
         $req->session()->put('id_nb', $id);
 
-        
+        return json_encode(["id_trans" => $id,"no_nota" => $no]);
 
 
         

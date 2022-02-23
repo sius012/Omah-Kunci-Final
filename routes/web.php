@@ -41,13 +41,14 @@ Route::post('/removedetail', 'KasirController@removedetail');
 
 
 Route::get('/transaksi', 'transaksiController@index');
-Route::get('/produk', 'ProdukController@index');
+Route::get('/produk', 'ProdukController@index')->name('produk');
 Route::post('/tambahbarang', 'ProdukController@tambahbarang');
 Route::post('/hapusbarang', 'ProdukController@hapusbarang');
 Route::post('/loadproduk', 'ProdukController@loadProduk');
 Route::post('/getprodukinfo', 'ProdukController@loadSingleProduk');
 Route::post('/updateproduk', 'ProdukController@updatebarang');
-
+Route::get('/hapusproduk/{kode}', 'ProdukController@hapusproduk')->name("hapusproduk");
+Route::get('/searchproduct', 'ProdukController@search')->name("searchproduct");
 
 
 Route::get('/notabesar', 'PreorderController@index');
@@ -64,13 +65,14 @@ Route::post('/tambahmerek', 'ProdukController@tambahmerek');
 Route::post('/getmerekinfo', 'ProdukController@getmerekinfo');
 Route::post('/ubahmerek', 'ProdukController@ubahmerek');
 Route::post('/hapusmerek', 'ProdukController@hapusmerek');
-
+Route::post('/editproduks/{id}', "ProdukController@updatebarang")->name("editproduk");
+Route::get('/editproduk', "ProdukController@showdetail");
 Route::post('/tambahkategori', 'ProdukController@tambahkategori');
 
 
 
 
-Route::post('/tambahstok', 'StokController@tambahstok');\
+Route::post('/tambahstok', 'StokController@tambahstok');
 Route::post('/loadsinglestok', 'StokController@loadsinglestok');
 
 Route::post('/editstok', 'StokController@editstok');
@@ -78,7 +80,7 @@ Route::post('/editstok', 'StokController@editstok');
 
 Route::get('/transaksipreorder', 'TransaksiPreorder@index');
 Route::post('/resettrans', 'PreorderController@resettrans');
-
+Route::get('/prosesbayar/{id}/', "PreorderController@index")->name("prosesbayar");
 Route::post('/bayarcicilan', 'KasirController@bayarcicilan');
 
 
@@ -122,7 +124,8 @@ Route::get('request', function(){
 Route::post("/searchnotapreorder", "PreorderController@search");
 Route::post("/getnb", "PreorderController@getnb");
 Route::post("/bayarpreorder", "PreorderController@bayarpreorder");
-ROute::post("/cetaknotabesar", "PreorderController@cetaknotabesar");
+Route::post("/cetaknotabesar", "PreorderController@cetaknotabesar");
+Route::post("/caritranspreorder", "TransaksiPreorder@index")->name("caritranspreorder");
 
 
 Route::get('/nota_besar_final', function(){

@@ -30,6 +30,15 @@ class DSMController extends Controller
 
     public function verifiying(Request $req){
         $id = $req->input('id');
+        $getproduk = DB::table('detail_stok')->where("id",$id)->get();
+        $getcode = $getproduk[0]->kode_produk;
+        $getstokold = DB::table("stok")->where("kode_produk", $getcode)->get()[0]->jumlah;
+        if($getproduk[0]->status == "masuk"){
+            DB::table('stok')->where("kode_produk", $getcode)->update(["jumlah" => $getstokold + $getproduk[0]->jumlah]);
+        }else{
+            DB::table('stok')->where("kode_produk", $getcode)->update(["jumlah" => $getstokold - $getproduk[0]->jumlah]);
+        }
+      
         DB::table('detail_stok')->where('id',$id)->update(['status2' => 'terverifikasi']);
     }
 

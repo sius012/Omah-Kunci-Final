@@ -1,9 +1,25 @@
-.row .col-6 .calendar-transaksi {
-    background-color: #1562AA;
-    color: white;
-    padding: 10.5px;
+.row .col-12 .search-box {
+    border: 1px solid #C6C6C6;
+    padding: 5px;
+    width: 430px;
 
     border-radius: 5px;
+}
+
+.row .col-12 .search-box::placeholder {
+    color: #8C8C8C;
+    font-size: 15px;
+
+    padding-left: 10px;
+}
+
+.row .col-12 .search-icon {
+    background-color: #1562AA;
+    color: white;
+    border: none;
+    padding: 6px;
+    border-radius: 5px;
+    margin-left: 10px;
 }
 
 .row .date {

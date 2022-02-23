@@ -10,9 +10,9 @@ use function GuzzleHttp\json_encode;
 
 
 
-
 class ProdukController extends Controller
 {
+
     public function loadSingleProduk(Request $req){
         $produk = DB::table('produk')->join('kategori', 'produk.id_kategori', '=', 'kategori.id_kategori')->join('merek', 'produk.merk', '=','merek.nomer')->where('kode_produk', $req->input('kode_produk'))->first();
         return json_encode($produk);
@@ -33,6 +33,29 @@ class ProdukController extends Controller
         $merek = DB::table('produk')->groupBy("merk")->get();
         $produk = DB::table('produk')->take(50)->get();
         return view("produk", ["kat" => $kategori, "produk" => $produk, "merek" => $merek, "kodetype" => $kodetype]);
+    }
+
+    public function search(Request $req){
+        $kategori = DB::table('produk')->groupBy("id_kategori")->get();
+        $kodetype = DB::table('produk')->groupBy("id_ct")->get();
+        $merek = DB::table('produk')->groupBy("merk")->get();
+       
+      
+        $kw = $req->kw;
+        $type = $req->tp;
+        $ct = $req->ct;
+        $merk = $req->merk;
+
+        if($kw != "" || $kw != null){
+            $produk = DB::table('produk')->where("kode_produk", $kw)->where("id_kategori", $type)->where("id_ct",$ct)->where("merk",$merk)->get();
+            return view("produk", ["kat" => $kategori, "produk" => $produk, "merek" => $merek, "kodetype" => $kodetype, "keyword" => $kw, "tipe" => $type, "id_ct" => $ct,"mereknya" => $merk]);
+        }else{
+                
+                $produk = DB::table('produk')->where("id_kategori", $type)->where("id_ct",$ct)->where("merk",$merk)->get();
+                return view("produk", ["kat" => $kategori, "produk" => $produk, "merek" => $merek, "kodetype" => $kodetype, "keyword" => $kw, "tipe" => $type, "id_ct" => $ct,"mereknya" => $merk]);
+        }
+        
+        
     }
 
     public function tambahbarang(Request $req){
@@ -56,17 +79,20 @@ class ProdukController extends Controller
         return json_encode(["produk" => $getProduk]);
     }
 
-    public function hapusbarang(Request $req){
-        $id_produk = $req->input('kode_produk');
+    public function hapusproduk($kode){
+       
 
-        DB::table('produk')->where('kode_produk', $id_produk)->delete();
-        $produk = DB::table('produk')->join('kategori', 'kategori.id_kategori', '=', 'produk.id_kategori')->get();
-        return json_encode($produk);
+        DB::table('produk')->where('kode_produk', $kode)->delete();
+        return redirect()->route('produk');
+        
     }
 
-    public function updatebarang(Request $req){
-        DB::table('produk')->where('kode_produk',$req->input('kode_produk'))->update(["nama_produk" => $req->input('nama_produk'),"merk" => $req->input('merek_produk'),"id_kategori" => $req->input('kategori_produk'), "harga" => $req->input('harga_produk')]);
-    }
+    public function updatebarang(Request $req,$id){
+        DB::table('produk')->where('kode_produk',$id)->
+                            update(["nama_produk" => $req->input('nama_produk'),"id_ct" => $req->input('id_ct'),"stn" => $req->input('stn'),"merk" => $req->input('merk'),"id_kategori" => $req->input('id_kategori'), "harga" => $req->input('harga')]);
+                            return redirect()->route('produk');
+       
+        }
 
     public function tambahkategori(Request $req){
         $data = $req->input('kat');
@@ -95,7 +121,23 @@ class ProdukController extends Controller
         return json_encode(['merek' => $getmerek]);
     }
 
+    public function showdetail(Request $req){
+        $kategori = DB::table('produk')->groupBy("id_kategori")->get();
+        $kodetype = DB::table('produk')->groupBy("id_ct")->get();
+        $merek = DB::table('produk')->groupBy("merk")->get();
+        $produk = DB::table('produk')->take(50)->get();
+        
+        $kode = $req->input('kodebarcode');
+        $data = DB::table("produk")->where('kode_produk',$kode)->take(1)->get();
+   
+        return view("produk", ["kat" => $kategori, "produk" => $produk, "merek" => $merek, "kodetype" => $kodetype, "data"=>$data[0]]);
 
+        
+    }
+
+    public function update($id){
+        dd($id);
+    }
 
 
 }

@@ -7,6 +7,82 @@
 <script src="{{ asset('js/print.js') }}"></script>
 <script src="{{ asset('js/transaksi.js') }}"></script>
 <script src="{{ asset('js/notabesar.js') }}"></script>
+@isset($id)
+<script>
+  $(document).ready(function(e){
+    var jmlopsi = 1;
+    console.log("{{'lol'}}");
+
+    function callbacking(response){
+        jmlopsi = response;
+    
+    }
+
+    $("#searcher-nota").attr("disabled", "disabled");
+    $.ajax({
+            headers: {
+                "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content'),
+            },
+            data: {
+                id_transaksi : "{{$id}}",
+            },
+            url: "/getnb",
+            type: "post",
+            dataType: "json",
+            success: function(data){
+                console.log(data);
+                $("#tt").text(data["nb"][0]["termin"] == 3 ? "PELUNASAN" : "Termin: "+data["nb"][0]["termin"]);
+                $("#baseinputnb .col").show();
+                $("#baseinputnb input, label").show();
+                $("#ttd").  val(data['nb'][0]['ttd']);
+                $("#up").   val(data['nb'][0]['up']);
+                $("#us").   val(data['nb'][0]['us']);
+                $("#brp").  val(data['nb'][0]['brp']);
+                $("#gm").   val(data['nb'][0]['gm']);
+                $("#total").val(data['nb'][0]['total']);
+                $("#nn").text("No Nota: "+data["nb"][0]["no_nota"]);
+    
+    
+                let row = data["opsi"].map(function(e,i){
+                    return `
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-sm title${i+1}" id="exampleInputPassword1" value="${e['judul']}">
+                        <input type="text" class="form-control isi${i+1}" id="exampleInputPassword1" value="${e['ket']}">
+                    </div>
+                    `;
+                    
+                });
+
+                callbacking(data['opsi'].length);
+                $(".opsigrup").html(row);
+
+                $("#buttonsubmit").text("Bayar");
+                $("#preorderform").attr("action", "/bayarpreorder");
+                $("#id_trans").val(data["nb"][0]["id_transaksi"]);
+                $(".td").show();
+                $(".td").children("input").val(data["td"]);
+                $("#addopsi").hide();
+                if(data["nb"][0]["status"] == "dibayar"){
+                    $("#buttonsubmit").attr("disabled", "disabled");
+                    $("#buttonsubmit").text("Sudah Lunas");
+                    $("#buttonsubmit").removeClass("btn-primary");
+                    $("#buttonsubmit").addClass("btn-success");
+                
+                }else{
+                    $("#buttonsubmit").removeAttr("disabled");
+                    $("#buttonsubmit").removeClass("btn-success");
+                    $("#buttonsubmit").addClass("btn-primary");
+                    $("#buttonsubmit").text("Bayar");
+                }
+            },
+            error: function(err){
+                alert(err.responseText);
+            }
+        });
+  });
+</script>
+
+@endisset
 @stop
 
 @section('css')
