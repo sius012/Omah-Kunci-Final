@@ -59,7 +59,7 @@
                       
                           <td><div><i class="fa fa-check-circle"></i></div></td>
                           <td align="center" valign="center"><div>@If($datas[0][0]->status == "dibayar")<div><i class="fa fa-check-circle"></i></div>@else <div><a class="btn btn-success text-light" href="{{route('prosesbayar',['id' => $datas[0][0]->id_transaksi])}}">Bayar</a></div>@endif</td>
-                          <td><div>@If($datas[0][1]->status == "dibayar")<div><i class="fa fa-check-circle"></i></div>@else <div><a class="btn btn-success text-light" href="{{route('prosesbayar',['id' => $datas[0][1]->id_transaksi])}}">Bayar</a></div>@endif</td>
+                          <td><div>@If(  $datas[0][1]->status == "dibayar" and $datas[0][1]->status == "dibayar")<div><i class="fa fa-check-circle"></i></div>@elseif($datas[0][1]->status == "menunggu") @else <div><a class="btn btn-success text-light" href="{{route('prosesbayar',['id' => $datas[0][1]->id_transaksi])}}">Bayar</a></div>@endif</td>
                          
                       </tr>
                   

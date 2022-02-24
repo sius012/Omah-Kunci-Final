@@ -118,7 +118,6 @@
                             <div class="form-group d-inline-flex">
                                 <input style="width:170px;" class="form-control mr-4 usethis uang" type="text" >
                                 <select class="custom-select form-control w-25 usethisvia">
-                                    <option selected>Via</option>
                                     <option value="Langsung">Langsung</option>
                                     <option value="BCA">BCA</option>
                                     <option value="Mandiri">Mandiri</option>

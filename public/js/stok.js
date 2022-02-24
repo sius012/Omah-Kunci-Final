@@ -71,7 +71,9 @@ $(document).ready(function(){
                     }else{
                         alert('data telah tersedia');
                     }
+                    window.location = "/stok"
                 }
+                
             },
             error: function(err){
                 alert(err.responseText);

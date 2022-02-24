@@ -170,7 +170,7 @@
 
                                 <li class="nav-item">
                                     <a href="{{url('/stok')}}" class="nav-link {{$whoactive =='stok' ? 'active' : ''}}">
-                                        <p>Stok</p>
+                                        <p>Katalog</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">

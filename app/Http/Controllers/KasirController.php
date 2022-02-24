@@ -23,7 +23,7 @@ class KasirController extends Controller
 
     public function loader(Request $req){
         if($req->session()->has('transaksi')){
-           $data = DB::table('detail_transaksi')->join('produk', 'detail_transaksi.kode_produk', '=', 'produk.kode_produk')->where('kode_trans', $req->session()->get('transaksi')['id_transaksi'])->get();
+           $data = DB::table('detail_transaksi')->join('produk', 'detail_transaksi.kode_produkG', '=', 'produk.kode_produk')->where('kode_trans', $req->session()->get('transaksi')['id_transaksi'])->get();
                 return(json_encode(["datadetail" => $data]));
             
         }

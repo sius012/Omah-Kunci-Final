@@ -17,7 +17,11 @@
     <title>Document</title>
 
     <style>
-   
+        @font-face /*perintah untuk memanggil font eksternal*/
+        {
+            font-family: barcode; /*memberikan nama bebas untuk font*/
+            src: url("{{storage_path('fonts/code128.ttf')}}");/*memanggil file font eksternalnya di folder nexa*/
+        }
         * {
             font-family: Arial, Helvetica, sans-serif;
         }
@@ -66,7 +70,7 @@
         }
 
         .barcode{
-       
+            
             font-size: 20pt !important;
         }
 

@@ -13,12 +13,15 @@ $whoactive = "riwayattransaksi"
 <script src="{{ asset('js/transaksi.js') }}"></script>
 @stop
 @section('content')
+<form action="/caritransaksi" type="get">
+    @csrf
 <div class="row">
     <div class="col-12">
-        <input class="search-box " type="text" placeholder="Cari riwayat transaksi...">
-        <i class="fas fa-search ml-1 search-icon"></i>
+        <input class="search-box " type="text" placeholder="Ketik Nomer Nota" name="no_nota">
+        <button class="search-icon"><i class="fas fa-search ml-1 "></i></button>
     </div>
 </div>
+</form>
 
 <div class="row">
     <h5 class="date">Hari Ini</h5>
@@ -27,7 +30,7 @@ $whoactive = "riwayattransaksi"
 @foreach($data as $datas)
 <div class="card datatrans" id_trans="{{$datas['kode_trans']}}">
     <div class="card-header">
-        <h6 class="card-title float-right mr-2">{{$datas['created_at']}}</h6>
+        <h6 class="card-title float-right mr-2">{{date('d M Y', strtotime($datas['created_at']))}}</h6>
     </div>
     <input type="hidden">
     <table class="table table-borderless text-center">
@@ -35,22 +38,19 @@ $whoactive = "riwayattransaksi"
             <th style="width: 40px; margin-left:9px;">
                 <div>No</div>
             </th>
-            <th style="width: 150px">
+            <th style="width: 300px">
                 <div>Nama Pelanggan</div>
             </th>
             <th style="width: 130px">
                 <div>Total Tagihan</div>
             </th>
-            <th style="width: 90px">
+            <th style="width: 130px">
                 <div>Status</div>
-            </th>
-            <th style="width: 120px">
-                <div>Tanggal Transaksi</div>
             </th>
         </tr>
         <tr>
             <td style="width: 60px">
-                <div>001</div>
+                <div>{{$datas["no_nota"]}}</div>
             </td>
             <td>
                 <div>{{$datas["nama_pelanggan"]}}</div>

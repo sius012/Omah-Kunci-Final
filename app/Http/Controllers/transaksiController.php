@@ -8,10 +8,20 @@ use function GuzzleHttp\json_encode;
 
 class transaksiController extends Controller
 {
-    public function index(){
+    public function index(Request $req){
         $data = [];
+      
         
-        $get = DB::table("transaksi")->orderBy("updated_at" ,'asc')->get()->toArray();
+        $get = DB::table("transaksi")->orderBy("updated_at" ,'asc')->where('no_nota', $req->no_nota)->get()->toArray();
+
+        if($req->has('no_nota')){
+            $get = DB::table("transaksi")->orderBy("updated_at" ,'asc')->where('no_nota', $req->no_nota)->get()->toArray();
+        }else{
+            $get = DB::table("transaksi")->orderBy("updated_at" ,'asc')->get()->toArray();
+        }
+        
+
+
         
 
         foreach($get as $d){
@@ -30,7 +40,7 @@ class transaksiController extends Controller
             
            
         }
-      //  dd($data);
+    //  dd($data);
 
         return view("transaksi", compact('data'));
 
