@@ -12,6 +12,7 @@
     <title>Omah Kunci || Account Request</title>
 </head>
 <body>
+
     <div class="container">
         <div class="col d-flex align-items-center justify-content-center">
             <img src="{{ asset('assets/Group 1.svg') }}" alt="">

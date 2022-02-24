@@ -160,3 +160,12 @@ Route::get('/nota_besar_final', function(){
 Route::get('/injectproduk', "SeederJoy@inject");
 
 Route::post('/printcurrentstok', "StokController@printcurrent");
+
+Route::get('manajemen_akun', function(){
+    return view('management_akun');
+});
+
+
+Route::get('manajemen_akun', function(){
+    return view('management_akun');
+});

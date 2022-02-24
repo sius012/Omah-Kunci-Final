@@ -5,7 +5,7 @@
 .container-fluid .row .col-6 .search-box {
     border: 1px solid #C6C6C6;
     padding: 5px;
-    width: 450px;
+    width: 420px;
 
     border-radius: 100px;
 }
@@ -24,13 +24,12 @@
     border-radius: 100px;
 }
 
-.container-fluid .row .col-6 .btn {
+.container-fluid .row .col-6 .btn-tambah-data a {
     background-color: #1562AA;
     color: white;
     text-decoration: none;
 
     border-radius: 100px;
-    font-size: small;
 }
 
 .row .col .card {

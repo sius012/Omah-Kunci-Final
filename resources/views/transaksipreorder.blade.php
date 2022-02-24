@@ -109,14 +109,29 @@
                 </div>
                 <div class="card-body text-dark m-0 p-0">
                   <div class="container-wrapper">
-                      <h5 class="card-title font-weight-bold">Telah terima dari : </h5><br><br>
-                      <h5 class="card-title font-weight-bold">UP : </h5><br><br>
-                      <h5 class="card-title font-weight-bold">Uang Sejumlah : </h5><br><br>
-                      <h5 class="card-title font-weight-bold">Berupa : </h5><br><br>
-                      <h5 class="card-title font-weight-bold">Guna membayar : </h5><br><br>
-                      <h5 class="card-title font-weight-bold">Total : </h5><br><br>
-                      <h5 class="card-title font-weight-bold">Opsi : </h5><br><br>
-                      <h5 class="card-title font-weight-bold">Opsi : </h5>
+                      <table class="table table-striped">
+                        <tr>
+                          <th class="float-left">Telah Diterima Dari : </th><td></td>
+                        </tr>
+                        <tr>
+                          <th class="float-left">Up : </th><td></td>
+                        </tr>
+                        <tr>
+                          <th class="float-left">Uang Sejumlah : </th><td></td>
+                        </tr>
+                        <tr>
+                          <th class="float-left">Berupa : </th><td></td>
+                        </tr>
+                        <tr>
+                          <th class="float-left">Guna Membayar : </th><td></td>
+                        </tr>
+                        <tr>
+                          <th class="float-left">Total : </th><td></td>
+                        </tr>
+                        <tr>
+                          <th class="float-left">Opsi : </th><td></td>
+                        </tr>
+                      </table>
                   </div>
                 </div>
             </div>
