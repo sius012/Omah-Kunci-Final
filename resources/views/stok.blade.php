@@ -6,6 +6,7 @@
 
 
 @section('js')
+<script src="{{ asset('js/print.js') }}"></script>
   <script src="{{asset('/js/stok.js')}}"></script>
 @stop
     
@@ -14,7 +15,7 @@
 <div class="card-header"><h3>Kelola Stok <i class='fas fa-box ml-2'></i></h3>
 <div class="card-body">
 <button type="button m-3" class="btn btn-primary" data-toggle="modal" data-target="#modalstok">Tambah Stok Baru</button>
-<a class="btn btn-warning float-right" href="#"><i class="fa fa-print mr-2"></i>Print</a>
+<a class="btn btn-warning float-right" href="#" id="stokprint"><i class="fa fa-print mr-2"></i>Print</a>
 <div>
 
     <table class="table mt-3 ">

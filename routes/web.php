@@ -158,3 +158,5 @@ Route::get('/nota_besar_final', function(){
 });
 
 Route::get('/injectproduk', "SeederJoy@inject");
+
+Route::post('/printcurrentstok', "StokController@printcurrent");

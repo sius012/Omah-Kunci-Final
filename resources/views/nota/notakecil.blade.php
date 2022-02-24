@@ -76,7 +76,7 @@ span{
 
 .trans td{
     border: 1px solid black;
-    padding: 2px;
+  
 
 }
 .trans .null{
@@ -84,7 +84,7 @@ span{
 }
 .trans th{
     border: 1px solid black;
-    padding: 10px;
+
 }
 
 .row{
@@ -101,8 +101,9 @@ th{
     font-size: 8pt;
 }
 td{
-    font-size: 8pt;
-    padding: 0;
+    font-size: 5pt;
+    padding: 0px;
+    margin-top: -10px;
 }
 img{
     display: inline-flex;
@@ -136,10 +137,10 @@ img{
             align-items: center;
         }
         td,th{
-            font-size: 8pt;
+            font-size: 6.5pt;
         }
         .centering{
-    
+            margin-top: -20px;
             margin-left: 63px;
             }
         h1{
@@ -213,11 +214,11 @@ img{
                         </tr>
                         <tr>
                             <td>Diskon :</td>
-                            <td align="right">Rp. {{number_format($dats->jumlah * $dats->potongan)}}</td>
+                            <td align="right">Rp. {{number_format($dats->jumlah * ($dats->harga - $dats->potongan))}}</td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td align="right">Rp. {{number_format($dats->jumlah * ($dats->harga - $dats->potongan))}}</td>
+                            <td align="right"></td>
                         </tr>
                                                 @endforeach
                       

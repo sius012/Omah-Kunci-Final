@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use function GuzzleHttp\json_encode;
-
+use PDF;
 
 
 
@@ -45,5 +45,19 @@ class StokController extends Controller
     public function hapusstok(Request $req){
         $data = $req->input('kode_stok');
         DB::table('stok')->where('id', $data)->delete();
+    }
+
+
+    public function printcurrent(){
+        $data = DB::table('stok')->join('produk','produk.kode_produk','=','stok.kode_produk')->get();
+        
+        $pdf = PDF::loadview('stokprint', ["data" => $data]);
+        $path = public_path('pdf/');
+            $fileName =  date('mdy').'-'."Data Stok". '.' . 'pdf' ;
+            $pdf->save(storage_path("pdf/$fileName"));
+        $storagepath = storage_path("pdf/$fileName");
+        $base64 = chunk_split(base64_encode(file_get_contents($storagepath)));
+
+    	return response()->json(["filename" => $base64]);
     }
 }

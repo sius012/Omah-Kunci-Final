@@ -122,4 +122,21 @@ $(document).ready(function(){
         $("#tgl-input").removeAttr('disabled','disabled');
         $(".tombolsubmit").text("Tambah");
     });
+
+    $("#stokprint").click(function(e){
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content'),
+            },
+            url: "/printcurrentstok",
+            type: "post",
+            success: function(response){
+             
+                printJS({printable: response['filename'], type: 'pdf', base64: true});
+            },error: function(err){
+                alert(err.responseText);
+                Swal.fire("terjadi Kesalahan");
+            }
+        });
+    });
 });

@@ -28,23 +28,25 @@
             <div class="row">
                 <div class="col-6">
                     <div class="row">
-                        <div class="card w-200">
+                        <div class="card" style="width: 500px">
                             <form action="" id="formsubmitter">
                             <div class="card-header">
                                 Pilih Product
                             </div>
-                            <div style="border-bottom:1px solid lightgray;" class="card-body ">
-                                <div class="row d-inline-flex">
-                                    <input required class="search-box form-control mr-2" type="text" id="searcher" placeholder="Cari Barang Disini...">
-                                    <ul id="myUL">
-                                      </ul>
-                                    <input  min="1" required class="qty form-control w-25" id="qty" placeholder="Quantity" type="number">
-                                    <input  required class="qty form-control w-25" id="hrg" placeholder="Quantity" type="hidden">
-                                </div>
-                              
-                                <div class="row m-0">
-                                    <p class="m-0 mt-3"><b>Harga  </b></p><p class="m-0 mt-3" id="hrg-nominal">: -</p>
-                                </div>
+                            <div style="border-bottom:1px solid lightgray; width: 600px" class="card-body " >
+                                <table style="width: 100px">
+                                    <tr>
+                                        <td > <input style="width: 300px" required class="search-box form-control mr-2" type="text" id="searcher" placeholder="Cari Barang Disini..."></td>
+                                        <td style="width: 200px"> <input  min="1" required class="qty form-control " id="qty" placeholder="Quantity" type="number">
+                                            <input style="width: 200px" required class="qty " id="hrg" placeholder="Quantity" type="hidden"></td>
+                                            <ul id="myUL">
+                                                </ul>
+                                    </tr>
+                                    <tr>
+                                        <td>                                    <p class="m-0 mt-3"><b>Harga  </b></p><p class="m-0 mt-3" id="hrg-nominal">: -</p></td>
+                                    </tr>
+                                </table>
+            
                             </div>
                           
                             <div class="card-footer">
