@@ -24,7 +24,9 @@ Auth::routes();
 
 
 
-
+Route::get('/accountsetting', function(){
+    return view('profile');
+});
 
 
 

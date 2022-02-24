@@ -35,3 +35,7 @@ body{
     width: 300px;
     border-radius: 100px;
 }
+
+button{
+    border: 0px;
+}

@@ -79,8 +79,8 @@ $(document).ready(function(){
                 subtotal1 = subtotal;
    
             },
-            error: function(response,){
-            
+            error: function(err){
+               // alert(err.responseText);
             }
         });    
     }
@@ -314,7 +314,7 @@ $(document).ready(function(){
                 success: function(data){
                     Swal.fire(
                         'Transaksi Berhasil!',
-                        'You clicked the button!',
+                        '',
                         'success'
                     );
                     print();
