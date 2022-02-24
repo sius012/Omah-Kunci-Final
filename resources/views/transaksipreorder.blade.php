@@ -7,6 +7,11 @@
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/transaksi.css') }}">
     <link rel="stylesheet" href="{{ asset('css/transaksi_progress_bar.css') }}">
+    <script>
+      $(document).ready(function(){
+        $("#infomodal").modal('show');
+      });
+    </script>
 @endsection
 
 @section('content')
@@ -31,7 +36,7 @@
              <div class="card datatrans"  id_trans="{{$datas['no_nota']}}">
                 <div class="card-header">
                     <h6 class="card-title float-right mr-2">{{$datas["created_at"]}}</h6>
-                    <h6 class="card-title">No Nota : {{$datas["no_nota"]}}</h6>
+                    <h6 class="card-title">No Nota :  {{$datas["no_nota"]}}</h6>
                 </div>
                 <input type="hidden" >
                 <table class="table table-borderless">
@@ -43,7 +48,7 @@
                           <th style="width: 120px"><div >Tagihan 2</div></th>
                           <th style="width: 120px"><div >Tagihan 3</div></th>
                           <td style="width: 110px" rowspan="2" align="center" valign="center" class=""><div class="mt-3 justify-content-center">
-                              <a href="#" data-toggle="modal" data-target=".bd-example-modal-lg"><i style="background-color:#1562AA; color:white; padding:10px; border-radius:100%;" class="fa fa-list"></i></a>
+                              <a href="{{route('showdetail',['no_nota'=>$datas['no_nota']])}}" class="" ><i style="background-color:#1562AA; color:white; padding:10px; border-radius:100%;" class="fa fa-list"></i></a>
                               <a href="#"><i style="background-color:#1562AA; color:white; padding:10px; border-radius:100%;" class="fa fa-trash bg-danger"></i></a>
                           </div></td>
                       </tr>
@@ -76,27 +81,28 @@
 </div>
 
 
+@isset($info)
   <!-- Modal -->
-  <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade bd-example-modal-lg" id="infomodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">No. Nota: {{" "}} {{$info[0]->no_nota}}</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
             <div class="stepper-wrapper">
-                <div class="stepper-item completed">
+                <div class="stepper-item @if($info[0]->status == 'dibayar') completed  @endif ">
                   <div class="step-counter">1</div>
                   <div class="step-name">Termin 1(DP)</div>
                 </div>
-                <div class="stepper-item completed">
+                <div class="stepper-item  @if($info[1]->status == 'dibayar') completed  @endif ">
                   <div class="step-counter">2</div>
                   <div class="step-name">Termin 2</div>
                 </div>
-                <div class="stepper-item active">
+                <div class="stepper-item  @if($info[2]->status == 'dibayar') completed  @endif ">
                   <div class="step-counter">3</div>
                   <div class="step-name">Termin 3(Pelunasan)</div>
                 </div>
@@ -105,31 +111,31 @@
             <hr class="m-0 p-0">
             <div class="card border-dark mb-3">
                 <div class="card-header mb-3">
-                  Tanggal Pemesanan : 27 Januari 2022
+                  Tanggal Pemesanan : {{date('d-M-Y',strtotime($info[0]->created_at))}}
                 </div>
                 <div class="card-body text-dark m-0 p-0">
                   <div class="container-wrapper">
                       <table class="table table-striped">
                         <tr>
-                          <th class="float-left">Telah Diterima Dari : </th><td></td>
+                          <th class="float-left">Telah Diterima Dari : </th><td>{{$info[0]->ttd}}</td>
                         </tr>
                         <tr>
-                          <th class="float-left">Up : </th><td></td>
+                          <th class="float-left">Up : </th><td>{{$info[0]->up}}</td>
                         </tr>
                         <tr>
-                          <th class="float-left">Uang Sejumlah : </th><td></td>
+                          <th class="float-left">Uang Sejumlah : </th><td>$info[0]->us</td>
                         </tr>
                         <tr>
-                          <th class="float-left">Berupa : </th><td></td>
+                          <th class="float-left">Berupa : </th><td>$info[0]</td>
                         </tr>
                         <tr>
-                          <th class="float-left">Guna Membayar : </th><td></td>
+                          <th class="float-left">Guna Membayar : </th><td>$info[0]</td>
                         </tr>
                         <tr>
-                          <th class="float-left">Total : </th><td></td>
+                          <th class="float-left">Total : </th><td>$info[0]</td>
                         </tr>
                         <tr>
-                          <th class="float-left">Opsi : </th><td></td>
+                          <th class="float-left">Opsi : </th><td>$info[0]</td>
                         </tr>
                       </table>
                   </div>
@@ -143,4 +149,6 @@
       </div>
     </div>
   </div>
+
+  @endisset
 @endsection

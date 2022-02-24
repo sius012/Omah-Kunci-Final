@@ -1,5 +1,10 @@
 $(document).ready(function(e){
-  
+    $("#infomodal").modal("show");
+
+    $(document).on('click', '.infopreorder', function(e){
+       
+        alert('hai');
+    });
     $(".content-wrapper").on("click", ".datatrans", function(event){
         $("#exampleModal").modal('show');
     

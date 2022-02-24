@@ -8,7 +8,7 @@ use function GuzzleHttp\json_encode;
 
 class TransaksiPreorder extends Controller
 {
-    public function index(Request $req){
+    public function index(Request $req,$no_nota=null){
         $data = [];
         
         $get = DB::table("nota_besar")->groupBy("no_nota")->get()->toArray();
@@ -27,8 +27,17 @@ class TransaksiPreorder extends Controller
                  array_push($data, $row);
             
         }
+
+        if($no_nota != null){
+            $data_detail = DB::table('nota_besar')->where('no_nota',$no_nota)->get();
+            $opsi = DB::table('nb_detail')->where('id_nb', $data_detail[0]->id_transaksi)->get();
+
+            return view("transaksipreorder", ['data'=>$data,'page'=>'kasir', 'info' => $data_detail,'opsi' => $opsi]);
+        }else{
+            return view("transaksipreorder", ['data'=>$data,'page'=>'kasir']);
+        }
      
-        return view("transaksipreorder", ['data'=>$data,'page'=>'kasir']);
+       
      
         
     }

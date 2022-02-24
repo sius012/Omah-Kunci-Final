@@ -239,7 +239,7 @@ img{
                         </tr>
                         <tr >
                            <td ></td>
-                            <td align="right" >Rp. {{number_format($data[0]->subtotal) }}</td>
+                            <td align="right" >Rp. {{number_format($subtotal - $data[0]->diskon) }}</td>
                             
                         </tr>
 
@@ -250,7 +250,7 @@ img{
                         </tr>
                         <tr >
                            <td >Kembalian</td>
-                            <td align="right" >Rp. {{number_format( $data[0]->bayar - $data[0]->subtotal) }}</td>
+                            <td align="right" >Rp. {{number_format( $data[0]->bayar - ($subtotal - $data[0]->diskon)) }}</td>
                             
                         </tr>
 

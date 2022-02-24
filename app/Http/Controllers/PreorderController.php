@@ -128,7 +128,7 @@ class PreorderController extends Controller
 
         $req->session()->put('id_nb', $id);
 
-        return json_encode(["id_trans" => $id,"no_nota" => $no]);
+       
 
 
         
@@ -144,6 +144,8 @@ class PreorderController extends Controller
         DB::table("nota_besar")->where("no_nota", $no_nota)->where("termin",$termin)->update(["status" => "dibayar"]);
         DB::table("nota_besar")->where("no_nota", $no_nota)->where("termin",$termin+1)->update(["status" => "ready"]);
         DB::table('nota_besar')->where("id_transaksi", $id)->update(['us'=> $formdata["us"],'brp'=> $formdata["brp"]]);
+
+        return json_encode(["id_trans" => $id,"no_nota" => $no_nota]);
     }
 
 

@@ -227,10 +227,10 @@ $(document).ready(function(){
                 $("#id_trans").val(data["id_trans"]);
                 $("#nn").text("No Nota: "+data["no_nota"]);
                 $("#searcher-nota").val("");
+               
             
             },
-            error: function(err){
-                alert(err.responseText);
+            error: function(err,response){
                 Swal.fire("terjadi kesalahan");
             }
 

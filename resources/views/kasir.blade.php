@@ -29,16 +29,16 @@
                 <div class="col-6">
                     <div class="row">
                         <div class="card" style="width: 500px">
-                            <form action="" id="formsubmitter">
+                            
                             <div class="card-header">
                                 Pilih Product
                             </div>
                             <div style="border-bottom:1px solid lightgray; width: 600px" class="card-body " >
-                                <table style="width: 100px">
+                                <table style="width: 450px">
                                     <tr>
                                         <td > <input style="width: 300px" required class="search-box form-control mr-2" type="text" id="searcher" placeholder="Cari Barang Disini..."></td>
-                                        <td style="width: 200px"> <input  min="1" required class="qty form-control " id="qty" placeholder="Quantity" type="number">
-                                            <input style="width: 200px" required class="qty " id="hrg" placeholder="Quantity" type="hidden"></td>
+                                        <td style="width: 200px"> <input  min="1" required class="qty form-control " id="qty" placeholder="Quantity" type="number" value=1>
+                                            <input style="width: 300px" required class="qty " id="hrg" placeholder="Quantity" type="hidden" value=1></td>
                                             <ul id="myUL">
                                                 </ul>
                                     </tr>
@@ -50,10 +50,9 @@
                             </div>
                           
                             <div class="card-footer">
-                                <button href="#" class="btn btn-success">Tambah Product</button>
+                                <button href="" class="btn btn-success" id="tambahproduk">Tambah Product</button>
                             </div>
                         </div>
-                         </form>
                     </div>
                     <div class="drop">
                         <ul>

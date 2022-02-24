@@ -1,8 +1,9 @@
-@extends('adminlte::page')
+@php  $whoactive = "" @endphp
+@extends('layouts.layout2')
 
 @section('title', 'Kasir || Omah Kunci')
 
-@section('content_header')
+@section('css')
     <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
     <link rel="stylesheet" href="{{ asset('css/open_sans.css') }}">
 @stop
@@ -13,7 +14,8 @@
         <div class="col">
             <div class="row">
                 <div class="col-4">
-                    <div class="row">
+                    <div class="wrapper ml-2">
+                        <div class="row">
                         <img class="rounded-circle profile-img" src="https://pbs.twimg.com/profile_images/1315683257057378306/hQBTQk3Y_400x400.jpg" alt="">
                     </div>
                     <div class="row">
@@ -34,6 +36,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
     

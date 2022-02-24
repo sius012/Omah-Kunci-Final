@@ -23,16 +23,24 @@ class KasirController extends Controller
 
     public function loader(Request $req){
         if($req->session()->has('transaksi')){
-            if($req->session()->has('datadetail')){
-                return(json_encode(["datadetail" => $req->session()->get('datadetail')]));
-            }
+           $data = DB::table('detail_transaksi')->join('produk', 'detail_transaksi.kode_produk', '=', 'produk.kode_produk')->where('kode_trans', $req->session()->get('transaksi')['id_transaksi'])->get();
+                return(json_encode(["datadetail" => $data]));
+            
         }
     }
 
     public function cari(Request $req){
         $kw = $req->input('data');
         $data = DB::table('produk')->join('kategori', 'produk.id_kategori', '=', 'kategori.id_kategori')->where('kode_produk',"LIKE","%".$kw."%")->get();
-        return( json_encode($data));
+        $count = DB::table('produk')->join('kategori', 'produk.id_kategori', '=', 'kategori.id_kategori')->where('kode_produk',$kw)->count();
+       
+        if($count == 1){
+             $data2 = DB::table('produk')->join('kategori', 'produk.id_kategori', '=', 'kategori.id_kategori')->where('kode_produk',$kw)->get();
+             return json_encode(['data' => $data, 'currentproduk' => (array) $data2[0]]);
+        }else{
+            return( json_encode(['data' => $data]));
+        }
+       
     }
 
     public function tambahTransaksi(Request $req){
@@ -45,6 +53,7 @@ class KasirController extends Controller
     public function tambahTransaksiDetail(Request $req){
         $id_kasir = Auth::user()->id;   
         $data = $req->input('data');
+        $harga = DB::table('produk')->where('kode_produk',$data['kode_produk'])->pluck("harga")->first();
         $id_trans = "";
         if($req->session()->has('transaksi')){
             $id_transaksi = $req->session()->get('transaksi')['id_transaksi'];
@@ -53,38 +62,24 @@ class KasirController extends Controller
             $no = DB::table('transaksi')->get()->count();
             $no += 1;   
             $id = DB::table('transaksi')->insertGetId(['no_nota' => str_pad($no+1, 6, '0', STR_PAD_LEFT), 'id_kasir' =>$id_kasir]);
-            $req->session()->put('transaksi', ['id_transaksi' => $id, 'no_nota' => $no]);
+            $req->session()->put('transaksi', ['id_transaksi' => $id, 'no_nota' => $no]);   
             $id_trans = $id;
         }
-
-        if($req->session()->has('keranjang')){
-            $req->session()->put('keranjang');
-        }
-
-        $jml=0;
-
+    
         $counter = DB::table('detail_transaksi')->where('kode_trans', $id_trans)->where('kode_produk', $data['kode_produk'])->count();
         if($counter < 1){
             DB::table('detail_transaksi')->insert(['kode_trans' => $id_trans, 'kode_produk' => $data['kode_produk'], "jumlah" => $data["jumlah"],"potongan" => $data["potongan"]]);
         }else{
             $jumlah = DB::table('detail_transaksi')->where('kode_trans', $id_trans)->where('kode_produk', $data['kode_produk'])->pluck('jumlah')->first();
-            $potongan = DB::table('detail_transaksi')->where('kode_trans', $id_trans)->where('kode_produk', $data['kode_produk'])->pluck('potongan')->first();
-            $jml = $data['harga']  * ((int)$jumlah + $data['jumlah']);
+            $jml = $harga  * ((int)$jumlah + (int) $data['jumlah']);
             $ptg = $data['potongan'];
             DB::table('detail_transaksi')->where('kode_trans', $id_trans)->where('kode_produk', $data['kode_produk'])->update(['jumlah' => $jumlah + $data['jumlah'], 'potongan' => $ptg]);
         }
         
-        $datadetail = DB::table('detail_transaksi')->join('produk','detail_transaksi.kode_produk','=','produk.kode_produk')->where('kode_trans',$id_trans)->get()->toArray();
+        $datadetail = DB::table('detail_transaksi')->join('produk','detail_transaksi.kode_produk','=','produk.kode_produk')->where('kode_trans',$id_trans)->get();
 
-        $subtotal = 0;
         
-        foreach($datadetail as $dts){
-            $subtotal += $dts->jumlah * ($dts->harga - $dts->potongan);
-        }
-
-         DB::table('transaksi')->where('kode_trans', $id_trans)->update(['subtotal' => $subtotal]);
         
-        $req->session()->put('datadetail', $datadetail);
        
         return(json_encode(['datadetail'=>$datadetail]));
     }
@@ -133,7 +128,7 @@ class KasirController extends Controller
         $id_trans = $req->session()->get('transaksi')['id_transaksi'];
 
         DB::table("transaksi")->where("kode_trans",$id_trans)->delete();
-        DB::table("detail_transaksi")->where("kode_trans",$id_trans)->delete();
+       // DB::table("detail_transaksi")->where("kode_trans",$id_trans)->delete();
         
         $req->session()->forget('transaksi');
         $req->session()->forget('datadetail');
@@ -170,6 +165,7 @@ class KasirController extends Controller
         if($checking >= 3){
             DB::table('transaksi')->where('kode_trans', $id)->update(['status' => 'lunas']);
         }
+        
     }
 
     public function cetaknotakecil(Request $req){
