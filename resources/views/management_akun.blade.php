@@ -1,28 +1,24 @@
-@php $whoactive = "manajemen akun" @endphp
+@php  $whoactive = "" @endphp
 @extends('layouts.layout2')
 
-@section('pagetitle', 'Manajemen Akun')
+@section('title', 'Kasir || Omah Kunci')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/manajemen_akun.css') }}">
-<link rel="stylesheet" href="{{ asset('css/open_sans.css') }}">
-<style>
-
-</style>
-
-
-@stop
-@section('js')
-<script src="{{ url('js/dsm.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('css/manajemen_akun.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/open_sans.css') }}">
 @stop
 
 @section('content')
 <section class="content">
     <div class="container-fluid">
         <div class="col">
-            <div class="row d-inline-flex">
-                <h5 class="card-title mt-3">Manajemen Akun</h5>
-                <input type="text" class="form-control w-25 float-right">
+            <div class="row">
+                <div class="col-6">
+                    <h2 class="card-title">Manajemen Akun</h2>
+                </div>
+                <div class="col-6">
+                    <input type="text" class="form-control w-50 float-right">
+                </div>
             </div>
         </div>
     </div>
