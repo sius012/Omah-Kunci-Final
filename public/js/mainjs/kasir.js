@@ -17,6 +17,28 @@ function formatRupiah(angka, prefix){
 
 
 $(document).ready(function(){
+    $("#searcher").on('keypress', function(event){
+        let keycode = (event.keyCode ? event.keyCode : event.which);
+          if(keycode == '13') {
+            
+            tambahItem(
+                $("#searcher").val(),
+                $("#hrg").val(),
+                $("#qty").val(),
+                0,
+            );
+
+            $("#searcher").val("");
+           
+          }
+
+        $.ajax({
+            headers: function(e){
+
+            },
+        });
+  
+    });
     $("#next-button").attr("disabled","disabled");
     //loader
     function loader(){
@@ -139,18 +161,25 @@ $(document).ready(function(){
                 dataType: "JSON",
                 url: "/cari", 
                 success: function(data){
+                    if(data['currentproduk'] != undefined){
+                        $("#hrg").val($(data['currentproduk']['harga']));
+                        $("#hrg-nominal").html(":  RP. " + parseInt(data['currentproduk']['harga']).toLocaleString());
+                    }
+                  
+
+
                     $(".drop").show();
-                    if(data.length > 0){
+                    if(data['data'].length > 0){
                     var li = "";
-                    for(var i = 0;i < data.length;i++){
+                    for(var i = 0;i < data['data'].length;i++){
                         li += `<li>
 
-                                   <a kode="${data[i]['kode_produk']}" harga="${data[i]['harga']}" jumlah="1" potongan="0" class="sear">${data[i]["kode_produk"] + " " + data[i]["nama_produk"]}</a>
+                                   <a kode="${data['data'][i]['kode_produk']}" harga="${data['data'][i]['harga']}" jumlah="1" potongan="0" class="sear">${data['data'][i]["kode_produk"] + " " + data['data'][i]["nama_produk"]}</a>
                                 </div>
                             
                             </li>`;
                     }
-                    $("#myUL").html(li);
+                   
         
                 }else{
                     $(".drop").hide();
@@ -178,7 +207,6 @@ $(document).ready(function(){
 
 
     function tambahItem(id,harga,jumlah,potongan){
-        $("#tabling").hide("slow");
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -215,6 +243,8 @@ $(document).ready(function(){
                 });
                 $('#tabling').html(row);
                 $("#tabling").show("slow");
+               
+                
           $('#subtotal').val(subtotal.toLocaleString());
                 subtotal1 = subtotal;
                 id_trans = data['datadetail'][0]['kode_trans'];
@@ -320,8 +350,8 @@ $(document).ready(function(){
                  alert("transaksi diulang");
                  window.location = "/kasir";
              },
-             error: function(){
-
+             error: function(err){
+                alert(err.responseText);
              }
         });
     });

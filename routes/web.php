@@ -61,7 +61,7 @@ Route::middleware(["role:kasir|manager"])->group(function(){
     Route::post('/resettrans', 'PreorderController@resettrans');
     Route::get('/prosesbayar/{id}/', "PreorderController@index")->name("prosesbayar");
     Route::post('/bayarcicilan', 'KasirController@bayarcicilan');
-
+    Route::get('/showdetail/{no_nota}', 'TransaksiPreorder@index')->name('showdetail');
 
 });
 
@@ -77,6 +77,7 @@ Route::middleware(["role:admingudang|manager"])->group(function(){
     Route::post('/loaddatadetailstok', 'DetailStokController@loaddatadetailstok');
     Route::post('/tambahdetailstok', 'DetailStokController@tambahdetailstok');
     Route::get('/stok', 'StokController@index')->name('stok');
+    
 });
 
 Route::middleware(["role:manager"])->group(function(){

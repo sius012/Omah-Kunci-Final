@@ -10,6 +10,7 @@
 @isset($id)
 <script>
   $(document).ready(function(e){
+   
     var jmlopsi = 1;
     console.log("{{'lol'}}");
 
@@ -46,8 +47,8 @@
                 let row = data["opsi"].map(function(e,i){
                     return `
                     <div class="form-group">
-                        <input type="text" class="form-control form-control-sm title${i+1}" id="exampleInputPassword1" value="${e['judul']}">
-                        <input type="text" class="form-control isi${i+1}" id="exampleInputPassword1" value="${e['ket']}">
+                        <input type="text" class="form-control form-control-sm readonly title${i+1}" id="exampleInputPassword1" value="${e['judul']}">
+                        <input type="text" class="form-control isi${i+1} readonly" id="exampleInputPassword1" value="${e['ket']}">
                     </div>
                     `;
                     
@@ -74,11 +75,14 @@
                     $("#buttonsubmit").addClass("btn-primary");
                     $("#buttonsubmit").text("Bayar");
                 }
+                $(".readonly").attr('readonly','readonly');
             },
+            
             error: function(err){
                 alert(err.responseText);
             }
         });
+        $(".readonly").attr('readonly','readonly');
   });
 </script>
 
@@ -102,13 +106,15 @@
     <div class="col">
     <form id="preorderform" action="/tambahpreorder">
     <input type="hidden" id="id_trans" val="0">
-    <h4 id="tt" class="mt-5">Tanda Terima</h4>
-    <i><h4 style="color:#747474;" id="nn" class="mb-5">No Nota : 001</h4></i>
+  
 
 
-
-
-     <div class="form-group">
+<div class="card">
+  <div class="card-header">
+  <h4 id="tt" class="m">Tanda Terima</h4><span id="nn" style="color:#747474;"> No Nota : ?</span><i style="color:#747474;" class="fa fa-copy mr-3"></i>
+  </div>
+  <div class="card-body">
+  <div class="form-group">
     <label for="exampleInputEmail1">Tanggal </label>
     <input type="date" class="form-control form-control-" id="tgl" value="{{date('Y-m-d')}}">
   </div>
@@ -118,27 +124,27 @@
   
   <div class="form-group">
     <label for="exampleInputEmail1">Telah diterima dari</label>
-    <input type="text" class="form-control" id="ttd" aria-describedby="emailHelp">
+    <input type="text" class="form-control readonly" id="ttd" aria-describedby="emailHelp">
   </div>
   <div class="form-group">
-    <label for="exampleInputPassword1">UP</label>
-    <input type="text" class="form-control" id="up" >
+    <label for="exampleInputPassword1">Untuk Proyek</label>
+    <input placeholder="" type="text" class="form-control readonly" id="up" >
   </div>
   <div class="form-group td">
     <label for="exampleInputPassword1">Telah Dibayar</label>
-    <input type="number" class="form-control" id="td" >
+    <input type="number" class="form-control readonly" id="td" >
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Uang sejumlah</label>
-    <input type="number" class="form-control" id="us" >
+    <input type="number" class="form-control " id="us" >
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Berupa</label>
-    <input type="text" class="form-control" id="brp" >
+    <input type="text" class="form-control " id="brp" >
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Guna Membayar</label>
-    <input type="text" class="form-control" id="gm" >
+    <input type="text" class="form-control readonly" id="gm" >
   </div>
 
   
@@ -147,22 +153,27 @@
 <div class="col">
   <div class="form-group">
     <label for="exampleInputPassword1">Total</label>
-    <input type="number" class="form-control" id="total"  >
+    <input type="number" class="form-control readonly" id="total"  >
   </div>
   <div class="form-group opsigrup">
     
-    <input type="text" class="form-control form-control-sm title1" id="exampleInputPassword1" >
-    <input type="text" class="form-control isi1" id="exampleInputPassword1" >
+    <input placeholder="Judul" type="text" class="form-control form-control-sm mb-3 title1 readonly" id="exampleInputPassword1"  >
+    <input placeholder="Keterangan" type="text" class="form-control isi1 readonly" id="exampleInputPassword1" >
   </div>
   <a class="btn btn-primary" id="addopsi">+</a>
 </div>
 <div class="col">
- 
+
 
 </div>
 </div>
     </div>
 </div>
+  </div>
+
+</div>
+
+    
 <div class="row">
 
  <button class="btn btn-primary m-3" id="buttonsubmit">Tambah</button>
