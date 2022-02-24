@@ -40,14 +40,14 @@
                     </div>
                 </div>
     
-                <div class="col-8">
+                <div style="margin-left: -20px;" class="col-8">
                     <div class="row">
                         <div class="col">
                             <div class="row">
                                 <div class="form-group">
                                     <label for="nama">Nama Pengguna</label>
                                     <div class="ml-0 row">
-                                        <input type="text" class="form-control nama-input" id="nama" name="nama" placeholder="Theodhore Riyanto">
+                                        <input type="text" class="form-control nama-input" id="nama" name="nama" value="Theodhore Riyanto">
                                         <a href="#"><i class="fa fa-edit"></i></a>
                                     </div>
                                     <small id="emailHelp" class="form-text text-muted">Nama harus terdiri dari 8 karakter.</small>
@@ -62,21 +62,21 @@
                                         <div class="form-group">
                                             <label class="mt-1 ml-2" for="telp">Nomor Telepon</label>
                                             <div class="row">
-                                                <input type="text" class="form-control ml-4 mr-1 w-75" id="telp" name="telp" placeholder="08124124123">
+                                                <input type="text" class="form-control ml-4 mr-1 w-75" id="telp" name="telp" value="08124124123">
                                                 <a href="#"><i class="fa fa-edit"></i></a>
                                             </div>
                                           </div>
                                           <div class="form-group">
                                             <label class="ml-2" for="email">Email</label>
                                             <div class="row">
-                                                <input type="text" class="form-control ml-4 mr-1 w-75" id="email" name="email" placeholder="theodhore@gmail.com">
+                                                <input type="text" class="form-control ml-4 mr-1 w-75" id="email" name="email" value="theodhore@gmail.com">
                                                 <a href="#"><i class="fa fa-edit"></i></a>
                                             </div>
                                           </div>
                                           <div class="form-group">
                                             <label class="ml-2" for="kode-kasir">Kode Kasir</label>
                                             <div class="row">
-                                                <input type="text" class="form-control ml-4 mr-1 w-75" id="kode-kasir" name="kode-kasir" placeholder="k-24234">
+                                                <input type="text" class="form-control ml-4 mr-1 w-75" id="kode-kasir" name="kode-kasir" value="K-1274">
                                             </div>
                                           </div>
                                     </div>
