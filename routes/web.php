@@ -169,3 +169,6 @@ Route::get('manajemen_akun', function(){
 Route::get('manajemen_akun', function(){
     return view('management_akun');
 });
+Route::get('profile', function(){
+    return view('profile');
+});
