@@ -79,7 +79,11 @@ return array (
     'normal' => $rootDir . '/lib/fonts/DejaVuSerif',
   ),
   'barcode' => array(
+<<<<<<< HEAD
     'normal' => $fontDir . '/barcode_normal_cbd85e34bac88d5ce0f4469d620a5684',
+=======
+    'normal' => $fontDir . '/barcode_normal_673887006bd0a7bae78e27b01f2739f2',
+>>>>>>> a7786e5838a177adeb251c5030d8c872f6cc991b
   ),
 );
 }; ?>

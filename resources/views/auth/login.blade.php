@@ -88,13 +88,13 @@
         <div class="row d-flex align-items-center justify-content-center">
             <div class="mb-3 username">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email">
+                <input type="email" class="form-control text-light" id="email" name="email">
             </div>
         </div>
         <div class="row d-flex align-items-center justify-content-center">
             <div class="mb-3 password">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password">
+                <input type="password" class="form-control text-light" id="password" name="password">
             </div>
         </div>
 

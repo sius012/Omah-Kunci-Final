@@ -115,19 +115,29 @@
                 </div>
                 <div class="card-body text-dark m-0 p-0">
                   <div class="container-wrapper">
-                    <table class="table table-striped table-borderless" style="border-colapse: colapse;">
-                      <tr><td align="left" valign="center">Telah terima dari</td><td a>{{$info[0]->ttd}}</td></tr>
-                      <tr><td align="left">Untuk Proyek</td><td> {{$info[0]->up}}</td></tr>
-                      <tr><td align="left">Uang Sejumlah</td><td>{{$info[0]->us}}</td></tr>
-                      <tr><td align="left">Berupa</td><td> {{$info[0]->brp}}</td></tr>
-                      <tr><td align="left">Guna Membayar</td><td>{{$info[0]->gm}}</td></tr>
-                      <tr><td align="left">Total</td><td> {{$info[0]->total}}</td></tr>
-                      @foreach($opsi as $opsis)
-                      <tr><td align="left">{{$opsis->judul}}</td><td> {{$opsis->ket}}</td></tr>
-                      @endforeach
-                    </table>
-                    
-                    
+                      <table class="table table-striped">
+                        <tr>
+                          <th class="float-left">Telah Diterima Dari : </th><td>{{$info[0]->ttd}}</td>
+                        </tr>
+                        <tr>
+                          <th class="float-left">Up : </th><td>{{$info[0]->up}}</td>
+                        </tr>
+                        <tr>
+                          <th class="float-left">Uang Sejumlah : </th><td>$info[0]->us</td>
+                        </tr>
+                        <tr>
+                          <th class="float-left">Berupa : </th><td>$info[0]</td>
+                        </tr>
+                        <tr>
+                          <th class="float-left">Guna Membayar : </th><td>$info[0]</td>
+                        </tr>
+                        <tr>
+                          <th class="float-left">Total : </th><td>$info[0]</td>
+                        </tr>
+                        <tr>
+                          <th class="float-left">Opsi : </th><td>$info[0]</td>
+                        </tr>
+                      </table>
                   </div>
                 </div>
             </div>

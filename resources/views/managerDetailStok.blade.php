@@ -17,11 +17,11 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-6">
-                <input required required class="search-box" type="text" placeholder="Scan atau cari item...">
-                <i class="fas fa-search ml-1 search-icon"></i>
+                <input class="search-box" type="text" placeholder="Scan atau cari item...">
+                <i class="fas fa-search ml-1 search-icon text-light"></i>
             </div>
             <div class="col-6">
-            <button  type="button" class="btn" data-toggle="modal" data-target=""><a href="{{url('detailstok')}}">Tambah Data</a> </button>
+            <button  type="button" class="btn float-right btn-tambah-data" data-toggle="modal" data-target=""><a class="p-2" href="{{url('detailstok')}}">Tambah Data</a> </button>
             </div>
         </div>
     </div>

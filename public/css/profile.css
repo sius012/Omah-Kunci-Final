@@ -1,0 +1,89 @@
+* {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+html {
+    margin: 0;
+    padding: 0;
+}
+
+.container-fluid .col .col-4 .row .profile-img {
+    height: 250px;
+}
+
+.container-fluid .col .col-4 .row .col .row .wrapper-roles {
+    margin-top: 30px;
+
+    background-color: white;
+
+    border-radius: 6px;
+    padding: 5px;
+    width: 250px;
+}
+
+.container-fluid .col .col-4 .row .col .row .roles {
+    padding-top: 6px;
+
+    margin-left: 6px;
+}
+
+.container-fluid .col .col-4 .row .col .row .wrapper-times {
+    margin-top: 10px;
+
+    background-color: white;
+
+    border-radius: 6px;
+    padding: 5px;
+    width: 250px;
+}
+
+.container-fluid .col .col-4 .row .col .row .times {
+    padding-top: 6px;
+
+    margin-left: 6px;
+}
+
+.container-fluid .col .col-4 .row .col .row .wrapper-saves {
+    margin-top: 10px;
+
+    background-color: #1562AA;
+
+    border-radius: 6px;
+    padding: 10px;
+    width: 250px;
+
+    text-align: center;
+}
+
+.container-fluid .col .col-4 .row .col .row .saves {
+    padding: 6px;
+
+    margin-left: 6px;
+
+    color: white;
+}
+
+.container-fluid .col .col-8 .row .col .row .form-group .nama-input {
+    width: 650px;
+
+    margin-right: 5px;
+}
+
+.container-fluid .col .col-8 .row .col .row .form-group .password-input {
+    width: 650px;
+
+    margin-right: 5px;
+}
+
+.container-fluid .col .col-8 .row .col .row .form-group a i {
+    color: black;
+
+    font-size: 20px;
+
+    margin-top: 7px;
+}
+
+.container-fluid .col .col-8 .row .col .row .form-group .card-wrapper{
+    width: 650px;
+    height: 257px;
+}
