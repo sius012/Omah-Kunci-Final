@@ -21,7 +21,7 @@
     <table class="table mt-3 ">
         <thead>
             <tr class="text-center">
-                <th>NO</th><th>kode_produk</th><th>Nama Produk</th><th>jumlah</th><th>tanggal dibuat</th><th>tanggal diperbarui</th><th></th>
+                <th>NO</th><th>kode_produk</th><th>Nama Produk</th><th>jumlah</th><th>tanggal dibuat</th><th>Aksi</th>
             </tr>
         </thead>
         <tbody id="stokfiller">

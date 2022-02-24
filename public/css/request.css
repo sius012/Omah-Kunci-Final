@@ -18,8 +18,8 @@ body{
     border-radius: 100px;
     color: white;
 
-    padding-bottom: 20px;
     width: 300px;
+    padding: 12px;
 
     background-color: transparent;
 }

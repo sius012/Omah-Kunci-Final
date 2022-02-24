@@ -21,7 +21,7 @@
                 <i class="fas fa-search ml-1 search-icon text-light"></i>
             </div>
             <div class="col-6">
-            <button  type="button" class="btn float-right btn-tambah-data" data-toggle="modal" data-target=""><a href="{{url('detailstok')}}">Tambah Data</a> </button>
+            <button  type="button" class="btn float-right btn-tambah-data" data-toggle="modal" data-target=""><a class="p-2" href="{{url('detailstok')}}">Tambah Data</a> </button>
             </div>
         </div>
     </div>

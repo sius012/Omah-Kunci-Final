@@ -24,12 +24,13 @@
     border-radius: 100px;
 }
 
-.container-fluid .row .col-6 .btn-tambah-data a {
+.container-fluid .row .col-6 .btn-tambah-data, .container-fluid .row .col-6 .btn-tambah-data a {
     background-color: #1562AA;
     color: white;
     text-decoration: none;
 
     border-radius: 100px;
+    font-size: small;
 }
 
 .row .col .card {
