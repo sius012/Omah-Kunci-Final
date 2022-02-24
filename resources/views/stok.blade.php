@@ -30,7 +30,7 @@
         @endphp
         @foreach($data as $datas)
             <tr class="text-center">
-                <td>{{$no}}</td><td>{{$datas->kode_produk}}</td><td>{{$datas->nama_produk}}</td><td>{{$datas->jumlah}}</td><td>{{$datas->created_at}}</td><td>{{$datas->updated_at}}</td><td align='right'><button class="btn btn-warning mr-3 editstok" kode_stok="{{$datas->id}}"><i class='fa fa-edit'></i></button><button class='btn btn-danger hapusstok' kode_stok="{{$datas->id}}"><i class='fa fa-trash'></i></button></button></td>
+                <td>{{$no}}</td><td>{{$datas->kode_produk}}</td><td>{{$datas->nama_produk}}</td><td>{{$datas->jumlah}}</td><td>{{$datas->created_at}}</td><td align='center'><button class="btn btn-warning mr-3 editstok" kode_stok="{{$datas->id}}"><i class='fa fa-edit'></i></button><button class='btn btn-danger hapusstok' kode_stok="{{$datas->id}}"><i class='fa fa-trash'></i></button></button></td>
             </tr>
             @php $no++ @endphp
         @endforeach
