@@ -77,6 +77,7 @@ $(document).ready(function(){
             },
             error: function(err){
                 alert(err.responseText);
+                window.location = "/stok"
             }
         });
     });

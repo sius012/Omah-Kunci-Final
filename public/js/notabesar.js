@@ -200,6 +200,7 @@ $(document).ready(function(){
             total: $("#total").val(),
         }
 
+        console.log(formData);
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -232,6 +233,7 @@ $(document).ready(function(){
             },
             error: function(err,response){
                 Swal.fire("terjadi kesalahan");
+                alert(err.responseText);
             }
 
 

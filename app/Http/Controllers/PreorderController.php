@@ -130,7 +130,7 @@ class PreorderController extends Controller
 
        
 
-
+        return json_encode(["id_nb" => $id, "no_nota" => $no]);
         
     }
 
