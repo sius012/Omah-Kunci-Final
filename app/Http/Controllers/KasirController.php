@@ -183,5 +183,35 @@ class KasirController extends Controller
     	return response()->json(["filename" => $base64]);
     }
 
+    public function printpreorder($id){
+        $data = DB::table('preorder')->where('id', $id)->get();
+        $pdf = PDF::loadview('preorder', ["data" => $data[0]]);
+        $path = public_path('pdf/');
+            $fileName =  date('mdy').'-'."PREORDER". '.' . 'pdf' ;
+            $pdf->save(storage_path("pdf/$fileName"));
+        $storagepath = storage_path("pdf/$fileName");
+        $base64 = chunk_split(base64_encode(file_get_contents($storagepath)));
+        return $base64;
+    }
+    public function tambahpreorder(Request $req){
+        $ttd = $req->ttd;
+        $telepon = $req->telepon;
+        $us = $req->us;
+        $gm = $req->gm;
+        $sejumlah = $req->sejumlah;
+        
+        $id = DB::table('preorder')->insertGetId(['ttd' => $ttd,'us'=>$us,'gm'=> $gm,'sejumlah'=>$sejumlah,'telepon'=>$telepon]);
+        
+        $preordercetak = $this->printpreorder($id);
+        
+        return json_encode(['filename' => $preordercetak,'id'=> $id]);
+    }
+
+    public function cetakpreorder(Request $req){
+        $id= $req->id;
+        $printku = $this->printpreorder($id);
+
+        return json_encode(['filename'=>$printku]);
+    }
  
 }

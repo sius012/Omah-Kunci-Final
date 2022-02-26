@@ -1,4 +1,6 @@
 $(document).ready(function(){
+    $("#printbutton").attr("disabled", "disabled");
+
     var jenisnota = "pintugarasi";
     var pg = `
         <label for='ukuranpg'>Ukuran : </label>
@@ -42,24 +44,36 @@ var omge = `
 
 `;
 
-var judulpg = ["Ukuran", "Daun Pintu", "Arah Tikung", "Pilar", "Warna/Tipe", "Waktu"];
-var ospipg = [$("#ukuranpg").val(), $("#daunpintupg").val(), $("#arahtikungpg").val(), $("#pilarpg"),val(), $("#warnatipepg"),val(), $("#waktupg"),val()];
+
 
 $("#notabesar").change(function(){
    jenisnota = $(this).val();
    if($(this).val() == "pintugarasi"){
-       $(".opsigrup").html(pg);
-   }else if($(this).val() == "pintugadandp"){
+    $(".opsigrup").html(pg);
+    $("#gm").val("Pintu Garasi");
+}else if($(this).val() == "pintugadandp"){
     $(".opsigrup").html(pgadp);
-   }else if($(this).val() == 'autog'){
+    $("#gm").val("Pintu GA & DP");
+}else if($(this).val() == 'autog'){
     $(".opsigrup").html(ag);
-   }else if($(this).val() == 'upvc'){
+    $("#gm").val("Auto Gate & Auto Garage");
+}else if($(this).val() == 'upvc'){
     $(".opsigrup").html(upvc);
-   }else{
+    $("#gm").val("UPVC");
+}else{
     $(".opsigrup").html(omge);
-   }
+    $("#gm").val("OMGE");
+}
+
+  
 });
+$(".opsigrup").html(pg);
+$("#trigger").click(function(e){
+    alert(currentopsi);
+})
  
+
+
 
 
 
@@ -151,16 +165,18 @@ $("#notabesar").change(function(){
                     $("#buttonsubmit").text("Sudah Lunas");
                     $("#buttonsubmit").removeClass("btn-primary");
                     $("#buttonsubmit").addClass("btn-success");
+                    $("#printbutton").removeAttr("disabled");
                 
                 }else{
                     $("#buttonsubmit").removeAttr("disabled");
                     $("#buttonsubmit").removeClass("btn-success");
                     $("#buttonsubmit").addClass("btn-primary");
                     $("#buttonsubmit").text("Bayar");
+                    $("#printbutton").attr("disabled", "disabled");
                 }
             },
             error: function(err){
-                alert(err.responseText);
+                Swal.fire("error", "", "info");
             }
         });
     });
@@ -241,6 +257,43 @@ $("#notabesar").change(function(){
 
     //ketika tombol submit/bayar tertekan
     $("#preorderform").submit(function(e){
+        var judulpg = ["Ukuran", "Daun Pintu", "Arah Tikung", "Pilar", "Warna/Tipe", "Waktu"];
+        var ospipg = [$("#ukuranpg").val(), $("#daunpintupg").val(), $("#arahtikungpg").val(), $("#pilarpg").val(), $("#warnatipepg").val(), $("#waktupg").val()];
+
+        var judulpgad = ["Ukuran Kusen", "Warna/Tipe", "Waktu"];
+        var ospipgagd = [$("#ukurankusenpgadp").val(), $("#warnatipepgadp").val(), $("#waktupgadp").val()];
+
+        var judulag = ["Ukuran Diperuntukan"];
+        var ospiag = [$("#ukuranag").val()];
+
+        var judulupvc = ["Item Barang", "Warna/Tipe"];
+        var ospiupvc = [$("#itembarangupvc").val(), $("#warnatipeupvc").val()];
+
+        var judulomge = ["Ukuran(Ekstimasi)"];
+        var ospiomge = [$("#ukuranomge").val()];
+
+        var currentjudul = judulpg;
+        var currentopsi = ospipg;
+
+
+        if(jenisnota == "pintugarasi"){
+            currentjudul = judulpg;
+             currentopsi = ospipg;
+        }else if(jenisnota == "pintugadandp"){
+         currentjudul = judulpgad;
+         currentopsi = ospipgagd;
+        }else if(jenisnota == 'autog'){
+         currentjudul = judulag;
+         currentopsi = ospiag;
+        }else if(jenisnota == 'upvc'){
+         currentjudul = judulupvc;
+         currentopsi = ospiupvc;
+        }else{
+         currentjudul = judulomge;
+         currentopsi = ospiomge;
+        }
+
+
         let url = $(this).attr("action");
         e.preventDefault();
 
@@ -271,7 +324,8 @@ $("#notabesar").change(function(){
             data: {
                 formData: formData,
                 jenisnota: jenisnota,
-                
+                judulopsi: currentjudul,
+                ketopsi: currentopsi,
                 id_transaksi: $("#id_trans").val()
             },
             type: "POST",
@@ -288,9 +342,10 @@ $("#notabesar").change(function(){
                 $("#buttonsubmit").text("Sudah Lunas");
                 $("#buttonsubmit").removeClass("btn-primary");
                 $("#buttonsubmit").addClass("btn-success");
-                $("#id_trans").val(data["id_trans"]);
+                $("#id_trans").val(data["id_nb"]);
                 $("#nn").text("No Nota: "+data["no_nota"]);
                 $("#searcher-nota").val("");
+                $("#printbutton").removeAttr('disabled');
                
             
             },

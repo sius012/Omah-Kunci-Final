@@ -144,11 +144,11 @@
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Uang sejumlah</label>
-    <input type="number" class="form-control " id="us" >
+    <input type="number" class="form-control " required id="us" >
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Berupa</label>
-    <input type="text" class="form-control " id="brp" >
+    <input type="text" class="form-control " required id="brp" >
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Guna Membayar</label>
@@ -181,15 +181,15 @@
 </div>
 
     
-<div class="row">
+<div class="row ml-1">
 
- <button class="btn btn-primary m-3" id="buttonsubmit">Tambah</button>
+ <button class="btn btn-primary m-3" id="buttonsubmit">Kirim</button>
 </div>
 </form>
-<div class="row">
+<div class="row ml-1">
 <button class="btn btn-warning m-3" id="printbutton" ><i class="fa fa-print"></i></button>
 </div>
-<div class="row">
+<div class="row ml-1">
 <button class="btn btn-primary m-3" id="resetbutton"><i class="fa fa-back"></i>Kembali</button>
 </div>
 @stop

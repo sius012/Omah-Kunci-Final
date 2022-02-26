@@ -81,5 +81,20 @@ return array (
   'barcode' => array(
     'normal' => $fontDir . '/barcode_normal_cbd85e34bac88d5ce0f4469d620a5684',
   ),
+  'fontku' => array(
+    'normal' => $fontDir . '/fontku_normal_18feb10f9246effee59daaed581c184d',
+  ),
+  'arial' => array(
+    'normal' => $fontDir . '/arial_normal_18feb10f9246effee59daaed581c184d',
+  ),
+  '' => array(
+    'normal' => $fontDir . '/_normal_18feb10f9246effee59daaed581c184d',
+  ),
+  'tes' => array(
+    'normal' => $fontDir . '/tes_normal_18feb10f9246effee59daaed581c184d',
+  ),
+  'your custom font name' => array(
+    'normal' => $fontDir . '/your_custom_font_name_normal_18feb10f9246effee59daaed581c184d',
+  ),
 );
 }; ?>

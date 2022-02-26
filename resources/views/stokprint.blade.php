@@ -70,6 +70,8 @@
             font-size: 20pt !important;
         }
 
+    
+
         td{
             margin: -10px;
         }

@@ -27,9 +27,10 @@ $(document).ready(function(){
                 $("#qty").val(),
                 0,
             );
+            
 
             $("#searcher").val("");
-           
+            $("#myUL").html("");
           }
 
         $.ajax({
@@ -180,7 +181,7 @@ $(document).ready(function(){
                             </li>`;
                     }
                    
-        
+                    $("#myUL").html(li);
                 }else{
                     $(".drop").hide();
                 }
@@ -321,7 +322,11 @@ $(document).ready(function(){
                     $("#next-button").removeAttr("disabled");
                 },
                 error: function(err,response, errorThrown, jqXHR){
-                    alert(err.responseText);
+                    Swal.fire(
+                        'Data barang tidak tersedia di katalog!',
+                        '',
+                        'info'
+                    );
                 }
             });
             //window.location = "{{url('/selesai')}}";

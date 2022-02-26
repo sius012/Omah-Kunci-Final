@@ -28,7 +28,7 @@
     @csrf
     <div class="filter">
         <div class="row">
-        <div class="col"> <input class="form-control  mt-3 mb-5" name="kw" placeholder="Masukan Kode Barcode" value="{{$kw}}"></div>
+            <input class="form-control  mt-0 mb-5" name="kw" placeholder="Masukan Kode Barcode" value="{{$kw}}">
             <div class="col"> </div>
           </div>
             <div class="row">
@@ -60,7 +60,7 @@
                       @endforeach
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-1">
                     <button class="btn btn-primary"><i class="fa fa-search"></i>   Cari</button>
                 </div>
                 </div>
@@ -69,23 +69,21 @@
               
     </div>
     </form>
-    <button type="button" class="btn btn-primary mt-3 mb-5 " data-toggle="modal" data-target="#modalproduk">
+    <button type="button" class="btn btn-primary mt-0 mb-5 " data-toggle="modal" data-target="#modalproduk">
         Tambah Produk <i class="fa fa-plus ml-2"></i>
       </button>
-
-      <button id="cetak-barcode">Cetak Barcode</button>
      
       <table class="table table-striped mt-5 table-bordered">
-        <thead>
+        <thead style="font-size:10pt;">
             <tr>
               <th>No</th>
               <th>Barcode</th>
-              <th>Nama Produk</th>
+              <th style="width:120px;">Nama Produk</th>
               <th>Tipe</th>
-              <th>Tipe Kode</th>
+              <th style="width:110px;">Tipe Kode</th>
               <th>Merek</th>
               <th>Satuan</th>
-              <th>Harga</th>
+              <th style="width:140px;">Harga</th>
               <th></th>
             </tr>
         </thead>
@@ -100,7 +98,11 @@
               <td>{{$produks->merk}}</td>
               <td>{{$produks->stn}}</td>
               <td>Rp. {{number_format($produks->harga)}}</td>
-          <td align="center"><a class="btn btn-warning" href={{url("/editproduk?kodebarcode=".$produks->kode_produk)}}><i class="fa fa-edit"></i></a><a class="btn btn-danger m-3 hapusproduk" href="{{route('hapusproduk',['kode'=>$produks->kode_produk])}}"><i class="fa fa-trash"></i></a></td>
+          <td class="d-inline-flex" align="center">
+            <a class="btn btn-warning" href={{url("/editproduk?kodebarcode=".$produks->kode_produk)}}><i class="fa fa-edit"></i></a>
+            <a class="btn btn-danger ml-1 mr-1 hapusproduk" href="{{route('hapusproduk',['kode'=>$produks->kode_produk])}}"><i class="fa fa-trash"></i></a>
+            <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-barcode"></i></a>
+          </td>
           </tr>
           @php $no++ @endphp
           @endforeach
@@ -119,7 +121,9 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="staticBackdropLabel">Tambah Produksi</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
       <div class="modal-body">
       <form action="/updateproduk" id="submitterproduk">
@@ -170,7 +174,7 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
         <button type="submit" class="btn btn-primary">Submit</button>
       </div>
       </form>
@@ -262,6 +266,27 @@
   </div>
   @endisset
 
-
-
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Barcode Print</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Jumlah</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-warning"><i class="fa fa-print mr-1"></i>Print</button>
+      </div>
+    </div>
+  </div>
+</div>
 @stop

@@ -65,6 +65,8 @@ Route::middleware(["role:kasir|manager"])->group(function(){
     Route::post('/bayarcicilan', 'KasirController@bayarcicilan');
     Route::get('/showdetail/{no_nota}', 'TransaksiPreorder@index')->name('showdetail');
     Route::get('/caritransaksi', 'TransaksiController@index')->name('caritrans');
+    Route::post('/tambahpreorder2', 'KasirController@tambahpreorder');
+    Route::post('/cetakpreorder', 'KasirController@cetakpreorder');
 });
 
 

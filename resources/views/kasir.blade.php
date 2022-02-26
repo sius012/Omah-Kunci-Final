@@ -12,6 +12,7 @@
 @section('js')
 <script src="{{ asset('js/print.js') }}"></script>
 <script src="{{ asset('js/mainjs/kasir.js') }}"></script>
+<script src="{{ asset('js/preorder.js') }}"></script>
 <link rel="stylesheet" href="{{ asset('css/kasir.css') }}">
 @stop
 
@@ -33,7 +34,7 @@
                             <div class="card-header">
                                 Pilih Product
                             </div>
-                            <div style="border-bottom:1px solid lightgray; width: 600px" class="card-body " >
+                            <div style="border-bottom:1px solid lightgray; x" class="card-body " >
                                 <table style="width: 450px">
                                     <tr>
                                         <td > <input style="width: 300px" required class="search-box form-control mr-2" type="text" id="searcher" placeholder="Cari Barang Disini..."></td>
@@ -43,7 +44,7 @@
                                                 </ul>
                                     </tr>
                                     <tr>
-                                        <td>                                    <p class="m-0 mt-3"><b>Harga  </b></p><p class="m-0 mt-3" id="hrg-nominal">: -</p></td>
+                                        <td><p class="m-0 mt-3"><b>Harga  </b></p><p class="m-0 mt-3" id="hrg-nominal">: -</p></td>
                                     </tr>
                                 </table>
             
@@ -60,9 +61,64 @@
                     </div>
                 </div>
                 <div class="times-wrapper col-6">
-                    <p class="times float-right">
-                        {{ $date->format('l, j F Y ; h:i a') }}</p>
+                    <div class="wrapperrs float-right">
+                    <div class="row">
+                        <p class="times">
+                            {{ $date->format('l, j F Y ; h:i a') }}
+                        </p>
+                    </div>
+                    <div class="row float-right">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                            Tambah Preorder
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <form action="/sss" id="preordersubmitter">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Tambah Preorder</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Telah Terima Dari</label>
+                                    <input id="ttd" type="text" class="form-control"  aria-describedby="emailHelp" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Telepon</label>
+                                    <input id="telepon" type="text" class="form-control"  aria-describedby="emailHelp" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Uang Sejumlah</label>
+                                    <input id="us" type="number" class="form-control"  aria-describedby="emailHelp" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Guna Membayar</label>
+                                    <input id="gm" type="text" class="form-control" aria-describedby="emailHelp" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Sejumlah</label>
+                                    <input id="sejumlah" type="text" class="form-control"  aria-describedby="emailHelp" required>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-warning" " id_pre="" id="tombolcetak2">Cetak</button>
+                                <button type="submit" class="btn btn-primary">Kirim</button>
+                            </div>
+                            </div>
+                    </div>
+                    </form>
+                    </div>
                 </div>
+            </div>
+        </div>
 
             </div>
 

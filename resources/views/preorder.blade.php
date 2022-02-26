@@ -12,7 +12,7 @@
             font-family: Arial, Helvetica, sans-serif;
             margin: 0px;
 
-            font-size: 8pt;
+            font-size: 10pt;
         }
 
         body{
@@ -59,7 +59,7 @@
 
         .container-wrapper .big-title .hr {
             margin: 0;
-            border: 1px solid black;
+       
             width: 200px;
             display: inline-flex;
             align-items: center;
@@ -101,13 +101,17 @@
             height: 10px;
 
         }
+        h4{
+            margin-top: 4px;
+            font-size: 9pt;
+        }
 
     </style>
 </head>
 
 <body>
     <div class="container-wrapper">
-        <table style="margin-top: 10px; width: 800px">
+        <table style="margin-top: 10px; width: 750px">
             <tr>
                 <td>
                     <div class="address">
@@ -116,60 +120,41 @@
                     </div>
                 </td>
                 <td></td>
-                <td>
-                    <h4 class="date-times">Semarang,
-                        {{ date("d-M-Y", strtotime($data->updated_at)) }}</h4>
+                <td align="right" valign="top" style>
+                    <h4 class="date-times">Semarang, {{date('d-M-Y', strtotime($data->created_at))}}
+                     
                 </td>
             </tr>
             <tr>
                 <td align="center" id="bigtitle" colspan="3">
                     <div class="big-title">
                         <h2 class="title">
-                            {{ $data->termin != 3 ? "TANDA TERIMA" : "NOTA" }}
+                            PEMESANAN
                         </h2>
                         <div class="hr"></div>
-                        <h5 class="no-nota">NO.{{ $data->no_nota }}</h5>
                     </div>
                 </td>
 
             </tr>
             <tr>
-                <td valign="top">
+                <td valign="top" style="width: 150px">
                     <h4>Telah terima dari</h4>
                 </td>
-                <td> {{ $data->ttd }}</td>
+                <td valign="top"> {{ $data->ttd }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td valign="top">
-                    <h4>Untuk Proyek</h4>
+                    <h4>Telepon</h4>
                 </td>
-                <td> {{ $data->up }}</td>
+                <td valign="top">  {{ $data->telepon}}</td>
                 <td></td>
             </tr>
-            @if($td != 0)
-                <tr>
-
-                    <td valign="top">
-                        <h4>Telah Dibayar</h4>
-                    </td>
-                    <td> : Rp. {{ number_format($td) }}</td>
-                    <td></td>
-
-                </tr>
-            @endif
             <tr>
-                <td style="padding-bottom: 5px;" valign="top">
+                <td  valign="top">
                     <h4>Uang Sejumlah</h4>
                 </td>
-                <td style="padding-bottom: 5px;"> Rp. {{ number_format($data->us) }}</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td valign="top">
-                    <h4>Berupa</h4>
-                </td>
-                <td> {{ $data->brp }}</td>
+                <td class="notabesar" valign="top" > Rp. {{ number_format($data->us) }}</td>
                 <td></td>
             </tr>
             <tr>
@@ -180,24 +165,14 @@
                 <td></td>
             </tr>
             <tr>
-                <td  style="padding-bottom: 5px;" valign="top">
-                    <h4>Total</h4>
+                <td  valign="top">
+                    <h4>Sejumlah</h4>
                 </td>
-                <td style="padding-bottom: 5px;">  Rp. {{ number_format($data->total)}}</td>
+                <td  valign="top">  {{$data->sejumlah}}</td>
                 <td></td>
             </tr>
             <tr><td></td></tr>
-            @foreach($opsi as $opsis)
-                <tr>
-
-                    <td valign="top">
-                        <h4>{{ $opsis->judul }}</h4>
-                    </td>
-                    <td> {{ $opsis->ket }}</td>
-                    <td></td>
-
-                </tr>
-            @endforeach
+        
           
             <tr align="center" >
                 <td colspan="3" style="padding-top:50px; padding-bottom:30px">
@@ -213,7 +188,7 @@
                     </div>
                 </td>
                 <td></td>
-                <td align="center" style="padding-left:150px">
+                <td align="center" style="padding-left:200px">
                     <div class="wrappers">
                         <h4 class="sales">Sales,</h4>
 
