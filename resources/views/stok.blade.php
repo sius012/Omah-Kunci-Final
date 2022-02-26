@@ -1,7 +1,7 @@
 @php $whoactive = 'stok '@endphp
 @extends('layouts.layout2')
 
-@section('pagetitle', 'STOK')
+@section('pagetitle', 'Katalog')
 
 
 

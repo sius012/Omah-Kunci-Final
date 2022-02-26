@@ -104,10 +104,15 @@ Route::get('/dsm', 'DSMController@index');
 Route::post('/loaddsm', 'DSMController@loaddatadetailstok');
 Route::post('/verifiying', 'DSMController@verifiying');
 Route::post('/rejecting', 'DSMController@rejecting');
+    Route::post('/printbarcode', 'ProdukController@printbarcode');
  });
 
 
 Route::get('/home', "HomeController@index");
+
+Route::get('/viewbarcode', function(){
+    return view('cetakbarcode');
+});
 
 
 

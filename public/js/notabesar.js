@@ -1,5 +1,68 @@
 $(document).ready(function(){
-  
+    var jenisnota = "pintugarasi";
+    var pg = `
+        <label for='ukuranpg'>Ukuran : </label>
+        <input class="form-control" id="ukuranpg">
+        <label for='daunpintupg'>Daun Pintu : </label>
+        <input class="form-control" id="daunpintupg">
+        <label for='arahtikungpg'>Arah Tikung : </label>
+        <input class="form-control" id="arahtikungpg">
+        <label for='pilarpg'>Pilar : </label>
+        <input class="form-control" id="pilarpg">
+        <label for='warnatipepg'>Warna/Tipe : </label>
+        <input class="form-control" id="warnatipepg">
+        <label for='waktupg'>Waktu : </label>
+        <input class="form-control" id="waktupg">
+    `;
+
+    var pgadp = `
+    <label for='ukurankusenpgadp'>Ukuran : </label>
+    <input class="form-control" id="ukurankusenpgadp">
+    <label for='warnatipepgadp'>Warna/Tipe : </label>
+    <input class="form-control" id="warnatipepgadp">
+    <label for='waktupgadp'>Waktu : </label>
+    <input class="form-control" id="waktupgadp">
+`;
+
+var ag = `
+<label for='ukuranag'>Ukuran Diperuntukan : </label>
+<input class="form-control" id="ukuranag">
+
+`;
+var upvc = `
+<label for='itembarangupvc'>Item Barang : </label>
+<input class="form-control" id="itembarangupvc">
+<label for='warnatipeupvc'>Warna/Tipe : </label>
+<input class="form-control" id="warnatipeupvc">
+`;
+
+var omge = `
+<label for='ukuranomge'>Ukuran(Ekstimasi) : </label>
+<input class="form-control" id="ukuranomge">
+
+`;
+
+var judulpg = ["Ukuran", "Daun Pintu", "Arah Tikung", "Pilar", "Warna/Tipe", "Waktu"];
+var ospipg = [$("#ukuranpg").val(), $("#daunpintupg").val(), $("#arahtikungpg").val(), $("#pilarpg"),val(), $("#warnatipepg"),val(), $("#waktupg"),val()];
+
+$("#notabesar").change(function(){
+   jenisnota = $(this).val();
+   if($(this).val() == "pintugarasi"){
+       $(".opsigrup").html(pg);
+   }else if($(this).val() == "pintugadandp"){
+    $(".opsigrup").html(pgadp);
+   }else if($(this).val() == 'autog'){
+    $(".opsigrup").html(ag);
+   }else if($(this).val() == 'upvc'){
+    $(".opsigrup").html(upvc);
+   }else{
+    $(".opsigrup").html(omge);
+   }
+});
+ 
+
+
+
     $(".td").hide();
     var jmlopsi = 1;
     console.log("{{'lol'}}");
@@ -207,8 +270,8 @@ $(document).ready(function(){
                  }, 
             data: {
                 formData: formData,
-                judulopsi : judulopsi,
-                ketopsi : ketopsi,
+                jenisnota: jenisnota,
+                
                 id_transaksi: $("#id_trans").val()
             },
             type: "POST",

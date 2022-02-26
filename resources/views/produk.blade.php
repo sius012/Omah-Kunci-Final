@@ -13,6 +13,7 @@
 @section('titlepage', 'Produk')
 
 @section('js')
+<script src="{{ asset('js/print.js') }}"></script>
 <script src="{{ asset('js/produk.js') }}"></script>
 @stop
 @section('content')
@@ -71,6 +72,8 @@
     <button type="button" class="btn btn-primary mt-3 mb-5 " data-toggle="modal" data-target="#modalproduk">
         Tambah Produk <i class="fa fa-plus ml-2"></i>
       </button>
+
+      <button id="cetak-barcode">Cetak Barcode</button>
      
       <table class="table table-striped mt-5 table-bordered">
         <thead>

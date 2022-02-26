@@ -17,6 +17,36 @@
     <title>Document</title>
 
     <style>
+    body{
+        
+    }
+.container{
+
+    
+}
+
+
+
+.pie{
+    position: relative;
+    background: red ;
+    padding: 20px ;
+    display: inline;
+    margin: 0.5px;
+}
+
+.card{
+  
+     background-color: white;
+     width: 160px;
+     height: 80px;
+    border:1px solid black;
+    padding: 3px;
+}
+
+    </style>
+
+    <style>
         @font-face /*perintah untuk memanggil font eksternal*/
         {
             font-family: barcode; /*memberikan nama bebas untuk font*/
@@ -83,6 +113,9 @@
             font-size: 8pt;
 
         }
+        span{
+            font-size: 6pt;
+        }
     </style>
 </head>
 
@@ -107,36 +140,19 @@
         <p>Tipe : Semua</p>
         <p>Tipe Kode: Semua</p>
    
-            <table class="table-data" style="width:700px !important; margin-top: 20px" >
-              
-                    <tr>
-                        <th >No</th>
-                        <th>Kode Produk</th>
-                        <th>Nama Produk</th>
-                        <th >Tipe</th>
-                        <th>Tipe Kode</th>
-                        <th>Merek</th>
-                        <th >Jumlah</th>
-                    </tr>
-
-              
-                    @foreach($data as $datas)
-                    <tr>
-                        <td align=center style="width: 0px">{{$no}}</td>
-                        <td align=center class="barcode" style="width: 210px">{{$datas->kode_produk}}</td>
-                        <td  align=center>{{$datas->nama_produk}}</td>
-                        <td  align=center>{{$datas->id_kategori}}</td>
-                        <td  align=center>{{$datas->id_ct}}</td>
-                        <td  align=center>{{$datas->merk}}</td>
-                        <td  align=center>{{$datas->jumlah}} {{$datas->stn}}</td>
-
-                    </tr>
-                    @php $no++ @endphp
-                    @endforeach
-                
-            </table>
-       <!-- {!! DNS1D::getBarcodeHTML($datas->kode_produk, 'C128') !!} -->
- 
+        
+        <div style="margin-top: 20px;  justify-content: center;flex-direction: unset;width: 120%;align-items: center;">
+      
+            <div style="display: inline-block;text-align: center; padding: 3px"><div class="card">
+                <span style="font-size: 13px;">{{"fresssss"}}</span>
+                <div style="text-align:center !important; margin-left: 5px; margin-top: 5px; margin-bottom: 5px;">
+                <span style="size: 8px !important;">{!! DNS1D::getBarcodeHTML(10101010, 'C128',1.9,33) !!}</span>
+                </div>
+                <span style="font-size: 13px;">101010101</span>
+            </div></div>
+     
+        </div>
+        
 </body>
 
 </html>

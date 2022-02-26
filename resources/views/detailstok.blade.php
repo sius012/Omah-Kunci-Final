@@ -1,7 +1,7 @@
 @php $whoactive = "detail stok" @endphp
 @extends('layouts.layout2')
 
-@section('pagetitle', 'Detail Stok')
+@section('pagetitle', 'Stok Harian')
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/detail_stok.css') }}">

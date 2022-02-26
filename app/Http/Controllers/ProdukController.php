@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use function GuzzleHttp\json_encode;
-
+use PDF;
 
 
 
@@ -137,6 +137,20 @@ class ProdukController extends Controller
 
     public function update($id){
         dd($id);
+    }
+
+    public function printbarcode(){
+        $data = DB::table("produk")->get();
+
+        $pdf = PDF::loadview('cetakbarcode', ["data" => $data]);
+        $path = public_path('pdf/');
+            $fileName =  date('mdy').'-'."cetakbarcode". '.' . 'pdf' ;
+            $pdf->save(storage_path("pdf/$fileName"));
+        $storagepath = storage_path("pdf/$fileName");
+        $base64 = chunk_split(base64_encode(file_get_contents($storagepath)));
+
+    	return response()->json(["filename" => $base64]);
+        
     }
 
 

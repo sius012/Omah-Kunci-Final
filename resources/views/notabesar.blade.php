@@ -114,6 +114,14 @@
   <h4 id="tt" class="m">Tanda Terima</h4><span id="nn" style="color:#747474;"> No Nota : ?</span><i style="color:#747474;" class="fa fa-copy mr-3"></i>
   </div>
   <div class="card-body">
+  <label for="notabesar">Pilih Nota Besar</label>
+  <select name=""  class="custom-select mb-3" id="notabesar">
+      <option value="pintugarasi">Pintu Garasi</option>
+      <option value="pintugadandp">Pintu GA & DP </option>
+      <option value="autog">Auto Gate & Auto Gate</option>
+      <option value="upvc">UPVC</option>
+      <option value="omge">OMGE</option>
+    </select>
   <div class="form-group">
     <label for="exampleInputEmail1">Tanggal </label>
     <input type="date" class="form-control form-control-" id="tgl" value="{{date('Y-m-d')}}">
@@ -160,7 +168,6 @@
     <input placeholder="Judul" type="text" class="form-control form-control-sm mb-3 title1 readonly" id="exampleInputPassword1"  >
     <input placeholder="Keterangan" type="text" class="form-control isi1 readonly" id="exampleInputPassword1" >
   </div>
-  <a class="btn btn-primary" id="addopsi">+</a>
 </div>
 <div class="col">
 

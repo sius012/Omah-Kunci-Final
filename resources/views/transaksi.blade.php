@@ -17,7 +17,7 @@ $whoactive = "riwayattransaksi"
     @csrf
 <div class="row">
     <div class="col-12">
-        <input class="search-box " type="text" placeholder="Ketik Nomer Nota" name="no_nota">
+        <input class="search-box " type="text" placeholder="Ketik Nomor Nota" name="no_nota">
         <button class="search-icon"><i class="fas fa-search ml-1 "></i></button>
     </div>
 </div>

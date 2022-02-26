@@ -1,4 +1,19 @@
 $(document).ready(function(){  
+    $("#cetak-barcode").click(function(e){
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN" : $("meta[name=csrf-token").attr('content')
+            },
+            url: "/printbarcode",
+            type: "post",
+            success: function(response){
+                printJS({printable: response['filename'], type: 'pdf', base64: true});
+            },
+            error: function(err){
+                alert(err.responseText);
+            }
+        })
+    });
     $(".hapusproduk").click(function(e){
         e.preventDefault();
         Swal.fire({

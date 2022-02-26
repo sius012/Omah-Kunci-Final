@@ -145,7 +145,7 @@
               <li class=" nav-header">Transaksi Pre-Order</li>
                                 <li class="nav-item">
                                     <a href="{{url('/notabesar')}}" class="nav-link {{$whoactive=='notabesar' ? 'active' : ''}}"">
-                  <p>Pre-Order</p>
+                  <p>Nota Besar</p>
                 </a>
               </li>
               <li class=" nav-item">
