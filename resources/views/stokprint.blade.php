@@ -61,13 +61,12 @@
         .table-data td, .table-data th{
             border: 1px solid black;
             font-size: 8pt;
-            padding: 20px;
             margin: 0;
         }
 
         .barcode{
        
-            font-size: 20pt !important;
+            font-size: 8pt !important;
         }
 
     
@@ -121,8 +120,8 @@
                     @foreach($data as $datas)
                     <tr>
                         <td align=center style="width: 0px">{{$no}}</td>
-                        <td align=center class="barcode" style="width: 210px">{{$datas->kode_produk}}</td>
-                        <td  align=center>{{$datas->nama_produk}}</td>
+                        <td align=center class="barcode" style="width: 120px">{{$datas->kode_produk}}</td>
+                        <td  align=center style="width: 200px">{{$datas->nama_produk}}</td>
                         <td  align=center>{{$datas->id_kategori}}</td>
                         <td  align=center>{{$datas->id_ct}}</td>
                         <td  align=center>{{$datas->merk}}</td>

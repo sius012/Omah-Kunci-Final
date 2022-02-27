@@ -1,5 +1,28 @@
 $(document).ready(function(){
+    $("#generatestok").click(function(e){
+        alert('hai');
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content')
+            },
+            type: "post",
+            dataType: 'json',
+            url: "/loaddatastok",
+            success: function(data){
+                $("#modaluploader").modal('show');
+
+                let li = data['stokless'].map(function(lis){
+                    return `<li>${lis['kode_produk']} ${lis['nama_produk']}</li>`;
+                });
+                $("#ktless").html(li);
+            },error: function(err){
+                alert(err.responseText);
+            }   
+        });
+    });
     
+    let timerInterval
+
     function hapusStok(kode_stok){
         $.ajax({
             headers:{
@@ -142,4 +165,6 @@ $(document).ready(function(){
             }
         });
     });
+
+    
 });

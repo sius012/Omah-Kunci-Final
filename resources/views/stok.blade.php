@@ -15,6 +15,7 @@
 <div class="card-header"><h3>Kelola Stok <i class='fas fa-box ml-2'></i></h3>
 <div class="card-body">
 <button type="button m-3" class="btn btn-primary" data-toggle="modal" data-target="#modalstok">Tambah Stok Baru</button>
+<button type="button m-3" class="btn btn-warning"  id="generatestok" ><i class="fas fa-upload"></i>Produk ke Stok</button>
 <a class="btn btn-warning float-right" href="#" id="stokprint"><i class="fa fa-print mr-2"></i>Print</a>
 <div>
 
@@ -81,5 +82,31 @@
 </div>
 
 
+<div class="modal fade" id="modaluploader" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="jp"> </p>
+        <p id="kat"> </p>
+        <p id="bt"> </p>
+
+        <h5>Produk yang belum masuk katalog:</h5>
+        <ul id="ktless">
+          <li></li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 @stop

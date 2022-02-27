@@ -93,7 +93,7 @@
           <td>{{$no}}</td>
               <td>{{$produks->kode_produk}}</td>
               <td>{{$produks->nama_produk}}</td>
-              <td>{{$produks->id_kategori == 1 ? "ACC PINTU" : "Not Handler"}}</td>
+              <td>{{$produks->id_kategori }}</td>
               <td>{{$produks->id_ct}}</td>
               <td>{{$produks->merk}}</td>
               <td>{{$produks->stn}}</td>
@@ -101,7 +101,7 @@
           <td class="d-inline-flex" align="center">
             <a class="btn btn-warning" href={{url("/editproduk?kodebarcode=".$produks->kode_produk)}}><i class="fa fa-edit"></i></a>
             <a class="btn btn-danger ml-1 mr-1 hapusproduk" href="{{route('hapusproduk',['kode'=>$produks->kode_produk])}}"><i class="fa fa-trash"></i></a>
-            <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-barcode"></i></a>
+            <a kode_produk='{{$produks->kode_produk}}' href="#" class="btn btn-warning cetak-barcode" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-barcode"></i></a>
           </td>
           </tr>
           @php $no++ @endphp
@@ -139,13 +139,6 @@
         @endforeach
     </select>
  
-  </div>
-  <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">No Merek</label>
-
-          <input type="number" class="form-control" required id="nomer-merek">
-     
-   
   </div>
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Kategori</label>
@@ -279,12 +272,12 @@
       <div class="modal-body">
         <div class="form-group">
           <label for="exampleInputEmail1">Jumlah</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          <input type="email" class="form-control" id="jml" aria-describedby="emailHelp">
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-        <button type="button" class="btn btn-warning"><i class="fa fa-print mr-1"></i>Print</button>
+        <button type="button" class="btn btn-warning" kode_produk="" id="cetaker"><i class="fa fa-print mr-1"></i>Print</button>
       </div>
     </div>
   </div>

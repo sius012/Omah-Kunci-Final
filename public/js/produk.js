@@ -1,8 +1,16 @@
 $(document).ready(function(){  
-    $("#cetak-barcode").click(function(e){
+    $(".cetak-barcode").click(function(e){
+       $("#cetaker").attr('kode_produk', $(this).attr('kode_produk'));
+    });
+
+    $("#cetaker").click(function(e){
         $.ajax({
             headers: {
                 "X-CSRF-TOKEN" : $("meta[name=csrf-token").attr('content')
+            },
+            data: {
+                kode_produk: $(this).attr('kode_produk'),
+                jml: $("#jml").val()
             },
             url: "/printbarcode",
             type: "post",
@@ -12,8 +20,12 @@ $(document).ready(function(){
             error: function(err){
                 alert(err.responseText);
             }
-        })
-    });
+        });
+    }
+
+    );
+
+   
     $(".hapusproduk").click(function(e){
         e.preventDefault();
         Swal.fire({

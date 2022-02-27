@@ -3,7 +3,7 @@
 @endphp
 @extends('layouts.layout2')
 
-@section('title', 'AdminLTE')
+@section('title', 'Kasir')
 
 
 @section('pagetitle', 'Kasir')
@@ -29,7 +29,7 @@
             <div class="row">
                 <div class="col-6">
                     <div class="row">
-                        <div class="card" style="width: 500px">
+                        <div class="card" style="width: 500px" id="searcherbox">
                             
                             <div class="card-header">
                                 Pilih Product
@@ -130,7 +130,7 @@
                         <th>Item</th>
                         <th>Jumlah</th>
                         <th>Harga(/pcs)</th>
-                        <th>Potongan(/pcs)</th>
+                        <th>diskon(/pcs)</th>
                         <th>Total</th>
                         <th>Aksi</th>
                     </tr>
@@ -156,8 +156,8 @@
                         <input type="text" class="subtotal" id="subtotal" name="subtotal" readonly>
                     </div>
                     <div class="row">
-                        <label class="diskon-label" for="diskon">Diskon</label>
-                        <input type="number" class="diskon uang" id="diskon" name="diskon">
+                        <label class="diskon-label" for="diskon">Potongan(RP)</label>
+                        <input type="" class="diskon uang" id="diskon" name="diskon">
                     </div>
                     <div class="row">
                         <label class="total-label" for="total">Total</label>
@@ -187,14 +187,14 @@
                 <div class="col-4">
                     <div class="wrapper float-right">
                         <div class="row">
-                            <button class="btn selesai" id="selesai">Selesai</button>
+                            <button class="btn selesai" id="selesai"><i class="fa fa-check mr-3"></i>Selesai</button>
                         </div>
                         
                         <div class="row">
-                            <button class="btn reset " id="reset-button" >Reset</button>
+                            <button class="btn reset " id="reset-button" ><i class="fa fa-trash mr-3"></i>Buang</button>
                         </div>
                         <div class="row">
-                            <button class="btn next" id="next-button" >Next</button>
+                            <button class="btn next" id="next-button" >Lanjut</button>
                         </div>
                     </div>
                 </div>
@@ -375,13 +375,33 @@
      </div> -->
     </section>
     <script> 
+
     $(document).ready(function(){
+
+    
        
 
     $(".uang").keyup(function(){
-  
-        $(this).val(rp($(this).val(),"Rp."));
+            $(this).val(formatRupiah($(this).val(),""))
     });
+
+
+    function formatRupiah(angka, prefix){
+    var number_string = angka.replace(/[^,\d]/g, '').toString(),
+    split   		= number_string.split(','),
+    sisa     		= split[0].length % 3,
+    rupiah     		= split[0].substr(0, sisa),
+    ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+    // tambahkan titik jika yang di input sudah menjadi angka ribuan
+    if(ribuan){
+        separator = sisa ? '.' : '';
+        rupiah += separator + ribuan.join('.');
+    }
+
+    rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+    return prefix == undefined ? rupiah : (rupiah ? '' + rupiah : '');
+}
 });
     </script>
 

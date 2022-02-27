@@ -51,7 +51,7 @@ input:focus, textarea:focus, select:focus{
     border: 1px solid #C6C6C6;
 
     padding: 5px;
-    width: 290px;
+    width: 299px;
 
     border-radius: 6px;
     margin-bottom: 6px;
@@ -61,14 +61,14 @@ input:focus, textarea:focus, select:focus{
     color: white;
 
     padding: 5px;
-    width: 80px;
+    width: 120px;
 
     text-align: center;
     margin-right: 10px;
 }
 .row .col-4 .row .subtotal, .row .col-4 .row .diskon{
     height: 35px;
-    width: 200px;
+    width: 180px;
 
     background-color: white;
     color: black;
@@ -82,7 +82,7 @@ input:focus, textarea:focus, select:focus{
     color: white;
 
     padding: 5px;
-    width: 80px;
+    width: 120px;
     height: 40px;
 
     text-align: center;
@@ -90,7 +90,7 @@ input:focus, textarea:focus, select:focus{
 }
 .row .col-4 .row .total{
     height: 43px;
-    width: 200px;
+    width: 180px;
 
     background-color: white;
     color: black;

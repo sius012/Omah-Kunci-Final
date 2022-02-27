@@ -139,10 +139,16 @@ class ProdukController extends Controller
         dd($id);
     }
 
-    public function printbarcode(){
-        $data = DB::table("produk")->get();
+    public function printbarcode(Request $req){
+        $listdata= [];
 
-        $pdf = PDF::loadview('cetakbarcode', ["data" => $data]);
+        $getter = DB::table('produk')->where('kode_produk', $req->kode_produk)->get()[0];
+        
+        for($i = 0;$i< $req->jml;$i++){
+            array_push($listdata,$getter);
+        }
+
+        $pdf = PDF::loadview('cetakbarcode', ["data" => $listdata]);
         $path = public_path('pdf/');
             $fileName =  date('mdy').'-'."cetakbarcode". '.' . 'pdf' ;
             $pdf->save(storage_path("pdf/$fileName"));

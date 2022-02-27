@@ -17,9 +17,9 @@ function formatRupiah(angka, prefix){
 
 
 $(document).ready(function(){
-    $("#searcher").on('keypress', function(event){
+    $(document).on('keypress', function(event){
         let keycode = (event.keyCode ? event.keyCode : event.which);
-          if(keycode == '13') {
+          if(keycode == '13' && $("#searcher").val()!="") {
             
             tambahItem(
                 $("#searcher").val(),
@@ -86,7 +86,6 @@ $(document).ready(function(){
         });    
     }
 
-    loader();
     
 
 
@@ -148,7 +147,9 @@ $(document).ready(function(){
     $(".drop").hide();
     $("#searcher").keyup(function(){
         $("#myUL").show();
+    
             kw = $(this).val();
+    
             
             $.ajax({
                 headers: {
@@ -224,6 +225,7 @@ $(document).ready(function(){
             dataType: "JSON",
             url: "/tambahItem",
             success: function(data,response){
+     
                 console.log(data['datadetail']);
                 var subtotal =0;
                 var no = 1;
@@ -304,8 +306,8 @@ $(document).ready(function(){
              data: {
                     data : {
                         nama_pelanggan: $("#nama").val(),
-                        diskon: $("#diskon").val(),
-                        bayar: $(".usethis").val(),
+                        diskon: $("#diskon").val().replace(/[._]/g,''),
+                        bayar: $(".usethis").val().replace(/[._]/g,''),
                         metode: "cash",
                         via: $(".usethisvia").val(),
                     } 
@@ -340,7 +342,7 @@ $(document).ready(function(){
 
     //input diskon
     $("#diskon").keyup(function(){
-       subtotalafterdiskon = subtotal1 - $(this).val(); 
+       subtotalafterdiskon = subtotal1 - $(this).val().replace(/[._]/g,''); 
        $("#totality").val(subtotalafterdiskon.toLocaleString());
     }); 
 

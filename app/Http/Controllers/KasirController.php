@@ -15,7 +15,8 @@ class KasirController extends Controller
         
     }
 
-    public function index(){
+    public function index(Request $req){
+        $req->session()->forget('transaksi');
         $no = DB::table('transaksi')->get()->count();
         $no = str_pad($no+1, 6, '0', STR_PAD_LEFT);
         return view('kasir.kasir', ['no_nota'=>$no,'page'=>'kasir']);
@@ -31,15 +32,17 @@ class KasirController extends Controller
 
     public function cari(Request $req){
         $kw = $req->input('data');
-        $data = DB::table('produk')->join('kategori', 'produk.id_kategori', '=', 'kategori.id_kategori')->where('kode_produk',"LIKE","%".$kw."%")->get();
-        $count = DB::table('produk')->join('kategori', 'produk.id_kategori', '=', 'kategori.id_kategori')->where('kode_produk',$kw)->count();
+        $data = DB::table('produk')->where('kode_produk',"LIKE","%".$kw."%")->where("kode_produk","!=","")->get();
+        $count = DB::table('produk')->where('kode_produk',$kw)->count();
        
         if($count == 1){
-             $data2 = DB::table('produk')->join('kategori', 'produk.id_kategori', '=', 'kategori.id_kategori')->where('kode_produk',$kw)->get();
+             $data2 = DB::table('produk')->where('kode_produk',$kw)->get();
              return json_encode(['data' => $data, 'currentproduk' => (array) $data2[0]]);
         }else{
             return( json_encode(['data' => $data]));
+            
         }
+        
        
     }
 

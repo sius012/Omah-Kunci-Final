@@ -60,4 +60,21 @@ class StokController extends Controller
 
     	return response()->json(["filename" => $base64]);
     }
+
+    public function loaddatastok(){
+        $jmlall = DB::table('produk')->count();
+        $jmlstok = DB::table('produk')->join('stok','stok.kode_produk','=','produk.kode_produk')->count();
+
+        $stoknessarray = [];
+        $stoknessproduk = DB::table('produk')->join('stok','stok.kode_produk','=','produk.kode_produk')->get();
+
+        foreach($stoknessproduk as $sp){
+            array_push($stoknessarray, $sp->kode_produk);
+        }
+
+
+        $stoklessproduk =  DB::table('produk')->whereNotIn('kode_produk',$stoknessarray)->get();
+
+        return json_encode(['jumlah produk' => $jmlall,'tersedia dikatalog'=> $jmlstok,'stokless' => $stoklessproduk]);
+    }
 }

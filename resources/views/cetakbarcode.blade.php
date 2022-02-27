@@ -17,7 +17,11 @@
     <title>Document</title>
 
     <style>
+        *{
+            margin: 0;
+        }
     body{
+        width: 60mm;
         
     }
 .container{
@@ -38,8 +42,8 @@
 .card{
   
      background-color: white;
-     width: 160px;
-     height: 80px;
+     width: 60mm;
+     height: 30mm;
     border:1px solid black;
     padding: 3px;
 }
@@ -115,6 +119,7 @@
         }
         span{
             font-size: 6pt;
+            margin:0;
         }
     </style>
 </head>
@@ -122,37 +127,21 @@
 <body>
   
     
-            <table style="width: 100px; margin-left: 250px">
-                <tr>
-                    <th align="center"> <img class="logo-img" src="{{ public_path('assets/logo.svg') }}" alt=""></th>
-                </tr>
-                <tr>
-                    <th align="center"><p class="address">
-                            Jl. Agus Salim D no.10 <br> Telp/Fax. (024) 3554929 / 085712423453 <br> Semarang <br>
-                        </p></th>
-                </tr>
-            </table>
-  
-            <br>
-            <br>
-            <h3>Data STOK Produk</h3>
-        <p>Tanggal : {{date('d-M-Y')}}</p>
-        <p>Tipe : Semua</p>
-        <p>Tipe Kode: Semua</p>
+         
    
-        
-        <div style="margin-top: 20px;  justify-content: center;flex-direction: unset;width: 120%;align-items: center;">
+    @foreach($data as $datas)
+        <div style="margin-top: 0px;  justify-content: center;flex-direction: unset;width: 60mm;align-items: center;">
       
-            <div style="display: inline-block;text-align: center; padding: 3px"><div class="card">
-                <span style="font-size: 13px;">{{"fresssss"}}</span>
+            <div style="display: inline-block;text-align: center; "><div class="card">
+                <span style="font-size: 13px;">{{$datas->nama_produk}}</span>
                 <div style="text-align:center !important; margin-left: 5px; margin-top: 5px; margin-bottom: 5px;">
-                <span style="size: 8px !important;">{!! DNS1D::getBarcodeHTML(10101010, 'C128',1.9,33) !!}</span>
+                <span style="size: 8px !important;">{!! DNS1D::getBarcodeHTML($datas->kode_produk, 'C128',2.6,33) !!}</span>
                 </div>
-                <span style="font-size: 13px;">101010101</span>
-            </div></div>
+                <span style="font-size: 13px;">{{$datas->kode_produk}}</span>
+            </div>
      
         </div>
-        
+    @endforeach
 </body>
 
 </html>

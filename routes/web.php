@@ -81,7 +81,7 @@ Route::middleware(["role:admingudang|manager"])->group(function(){
     Route::post('/loaddatadetailstok', 'DetailStokController@loaddatadetailstok');
     Route::post('/tambahdetailstok', 'DetailStokController@tambahdetailstok');
     Route::get('/stok', 'StokController@index')->name('stok');
-    
+    Route::post('/loaddatastok', 'StokController@loaddatastok');
 });
 
 Route::middleware(["role:manager"])->group(function(){
