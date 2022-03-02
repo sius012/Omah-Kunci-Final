@@ -50,10 +50,7 @@ $(document).ready(function(){
                                     <th style="width:170px;">Kode Produk</th>
                                     <th style="width:180px;">Nama Produk</th>
                                     <th style="width:70px;">Jumlah</th>
-                                    <th style="width:90px;">Status</th>
                                     <th style="width:120px;">Keterangan</th>
-                                   
-                                    <th style="width:120px;">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="tbody">
@@ -61,9 +58,8 @@ $(document).ready(function(){
                                     <td>${rows['kode_produk']}</td>
                                     <td>${rows['nama_produk']}</td>
                                     <td>${rows['jumlah']} ${rows['stn']}</td>
-                                    <td><div class="status bg-danger">${rows['status']}</div></td>
                                     <td>${rows['keterangan']}</td>
-                                    ${aksi}
+                                
                                 </tr
                             </tbody>
                         </table>
@@ -76,7 +72,6 @@ $(document).ready(function(){
                     $("#dscont").html(row);
                 }, 
                 error: function(err){
-                    alert(err.responseText);
                 }
             }
         );
@@ -127,7 +122,6 @@ $(document).ready(function(){
             success: function(){
                 loaddetail();
             },error: function(err){
-                alert(err.responseText);
             }
         });
     }
@@ -145,7 +139,6 @@ $(document).ready(function(){
             success: function(){
                 loaddetail();
             },error: function(err){
-                alert(err.responseText);
             }
         });
     }

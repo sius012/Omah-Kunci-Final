@@ -88,7 +88,6 @@ $(document).ready(function () {
                 $("#dscont").html(row);
             },
             error: function (err) {
-                alert(err.responseText);
             }
         });
     }

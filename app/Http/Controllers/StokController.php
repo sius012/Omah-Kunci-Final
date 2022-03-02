@@ -61,7 +61,7 @@ class StokController extends Controller
     	return response()->json(["filename" => $base64]);
     }
 
-    public function loaddatastok(){
+    public function loaddatastok($aksi=null){
         $jmlall = DB::table('produk')->count();
         $jmlstok = DB::table('produk')->join('stok','stok.kode_produk','=','produk.kode_produk')->count();
 
@@ -75,6 +75,17 @@ class StokController extends Controller
 
         $stoklessproduk =  DB::table('produk')->whereNotIn('kode_produk',$stoknessarray)->get();
 
-        return json_encode(['jumlah produk' => $jmlall,'tersedia dikatalog'=> $jmlstok,'stokless' => $stoklessproduk]);
+       return $aksi != null ? $stoklessproduk : json_encode(['jumlah produk' => $jmlall,'tersedia dikatalog'=> $jmlstok,'stokless' => $stoklessproduk]);
+    }
+
+    public function updateallstok(){
+        $data = $this->loaddatastok('ambilsaja');
+        $jumlah = 0;
+        foreach($data as $datas){
+            DB::table('stok')->insert(['kode_produk'=>$datas->kode_produk,'jumlah'=>0]);
+            $jumlah += 1;
+        }
+
+        return json_encode(['jumlah' => $jumlah]);
     }
 }

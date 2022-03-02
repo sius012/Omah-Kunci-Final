@@ -1,15 +1,37 @@
-@php  $whoactive='transaksipreorder' @endphp
+@php  $whoactive='riwayatnotabesar';
+$master='kasir' @endphp
 @extends('layouts.layout2')
 @section('titlepage', 'Transaksi Preorder')
 
-
+@section('title', 'Riwayat Transaksi')
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('css/transaksi.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/transaksiPreorder.css') }}">
     <link rel="stylesheet" href="{{ asset('css/transaksi_progress_bar.css') }}">
     <script>
       $(document).ready(function(){
         $("#infomodal").modal('show');
+        $(".btnClose").click(function(){
+          $("#infomodal").modal("hide");
+        });
+
+        $(".btnhapus").click(function(e){
+          e.preventDefault();
+          
+          Swal.fire({
+            title: 'Apakah anda yakin ingin menghapus',
+            showCancelyButton: true,
+            confirmButtonText: 'Hapus',
+            cancelButtonText: `Hapus`,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+               window.location = $(this).attr('href');
+            } else if (result.isDenied) {
+             
+            }
+          });
+        });
       });
     </script>
 @endsection
@@ -35,7 +57,7 @@
 
              <div class="card datatrans"  id_trans="{{$datas['no_nota']}}">
                 <div class="card-header">
-                    <h6 class="card-title float-right mr-2">{{$datas["created_at"]}}</h6>
+                    <h6 class="card-title float-right mr-2">{{strtotime(date("d-m-Y")) < strtotime(date("d-m-Y", strtotime($datas['min3jatuhtempo']))) ? date("d-M-Y", strtotime($datas["created_at"])) : "Telah mendekati jatuh tempo"}} </h6>
                     <h6 class="card-title">No Nota :  {{$datas["no_nota"]}}</h6>
                 </div>
                 <input type="hidden" >
@@ -49,7 +71,7 @@
                           <th style="width: 120px"><div >Tagihan 3</div></th>
                           <td style="width: 110px" rowspan="2" align="center" valign="center" class=""><div class="mt-3 justify-content-center">
                               <a href="{{route('showdetail',['no_nota'=>$datas['no_nota']])}}" class="" ><i style="background-color:#1562AA; color:white; padding:10px; border-radius:100%;" class="fa fa-list"></i></a>
-                              @if(Auth::user()->roles[0]['name'] == 'manager')<a href="#"><i style="background-color:#1562AA; color:white; padding:10px; border-radius:100%;" class="fa fa-trash bg-danger"></i></a>@endif
+                              @if(Auth::user()->roles[0]['name'] == 'manager')<a href="{{route('hapusnotabesar',['no_nota'=>$datas['no_nota']])}}" class="btnhapus"><i style="background-color:#1562AA; color:white; padding:10px; border-radius:100%;" class="fa fa-trash bg-danger"></i></a>@endif
                           </div></td>
                       </tr>
                    
@@ -88,7 +110,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">No. Nota: {{" "}} {{$info[0]->no_nota}}</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close btnClose" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -115,7 +137,7 @@
                 </div>
                 <div class="card-body text-dark m-0 p-0">
                   <div class="container-wrapper">
-                      <table class="table table-striped">
+                      <table class="table table-striped table-borderless">
                         <tr>
                           <th class="float-left">Telah Diterima Dari : </th><td>{{$info[0]->ttd}}</td>
                         </tr>
@@ -123,28 +145,29 @@
                           <th class="float-left">Up : </th><td>{{$info[0]->up}}</td>
                         </tr>
                         <tr>
-                          <th class="float-left">Uang Sejumlah : </th><td>$info[0]->us</td>
+                          <th class="float-left">Uang Sejumlah : </th><td>{{$info[0]->us}}</td>
                         </tr>
                         <tr>
-                          <th class="float-left">Berupa : </th><td>$info[0]</td>
+                          <th class="float-left">Berupa : </th><td>{{$info[0]->brp}}</td>
                         </tr>
                         <tr>
-                          <th class="float-left">Guna Membayar : </th><td>$info[0]</td>
+                          <th class="float-left">Guna Membayar : </th><td>{{$info[0]->gm}}</td>
                         </tr>
                         <tr>
-                          <th class="float-left">Total : </th><td>$info[0]</td>
+                          <th class="float-left">Total : </th><td>Rp. {{number_format($info[0]->total)}}</td>
                         </tr>
+                        @foreach($opsi as $opsis)
                         <tr>
-                          <th class="float-left">Opsi : </th><td>$info[0]</td>
+                          <th class="float-left">{{$opsis->judul}} : </th><td>{{$opsis->ket}}</td>
                         </tr>
+                        @endforeach
                       </table>
                   </div>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary btnClose" data-dismiss="modal">Tutup</button>
         </div>
       </div>
     </div>

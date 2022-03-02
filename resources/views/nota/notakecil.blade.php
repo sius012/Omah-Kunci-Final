@@ -156,7 +156,7 @@ $subtotal = 0;
 
         table {
             font-size: 10pt;
-            width: 34%;
+            width: 63mm;
             align-items: center;
         }
 
@@ -167,7 +167,7 @@ $subtotal = 0;
 
         .centering {
             margin-top: -20px;
-            margin-left: 63px;
+            margin-left: 60px;
         }
 
         h1 {
@@ -216,6 +216,15 @@ $subtotal = 0;
                     <td>{{$data[0]->no_nota}}</td>
                     <td align="right">YTH. {{$data[0]->nama_pelanggan}}</td>
 
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align:right;" class="ml-3">
+                        {{$data[0]->telepon}}
+                        <br>
+                        {{$data[0]->alamat}}
+                    </td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td align=>{{date("d-m-Y" ,strtotime($data[0]->created_at))}}</td>

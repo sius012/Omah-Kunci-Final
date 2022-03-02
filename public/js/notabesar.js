@@ -2,45 +2,46 @@ $(document).ready(function(){
     $("#printbutton").attr("disabled", "disabled");
 
     var jenisnota = "pintugarasi";
+    $("#gm").val('Pintu Garasi');
     var pg = `
         <label for='ukuranpg'>Ukuran : </label>
-        <input class="form-control" id="ukuranpg">
+        <input required class="form-control readonly" id="ukuranpg">
         <label for='daunpintupg'>Daun Pintu : </label>
-        <input class="form-control" id="daunpintupg">
+        <input required class="form-control readonly" id="daunpintupg">
         <label for='arahtikungpg'>Arah Tikung : </label>
-        <input class="form-control" id="arahtikungpg">
+        <input required class="form-control readonly" id="arahtikungpg">
         <label for='pilarpg'>Pilar : </label>
-        <input class="form-control" id="pilarpg">
+        <input required class="form-control readonly" id="pilarpg">
         <label for='warnatipepg'>Warna/Tipe : </label>
-        <input class="form-control" id="warnatipepg">
+        <input required class="form-control readonly" id="warnatipepg">
         <label for='waktupg'>Waktu : </label>
-        <input class="form-control" id="waktupg">
+        <input required class="form-control readonly" id="waktupg">
     `;
 
     var pgadp = `
     <label for='ukurankusenpgadp'>Ukuran : </label>
-    <input class="form-control" id="ukurankusenpgadp">
+    <input required class="form-control readonly" id="ukurankusenpgadp">
     <label for='warnatipepgadp'>Warna/Tipe : </label>
-    <input class="form-control" id="warnatipepgadp">
+    <input required class="form-control readonly" id="warnatipepgadp">
     <label for='waktupgadp'>Waktu : </label>
-    <input class="form-control" id="waktupgadp">
+    <input required class="form-control readonly" id="waktupgadp">
 `;
 
 var ag = `
 <label for='ukuranag'>Ukuran Diperuntukan : </label>
-<input class="form-control" id="ukuranag">
+<input required class="form-control readonly" id="ukuranag">
 
 `;
 var upvc = `
 <label for='itembarangupvc'>Item Barang : </label>
-<input class="form-control" id="itembarangupvc">
+<input required class="form-control readonly" id="itembarangupvc">
 <label for='warnatipeupvc'>Warna/Tipe : </label>
-<input class="form-control" id="warnatipeupvc">
+<input required class="form-control readonly" id="warnatipeupvc">
 `;
 
 var omge = `
 <label for='ukuranomge'>Ukuran(Ekstimasi) : </label>
-<input class="form-control" id="ukuranomge">
+<input required class="form-control readonly" id="ukuranomge">
 
 `;
 
@@ -139,6 +140,7 @@ $("#trigger").click(function(e){
                 $("#gm").   val(data['nb'][0]['gm']);
                 $("#total").val(data['nb'][0]['total']);
                 $("#nn").text("No Nota: "+data["nb"][0]["no_nota"]);
+                $("#tgl").val(data["nb"][0]["created_at"]);
     
     
                 let row = data["opsi"].map(function(e,i){
@@ -184,55 +186,7 @@ $("#trigger").click(function(e){
 
 
 
-    $.ajax({
-        headers:{
-            'X-CSRF-TOKEN' : $("meta[name='csrf-token']").attr('content')
-        },
-        url : '/loaddatanb',
-        type : 'post',
-        dataType: 'JSON',
-        beforeSend:  function(xhr){
-            $("#baseinputnb .col").append(`<div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-          </div>`);
-          $("#baseinputnb input, label").hide();
-        },
-        success: function(data){
-            console.log(data);
-            $("#baseinputnb .col").show();
-            $("#baseinputnb input, label").show();
-            $(".spinner-border").hide();
-            $("#ttd").  val(data['data']['ttd']);
-            $("#up").   val(data['data']['up']);
-            $("#us").   val(data['data']['us']);
-            $("#brp").  val(data['data']['brp']);
-            $("#gm").   val(data['data']['gm']);
-            $("#total").val(data['data']['total']);
-
-
-            let row = data['dataopsi'].map(function(e,i){
-                return `
-                <div class="form-group">
-                    <input type="text" class="form-control form-control-sm title${i+1}" id="exampleInputPassword1" value="${e['judul']}">
-                    <input type="text" class="form-control isi${i+1}" id="exampleInputPassword1" value="${e['ket']}">
-                </div>
-                `;
-                
-            });
-           // callbacking(data['dataopsi'].length);
-           if( data["dataopsi"].length > 0) {
-            $(".opsigrup").html(row);
-           }
-           
-         
-            $(".opsigrup").show("slow");
-            jmlopsi = dataopsi['dataopsi'].length;
-        },
-        error: function(err){
-            alert(err.responseText);
-        }
-    });
-
+   
 
 
     
@@ -310,10 +264,10 @@ $("#trigger").click(function(e){
         var formData = {
             ttd: $("#ttd").val(),
             up: $("#up").val(),
-            us: $("#us").val(),
+            us: $("#us").val().replace(/[._]/g,''),
             brp: $("#brp").val(),
             gm: $("#gm").val(),
-            total: $("#total").val(),
+            total: $("#total").val().replace(/[._]/g,'')
         }
 
         console.log(formData);
@@ -326,7 +280,8 @@ $("#trigger").click(function(e){
                 jenisnota: jenisnota,
                 judulopsi: currentjudul,
                 ketopsi: currentopsi,
-                id_transaksi: $("#id_trans").val()
+                id_transaksi: $("#id_trans").val(),
+                tanggal: $("#tgl").val(),
             },
             type: "POST",
             url: url,
@@ -351,12 +306,7 @@ $("#trigger").click(function(e){
             },
             error: function(err,response){
                 Swal.fire("terjadi kesalahan");
-                alert(err.responseText);
             }
-
-
-
-
         });
        
     });
@@ -374,9 +324,8 @@ $("#trigger").click(function(e){
             type: "post",
             success: function(response){
                 printJS({printable: response['filename'], type: 'pdf', base64: true});
-                alert("berhasil");
             },error: function(err){
-                alert(err.responseText);
+                Swal.fire('terjadi kesalahan','','info');
             }
         });
     });
@@ -393,7 +342,6 @@ $("#trigger").click(function(e){
                 window.location = "/notabesar";
             },
             error: function(err){
-                alert(err.responseText);
             },
         });
     });

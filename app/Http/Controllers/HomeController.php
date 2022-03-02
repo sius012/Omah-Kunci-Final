@@ -25,16 +25,27 @@ class HomeController extends Controller
      */
     public function index()
     {
+
+      
+      $date = Carbon::createFromFormat('Y.m.d', date("Y.m.d"));
+      $date = $date->addDays(35);
+
+
       $jumlahproduk = DB::table('produk')->count();
 
+    $dt=Carbon::now();
 
+ 
 
       $daily = [];
 
+
       $daily["hari"]["pemasukan"] = DB::table("transaksi")->whereDay("created_at",Carbon::now()->day)->sum("subtotal");
+      $daily["minggu"]["pemasukan"] = DB::table("transaksi")->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum("subtotal");
+      $daily["bulanan"]["pemasukan"] = DB::table("transaksi")->whereMonth("created_at",Carbon::now()->month)->sum("subtotal");
     
       
-        return view('home');
+        return view('home',['daily'=>$daily]);
         
     }
 }

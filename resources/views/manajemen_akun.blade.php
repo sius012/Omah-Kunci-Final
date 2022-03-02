@@ -1,4 +1,8 @@
-@php  $whoactive='transaksipreorder' @endphp
+@php $whoactive = 'stok';
+$master='admingudang';
+
+@endphp
+
 @extends('layouts.layout2')
 @section('titlepage', 'Transaksi Preorder')
 

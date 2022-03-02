@@ -69,4 +69,11 @@ class transaksiController extends Controller
 
         return json_encode(["trans" => $trans, "detail" => $detail, 'cicilan'=>$cicilandata]);
     }
+
+    public function hapus($id){
+        DB::table('transaksi')->where('kode_trans',$id)->delete();
+        DB::table('detail_transaksi')->where('kode_trans',$id)->delete();
+
+        return back();
+    }
 }

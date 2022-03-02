@@ -9,7 +9,6 @@
 
     <style>
         * {
-            font-family: Arial, Helvetica, sans-serif;
             margin: 0px;
 
             font-size: 8pt;
@@ -153,7 +152,7 @@
                     <td valign="top">
                         <h4>Telah Dibayar</h4>
                     </td>
-                    <td> : Rp. {{ number_format($td) }}</td>
+                    <td>Rp. {{ number_format($td) }}</td>
                     <td></td>
 
                 </tr>

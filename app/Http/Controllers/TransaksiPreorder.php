@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use function GuzzleHttp\json_encode;
+use Carbon\Carbon;
 
 class TransaksiPreorder extends Controller
 {
@@ -23,6 +24,8 @@ class TransaksiPreorder extends Controller
             $row = (array) $d;
           
                  $opsi = DB::table("nota_besar")->where("no_nota", $d->no_nota)->select("us", "brp", "total", "updated_at", "status","id_transaksi")->where('termin', ">", $d->termin)->get()->toArray();
+                 $jatuhtempo = Carbon::createFromFormat("Y.m.d", date("Y.m.d",strtotime($d->created_at)));
+                 $row["min3jatuhtempo"] = $jatuhtempo->addDays(17)->format("d M Y");
                  array_push($row, (array) $opsi);
                  array_push($data, $row);
             
@@ -51,5 +54,17 @@ class TransaksiPreorder extends Controller
         $detail = DB::table("transaksi")->where("kode_trans", $id)->get();
 
         return json_encode(["trans" => $trans, "detail" => $detail]);
+    }
+
+    public function hapusnotabesar($no_nota){
+        $id = DB::table('nota_besar')->where('no_nota', $no_nota)->get();
+
+        foreach($id as $ids){
+            DB::table('nb_detail')->where('id_nb',$ids->id_transaksi)->delete();
+        }
+        DB::table('nota_besar')->where('no_nota', $no_nota)->delete();
+
+        return back();
+
     }
 }

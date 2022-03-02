@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use PDF;
 
 
@@ -53,7 +54,14 @@ class PreorderController extends Controller
         $judulopsi = $req->input('judulopsi');
         $ketopsi = $req->input('ketopsi');
         $formdata = $req->input('formData');
+        $tanggal = $req->tanggal;
         
+
+        $tanggal2 = Carbon::createFromFormat("Y.m.d", date("Y.m.d",strtotime($tanggal)))->addDays(20)->format("Y-m-d");
+
+
+        $tanggal3 =  Carbon::createFromFormat("Y.m.d", date("Y.m.d",strtotime($tanggal)))->addDays(40)->format("Y-m-d");
+
         $id;
         $id2 = "";
         $id3;
@@ -67,9 +75,9 @@ class PreorderController extends Controller
             $no = date("ymmd").$counter;
             $counting = DB::table('nota_besar')->where("no_nota",$no)->count();
             if($counting < 1){
-                $id = DB::table('nota_besar')->insertGetId(array_merge($req->input('formData'),['no_nota' => $no, 'termin' => 1, "status" => "dibayar"]));
-                $id2 = DB::table('nota_besar')->insertGetId(['ttd'=> $formdata["ttd"],'ttd'=> $formdata["ttd"],'up'=> $formdata["up"],'gm'=> $formdata["gm"],'total'=> $formdata["total"],'no_nota' => $no, 'termin' => 2, "status" => "ready"]);
-                $id3 = DB::table('nota_besar')->insertGetId(['ttd'=> $formdata["ttd"],'ttd'=> $formdata["ttd"],'up'=> $formdata["up"],'gm'=> $formdata["gm"],'total'=> $formdata["total"],'no_nota' => $no, 'termin' => 3]);
+                $id = DB::table('nota_besar')->insertGetId(array_merge($req->input('formData'),['no_nota' => $no, 'termin' => 1, "status" => "dibayar",'created_at'=>$tanggal]));
+                $id2 = DB::table('nota_besar')->insertGetId(['ttd'=> $formdata["ttd"],'ttd'=> $formdata["ttd"],'up'=> $formdata["up"],'gm'=> $formdata["gm"],'total'=> $formdata["total"],'no_nota' => $no, 'termin' => 2, "status" => "ready",'jatuh_tempo'=>$tanggal2]);
+                $id3 = DB::table('nota_besar')->insertGetId(['ttd'=> $formdata["ttd"],'ttd'=> $formdata["ttd"],'up'=> $formdata["up"],'gm'=> $formdata["gm"],'total'=> $formdata["total"],'no_nota' => $no, 'termin' => 3,'jatuh_tempo'=>$tanggal3]);
             }
           
         }
@@ -126,7 +134,7 @@ class PreorderController extends Controller
 
         
 
-        $req->session()->put('id_nb', $id);
+
 
        
 
@@ -145,7 +153,7 @@ class PreorderController extends Controller
         DB::table("nota_besar")->where("no_nota", $no_nota)->where("termin",$termin+1)->update(["status" => "ready"]);
         DB::table('nota_besar')->where("id_transaksi", $id)->update(['us'=> $formdata["us"],'brp'=> $formdata["brp"]]);
 
-        return json_encode(["id_trans" => $id,"no_nota" => $no_nota]);
+        return json_encode(["id_nb" => $id,"no_nota" => $no_nota]);
     }
 
 

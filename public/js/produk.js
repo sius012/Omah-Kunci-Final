@@ -18,7 +18,6 @@ $(document).ready(function(){
                 printJS({printable: response['filename'], type: 'pdf', base64: true});
             },
             error: function(err){
-                alert(err.responseText);
             }
         });
     }
@@ -69,7 +68,6 @@ $(document).ready(function(){
                 alert('databerhasilditambahkan');
             },
             error: function(err){
-                alert(err.responseText);
             }
         });
     }); 
@@ -147,7 +145,6 @@ $(document).ready(function(){
                 $("#namamerek").val(data[0]['merek'])
             },
             error: function(){
-                alert('lil');
             }
 
         });
@@ -170,7 +167,6 @@ $(document).ready(function(){
                 $("#produkfiller").html(row);
             },
             error: function(response,){
-                alert("ada yang salah");
             }
         });
     }
@@ -217,7 +213,6 @@ $(document).ready(function(){
 
             },
             error: function(err){
-                alert(err.responseText);
             }
         });
     });
@@ -248,7 +243,6 @@ $(document).ready(function(){
                 loadProduk();
             },
             error: function(response,){
-                alert("cek apache server");
             }
         });
     }
@@ -317,7 +311,6 @@ $(document).ready(function(){
                 }
             },
             error: function(err){
-                alert(err.responseText);
             }
         });
     });

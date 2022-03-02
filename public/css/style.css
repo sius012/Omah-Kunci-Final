@@ -98,12 +98,12 @@ li .nav-item .active {
     border-radius: 30px;
 }
 
-.nav-link{
+.sidebar  .nav-link{
     color: white !important;
 }
 
-.active {
-    
+.sidebar .active {
+    background-color: white !important;
     color: #1363ae !important;
 }
 

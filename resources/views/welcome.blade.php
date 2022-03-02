@@ -1,100 +1,100 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+    <title>Laravel</title>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 
-            .full-height {
-                height: 100vh;
-            }
+    <!-- Styles -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+        body {
+            background-image: linear-gradient(to right, #1562AA, #4FA2EE, white);
+        }
 
-            .position-ref {
-                position: relative;
-            }
+        .container .row .col-4 .link-wrapper .login-btn,
+        .home-btn,
+        .register-btn {
+            background-color: #BFAE00;
+            color: black;
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
+            padding: 5px;
+            width: 100px;
+            border-radius: 8px;
 
-            .content {
-                text-align: center;
-            }
+            text-align: center;
+            font-weight: bold;
+        }
 
-            .title {
-                font-size: 84px;
-            }
+    </style>
+</head>
+<body>
+    <div class="wrapper m-3 ml-4">
+        <div class="header d-inline-flex">
+            <img class="img-header" src="{{ asset('assets/Group 1.svg') }}">
+            <h3 class="card-title ml-3 mt-3 text-light">OmahKunci</h3>
+        </div>
+    </div>
 
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-8">
+                    <div class="row mt-5">
+                        <div class="col">
+                            <div class="wrapper-inline d-inline-flex">
+                                <h2 class="card-title text-light mr-3">Amankan Lingkungan anda bersama</h2>
+                                <h2 style="color: #FAE511" class="card-title">OmahKunci</h2>
+                            </div>
+                            <p class="card-text w-75 text-light">
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <div style="margin-left: -18px;" class="flex-center position-ref full-height mt-3 link-wrapper">
+                                @if (Route::has('login'))
+                                <div class="d-inline-flex ml-3">
+                                    @auth
+                                    <a class="nav-link home-btn" href="{{ url('/redirecting') }}">Beranda</a>
+                                    @else
+                                    <a class="nav-link login-btn" href="{{ route('login') }}">Login</a>
 
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
+                                    @if (Route::has('register'))
+                                    <a class="nav-link register-btn" href="{{ route('register') }}">Register</a>
+                                    @endif
+                                    @endauth
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                <div class="col-4">
+                    <img style="height: 330px;" src="{{ asset('assets/security.svg') }}">
                 </div>
             </div>
+            <div style="width: 1210px;" class="row mt-5">
+                <footer style="width: 1600px; margin-left:-80px; margin-top: 13px; padding: 20px;">
+                    <p class="card-text text-center text-light mt-2">
+                        Copyright © 2022 Omah Kunci. All rights reserved.
+                    </p>
+                </footer>
+            </div>
         </div>
-    </body>
+    </div>
+</body>
 </html>

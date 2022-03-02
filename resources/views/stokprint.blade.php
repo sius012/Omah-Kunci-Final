@@ -20,10 +20,15 @@
    
         * {
             font-family: Arial, Helvetica, sans-serif;
+            margin: 0px;
+        }
+
+        body{
+            margin: 1cm;
         }
 
          .logo-img {
-           width: 200px;
+           width: 120px;
         }
 
         .container .header {
@@ -35,8 +40,9 @@
 
         .container .address {
   
-
+            font-size: 8pt;
             margin-bottom: 40px;
+            width: 
         }
 
         .container .data-wrapper {
@@ -80,19 +86,22 @@
             font-size: 8pt;
 
         }
+        h3{
+            font-size: 10pt;
+        }
     </style>
 </head>
 
 <body>
   
     
-            <table style="width: 100px; margin-left: 250px">
+            <table style="width: 190mm; margin-left:">
                 <tr>
                     <th align="center"> <img class="logo-img" src="{{ public_path('assets/logo.svg') }}" alt=""></th>
                 </tr>
                 <tr>
                     <th align="center"><p class="address">
-                            Jl. Agus Salim D no.10 <br> Telp/Fax. (024) 3554929 / 085712423453 <br> Semarang <br>
+                            Jl. Agus Salim D no.10 <br> Telp/Fax. (024) 3554929 / 085712423453 Semarang <br>
                         </p></th>
                 </tr>
             </table>
@@ -101,10 +110,8 @@
             <br>
             <h3>Data STOK Produk</h3>
         <p>Tanggal : {{date('d-M-Y')}}</p>
-        <p>Tipe : Semua</p>
-        <p>Tipe Kode: Semua</p>
    
-            <table class="table-data" style="width:700px !important; margin-top: 20px" >
+            <table class="table-data" style="width:190mm !important; margin-top: 20px" >
               
                     <tr>
                         <th >No</th>

@@ -2,8 +2,6 @@ $(document).ready(function(e){
     $("#infomodal").modal("show");
 
     $(document).on('click', '.infopreorder', function(e){
-       
-        alert('hai');
     });
     $(".content-wrapper").on("click", ".datatrans", function(event){
         $("#exampleModal").modal('show');
@@ -74,7 +72,6 @@ $(document).ready(function(e){
                 
             },
             error: function(err){
-                alert(err.responseText);
             }
         });
     });
@@ -103,7 +100,6 @@ $(document).ready(function(e){
                 })
             },
             error: function(err){
-                alert(err.responseText);
             }
         });
     }
@@ -139,6 +135,23 @@ $(document).ready(function(e){
           });
         
       
+     });
+
+     $(".hapustrans").click(function(e){
+        e.preventDefault();
+        Swal.fire({
+            title: 'Apakah anda yakin ingin menghapus',
+            confirmButtonText: 'Hapus',
+            cancelButtonText: "Batal",
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                window.location = $(this).attr('href');
+            } else if (result.isDenied) {
+              
+            }
+          });
+        
      });
       
   

@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <link rel="icon" href="{{ asset('assets/Group 1.svg') }}">
+
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -33,19 +36,51 @@
 
 
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $(document).on('click', '.btnlink', function(e){
+                e.preventDefault();
+                window.location = "/prosesbayar/"+$(this).attr('id_nb');
+            });
+            $.ajax(
+                {
+                    headers: {
+                        "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content'),
+                    },
+                    url: "/checkdata",
+                    type: "post",
+                    dataType: "json",
+                    success: function(data){
+                         $(".badger").html(data.length);
+                        let row=data.map(function(datas){
+                            return `<a href="#" id_nb='${datas['id_transaksi']}' class="dropdown-item p-3 btnlink">
+                        <i class="fas fa-info mr-2"></i> Termin ${datas['termin']} No Nota ${datas['no_nota']} sudah mendekati jatuh tempo
+                    </a>`;
+                        });
+
+                        $(".cont-notif").html(row);
+                        $(".titler").html(row.length + " Notifikasi");
+                       
+                    },error: function(err){
+                        alert(err.responseText);
+                    }
+                }
+            )
+        });
+    </script>
     @yield('css')
     @yield('js')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
-    <div class="wrapper">
+    <div class="wrapper m-0">
 
         <!-- Preloader -->
-        <div class="preloader flex-column justify-content-center align-items-center">
+        <div class="preloader flex-column justify-content-center align-items-center m-0">
             <img clagss="animation__shake" src="{{asset('assets/Group 1.svg')}}" alt="AdminLTELogo" height="60" width="60">
         </div>
 
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light bgnavbar">
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light bgnavbar ">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
@@ -65,9 +100,21 @@
                         <i class="fas fa-th-large"></i>
                     </a>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-bell"></i>
+                    <span class="badge badge-warning navbar-badge badger">15</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu dropdown-menu-right row ">
+                    <span class="dropdown-item dropdown-header titler">15 Notifications</span>
+                    <div class="dropdown-divider"></div><div class="cont-notif"></div>
+                    <div class="dropdown-divider"></div>
+                    </div>
+                </li>
+
                 <li>
 
-                    <a class="dropdown-item mt-1" href="{{ route('logout') }}" onclick="event.preventDefault();
+                    <a class="dropdown-item m-0 p-0 mt-2" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                         <p>  <i class="fa fa-sign-out text-dark"></i> <b>Logout<b></p>
                     </a>
@@ -83,7 +130,7 @@
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4 m-0 overflow-hidden" style="overflow-x: hidden !important">
             <!-- Brand Logo -->
             <!-- <a href="index3.html" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -91,18 +138,20 @@
     </a> -->
 
             <!-- Sidebar -->
-            <div class="sidebar">
-                <a href="index3.html" class="brand-link p-3 m-0" style="border-bottom:4px solid white">
-                    <img style="margin-right: -40px;" src="{{asset('assets/omahkunci.svg')}}" alt="AdminLTE Logo" class="brand-image">
+            <div class="sidebar  p-0 overflow-x-hidden" style="overflow-x: hidden !important" >
+                <a href="index3.html" class="brand-link m-0 d-flex align-items-center justify-content-center" style="border-bottom:2px solid white;padding: 15px">
+                    <img style="margin-right: -40px;" src="{{asset('assets/omahkunci.svg')}}" alt="AdminLTE Logo" class="brand-image m-0">
                     <span class="brand-text font-weight-light">OmahKunci</span>
                 </a>
                 <!-- Sidebar user panel (optional) -->
-                <div class="mt-3 pb-3 mb-3 d-block ">
+                <div class="mt-3 pb-3 mb-3 d-block pl-0  " >
                     <div class="image">
-                        <img style="height: 90px;" src="{{asset('assets/icebear.jpg')}}" class="img-circle mb-2" alt="User Image">
+                        <a href="{{ url('/profile') }}">
+                            <img style="height: 90px;" src="{{asset('assets/pp/'.auth()->user()->pp)}}" class="img-circle mb-2" alt="User Image">
+                        </a>
                     </div>
                     <div class="">
-                        <a href="#" class="d-block">{{Auth::user()->name}}</a>
+                        <p class="d-block text-light">{{Auth::user()->name}}</p>
                     </div>
                 </div>
 
@@ -120,15 +169,15 @@
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column ml-2" data-widget="treeview" role="menu" data-accordion="false" style="overflow-x: none !important">
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         @if(auth()->user()->roles[0]['name'] == 'kasir' or auth()->user()->roles[0]['name'] == 'manager' )
-                        <li class="nav-itemn">
-                            <a href="#" class="nav-link {{$whoactive=='kasir' ? 'active' : ''}}">
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link {{$master=='kasir' ? 'active' : ''}}">
                                 <p>
                                     Kasir
-                                    <i class="right fas fa-angle-left"></i>
+                                    <i class="right fas fa-angle-left mr-3"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
@@ -139,19 +188,30 @@
               </li>
               <li class=" nav-item">
                                         <a href="{{url('/transaksi')}}" class="nav-link {{$whoactive=='riwayattransaksi' ? 'active' : ''}}"" >
-                  <p>Riwayat transaksi</p>
+                  <p>Riwayat Transaksi</p>
                 </a>
               </li>
-              <li class=" nav-header">Transaksi Pre-Order</li>
+              <li class=" nav-item">
+                                        <a href="{{url('/preorderpage')}}" class="nav-link {{$whoactive=='preorderpage' ? 'active' : ''}}"" >
+                  <p>Riwayat Preorder</p>
+                </a>
+              </li>
+              
+              <li class=" nav-header">Transaksi Nota Besar</li>
                                 <li class="nav-item">
                                     <a href="{{url('/notabesar')}}" class="nav-link {{$whoactive=='notabesar' ? 'active' : ''}}"">
                   <p>Nota Besar</p>
                 </a>
               </li>
               <li class=" nav-item">
-                                        <a href="{{url('/transaksipreorder')}}" class="nav-link {{$whoactive=='transaksipreorder' ? 'active' : ''}}">
-                                            <p>Riwayat Pre-Order</p>
+                                        <a href="{{url('/transaksipreorder')}}" class="nav-link {{$whoactive=='riwayatnotabesar' ? 'active' : ''}}">
+                                            <p>Riwayat Nota Besar</p>
                                         </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('/preorderpage') }}" class="nav-link {{ $whoactive == 'preorderpage' ? 'active' : '' }}">
+                                        <p>Preorder</p>
+                                    </a>
                                 </li>
                             </ul>
                         </li>
@@ -159,8 +219,8 @@
 
 
                         @if(auth()->user()->roles[0]['name'] == 'admin gudang' or auth()->user()->roles[0]['name'] == 'manager')
-                        <li class="nav-item">
-                            <a href="#" class="nav-link {{$whoactive =='admingudang' ? 'active' : ''}}">
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link {{$master =='admingudang' ? 'active' : ''}}">
                                 <p>
                                     Admin Gudang
                                     <i class="right fas fa-angle-left"></i>
@@ -169,13 +229,13 @@
                             <ul class="nav nav-treeview">
 
                                 <li class="nav-item">
-                                    <a href="{{url('/stok')}}" class="nav-link {{$whoactive =='stok' ? 'active' : ''}}">
+                                    <a href="{{url('/stok')}}" class="nav-link {{$whoactive =='katalog' ? 'active' : ''}}">
                                         <p>Katalog</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{url('detailstok')}}" class="nav-link">
-                                        <p>Detail Stok</p>
+                                    <a href="{{url('detailstok')}}" class="nav-link {{$whoactive =='stokharian' ? 'active' : ''}}">
+                                        <p>Stok Harian</p>
                                     </a>
                                 </li>
                             </ul>
@@ -183,8 +243,8 @@
                         @endif
 
                         @if(auth()->user()->roles[0]['name'] == 'manager' )
-                        <li class="nav-item menuopen">
-                            <a href="#" class="nav-link {{$whoactive=='manager' ? 'active' : ''}}">
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link {{$master=='manager' ? 'active' : ''}}">
                                 <p>
                                     Manager
                                     <i class="right fas fa-angle-left"></i>
@@ -204,7 +264,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{url('/dsm')}}" class="nav-link {{$whoactive =='stoktrafic' ? 'active' : ''}}">
+                                    <a href="{{url('/dsm')}}" class="nav-link {{$whoactive =='stok trafic' ? 'active' : ''}}">
 
                                         <p>Stok Trafic</p>
                                     </a>
@@ -257,16 +317,16 @@
 
         <!-- jQuery -->
 
-        <script src="plugins/jquery/jquery.min.js"></script>
+        <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
         <!-- jQuery UI 1.11.4 -->
-        <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+        <script src="{{asset('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
         <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
         <script>
             $.widget.bridge('uibutton', $.ui.button)
 
         </script>
         <!-- Bootstrap 4 -->
-        <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
         <!-- ChartJS -->
         <script src="{{asset('plugins/chart.js/Chart.min.js')}}"></script>
         <!-- Sparkline asset -->

@@ -1,7 +1,9 @@
-@php $whoactive='notabesar' @endphp
+@php $whoactive='notabesar';
+$master='kasir' @endphp
 @extends('layouts.layout2')
 
 @section('titlepage', 'Nota Besar')
+@section('title', 'Nota Besar')
 
 @section('js')
 <script src="{{ asset('js/print.js') }}"></script>
@@ -9,23 +11,13 @@
 <script src="{{ asset('js/notabesar.js') }}"></script>
 @isset($id)
 <script>
-  $(document).ready(function(e){
-   
-    var jmlopsi = 1;
-    console.log("{{'lol'}}");
-
-    function callbacking(response){
-        jmlopsi = response;
-    
-    }
-
-    $("#searcher-nota").attr("disabled", "disabled");
+  $(document).ready(function(){
     $.ajax({
             headers: {
                 "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content'),
             },
             data: {
-                id_transaksi : "{{$id}}",
+                id_transaksi : "{{$id}}"
             },
             url: "/getnb",
             type: "post",
@@ -42,19 +34,20 @@
                 $("#gm").   val(data['nb'][0]['gm']);
                 $("#total").val(data['nb'][0]['total']);
                 $("#nn").text("No Nota: "+data["nb"][0]["no_nota"]);
+                $("#tgl").val(data["nb"][0]["created_at"]);
     
     
                 let row = data["opsi"].map(function(e,i){
                     return `
                     <div class="form-group">
-                        <input type="text" class="form-control form-control-sm readonly title${i+1}" id="exampleInputPassword1" value="${e['judul']}">
-                        <input type="text" class="form-control isi${i+1} readonly" id="exampleInputPassword1" value="${e['ket']}">
+                        <input type="text" class="form-control form-control-sm title${i+1}" id="exampleInputPassword1" value="${e['judul']}">
+                        <input type="text" class="form-control isi${i+1}" id="exampleInputPassword1" value="${e['ket']}">
                     </div>
                     `;
                     
                 });
+      
 
-                callbacking(data['opsi'].length);
                 $(".opsigrup").html(row);
 
                 $("#buttonsubmit").text("Bayar");
@@ -68,25 +61,27 @@
                     $("#buttonsubmit").text("Sudah Lunas");
                     $("#buttonsubmit").removeClass("btn-primary");
                     $("#buttonsubmit").addClass("btn-success");
+                    $("#printbutton").removeAttr("disabled");
                 
                 }else{
                     $("#buttonsubmit").removeAttr("disabled");
                     $("#buttonsubmit").removeClass("btn-success");
                     $("#buttonsubmit").addClass("btn-primary");
                     $("#buttonsubmit").text("Bayar");
+                    $("#printbutton").attr("disabled", "disabled");
                 }
                 $(".readonly").attr('readonly','readonly');
             },
-            
             error: function(err){
-                alert(err.responseText);
+                Swal.fire("error", "", "info");
             }
         });
-        $(".readonly").attr('readonly','readonly');
+
+
   });
 </script>
-
 @endisset
+
 @stop
 
 @section('css')
@@ -104,14 +99,16 @@
   </div>
    
     <div class="col">
-    <form id="preorderform" action="/tambahpreorder">
+   
     <input type="hidden" id="id_trans" val="0">
   
 
 
 <div class="card">
+
   <div class="card-header">
-  <h4 id="tt" class="m">Tanda Terima</h4><span id="nn" style="color:#747474;"> No Nota : ?</span><i style="color:#747474;" class="fa fa-copy mr-3"></i>
+  <form id="preorderform" action="/tambahpreorder">
+  <h4 id="tt" class="m">Tanda Terima</h4><span id="nn" style="color:#747474;" class="mr-2"> No Nota : ?</span><i style="color:#747474;" class="fa fa-copy mr-3"></i>
   </div>
   <div class="card-body">
   <label for="notabesar">Pilih Nota Besar</label>
@@ -132,27 +129,27 @@
   
   <div class="form-group">
     <label for="exampleInputEmail1">Telah diterima dari</label>
-    <input type="text" class="form-control readonly" id="ttd" aria-describedby="emailHelp">
+    <input type="text" class="form-control readonly" id="ttd" aria-describedby="emailHelp" required>
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Untuk Proyek</label>
-    <input placeholder="" type="text" class="form-control readonly" id="up" >
+    <input placeholder="" type="text" class="form-control readonly" id="up" required>
   </div>
   <div class="form-group td">
     <label for="exampleInputPassword1">Telah Dibayar</label>
-    <input type="number" class="form-control readonly" id="td" >
+    <input type="text" class="form-control readonly" id="td"  >
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Uang sejumlah</label>
-    <input type="number" class="form-control " required id="us" >
+    <input type="text" class="form-control uang" required id="us" required>
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Berupa</label>
-    <input type="text" class="form-control " required id="brp" >
+    <input type="text" class="form-control " required id="brp" required>
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Guna Membayar</label>
-    <input type="text" class="form-control readonly" id="gm" >
+    <input type="text" class="form-control readonly" id="gm" required>
   </div>
 
   
@@ -161,7 +158,7 @@
 <div class="col">
   <div class="form-group">
     <label for="exampleInputPassword1">Total</label>
-    <input type="number" class="form-control readonly" id="total"  >
+    <input type="text" class="form-control readonly uang" id="total" required >
   </div>
   <div class="form-group opsigrup">
     
@@ -175,21 +172,49 @@
 </div>
 </div>
     </div>
+    <div class="row ml-3 mb-3">
+ <button type="submit" class="btn btn-primary" id="buttonsubmit">Kirim</button>
+
+ <button class="btn btn-primary ml-2" id="resetbutton"><i class="fa fa-back"></i>Kembali</button>
+ </form>
+ <button class="btn btn-warning ml-2" id="printbutton" ><i class="fa fa-print mr-2"></i>Print</button>
+</div>
 </div>
   </div>
+ 
 
 </div>
 
-    
-<div class="row ml-1">
 
- <button class="btn btn-primary m-3" id="buttonsubmit">Kirim</button>
-</div>
-</form>
-<div class="row ml-1">
-<button class="btn btn-warning m-3" id="printbutton" ><i class="fa fa-print"></i></button>
-</div>
-<div class="row ml-1">
-<button class="btn btn-primary m-3" id="resetbutton"><i class="fa fa-back"></i>Kembali</button>
-</div>
+
+<script> 
+
+$(document).ready(function(){
+
+
+   
+
+$(".uang").keyup(function(){
+        $(this).val(formatRupiah($(this).val(),""))
+});
+
+
+function formatRupiah(angka, prefix){
+var number_string = angka.replace(/[^,\d]/g, '').toString(),
+split   		= number_string.split(','),
+sisa     		= split[0].length % 3,
+rupiah     		= split[0].substr(0, sisa),
+ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+// tambahkan titik jika yang di input sudah menjadi angka ribuan
+if(ribuan){
+    separator = sisa ? '.' : '';
+    rupiah += separator + ribuan.join('.');
+}
+
+rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+return prefix == undefined ? rupiah : (rupiah ? '' + rupiah : '');
+}
+});
+</script>
 @stop

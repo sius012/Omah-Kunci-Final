@@ -1,5 +1,6 @@
 @php
     $whoactive = 'kasir';
+    $master='kasir';
 @endphp
 @extends('layouts.layout2')
 
@@ -14,13 +15,17 @@
 <script src="{{ asset('js/mainjs/kasir.js') }}"></script>
 <script src="{{ asset('js/preorder.js') }}"></script>
 <link rel="stylesheet" href="{{ asset('css/kasir.css') }}">
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+ 
 @stop
 
     @section('content')
     @php
-        $date = \Carbon\Carbon::parse(date('Y-m-d h:i:s'))->locale('id');
+        $date = \Carbon\Carbon::parse(date('Y-m-d h:i:s'))->setTimeZone("Asia/Jakarta");
 
-        $date->settings(['formatFunction' => 'translatedFormat']);
+     
+
+       $date->settings(['formatFunction' => 'translatedFormat']);
 
     @endphp
 
@@ -32,7 +37,10 @@
                         <div class="card" style="width: 500px" id="searcherbox">
                             
                             <div class="card-header">
-                                Pilih Product
+                                <p class="card-title p-2">Pilih Produk</p>
+                                <div class="alerts">
+                                    <p style="width:225px; left:245px; top:12px;" class="card-text bg-warning p-2 rounded text-center float-right position-absolute"><i style="width:23px;" class="fa fa-info mr-2 text-light bg-dark p-1 rounded-circle text-center"></i>Barang Tidak Tersedia</p>
+                                </div>
                             </div>
                             <div style="border-bottom:1px solid lightgray; x" class="card-body " >
                                 <table style="width: 450px">
@@ -43,15 +51,12 @@
                                             <ul id="myUL">
                                                 </ul>
                                     </tr>
-                                    <tr>
-                                        <td><p class="m-0 mt-3"><b>Harga  </b></p><p class="m-0 mt-3" id="hrg-nominal">: -</p></td>
-                                    </tr>
                                 </table>
             
                             </div>
                           
                             <div class="card-footer">
-                                <button href="" class="btn btn-success" id="tambahproduk">Tambah Product</button>
+                                <button href="" class="btn btn-success" id="tambahproduk">Tambah Produk</button>
                             </div>
                         </div>
                     </div>
@@ -64,14 +69,20 @@
                     <div class="wrapperrs float-right">
                     <div class="row">
                         <p class="times">
-                            {{ $date->format('l, j F Y ; h:i a') }}
+                            {{ $date->format('l, j F Y ;  h:i ') }}
                         </p>
                     </div>
                     <div class="row float-right">
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                            Tambah Preorder
-                        </button>
+                        <div class="card pl-2">
+                        <div class="card-body">
+                            <p><i style="width:30px;" class="fa fa-info bg-primary p-2 rounded-circle text-light ml-3 text-center mr-2"></i>Produk habis?</p>
+                            <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal">
+                                Tambah Preorder
+                            </button>
+                        </div>
+                        </div>
+                       
 
                         <!-- Modal -->
                         <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -96,7 +107,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Uang Sejumlah</label>
-                                    <input id="us" type="number" class="form-control"  aria-describedby="emailHelp" required>
+                                    <input id="us" type="text" class="form-control uang"  aria-describedby="emailHelp" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Guna Membayar</label>
@@ -123,14 +134,13 @@
             </div>
 
             <div class="row">
-                <h5 class="nomor-nota ml-4 mt-4 mb-2">Nota : 001</h5>
                 <table class="table table-light table-borderless">
                     <tr>
                         <th>No.</th>
                         <th>Item</th>
                         <th>Jumlah</th>
                         <th>Harga(/pcs)</th>
-                        <th>diskon(/pcs)</th>
+                        <th>Diskon(/pcs)</th>
                         <th>Total</th>
                         <th>Aksi</th>
                     </tr>
@@ -149,7 +159,13 @@
             <div class="row">
                 <div class="col-4">
                     <div class="row">
-                        <input class="nama-pelanggan" type="text" placeholder="Nama Pelanggan" id="nama">
+                        <input class="nama-pelanggan" type="text" placeholder="Nama Pelanggan" id="nama" required>
+                    </div>
+                    <div class="row">
+                        <input class="nama-pelanggan" type="text" placeholder="No Telp" id="telp" required>
+                    </div>
+                    <div class="row">
+                        <input class="nama-pelanggan" type="text" placeholder="Alamat" id="alamat" required>
                     </div>
                     <div class="row">
                         <label class="subtotal-label" for="subtotal">Subtotal</label>
@@ -166,7 +182,7 @@
                 </div>
 
                 <div class="col-4">
-                    <div class="card" id="tunai">
+                    <div class="card" id="tunai" style="width: 100%">
                         <div class="card-header mb-3" >
                             <p class="card-title">Pembayaran</p>         
                         </div>
@@ -174,7 +190,7 @@
                             <div class="form-group d-inline-flex">
                                 <input style="width:170px;" class="form-control mr-4 usethis uang" type="text" >
                                 <select class="custom-select form-control w-25 usethisvia">
-                                    <option value="Langsung">Langsung</option>
+                                    <option value="Langsung">Tunai</option>
                                     <option value="BCA">BCA</option>
                                     <option value="Mandiri">Mandiri</option>
                                     <option value="Lainnya">Lainnya </option>
@@ -194,7 +210,7 @@
                             <button class="btn reset " id="reset-button" ><i class="fa fa-trash mr-3"></i>Buang</button>
                         </div>
                         <div class="row">
-                            <button class="btn next" id="next-button" >Lanjut</button>
+                            <button class="btn next text-light" id="next-button" >Lanjut</button>
                         </div>
                     </div>
                 </div>

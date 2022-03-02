@@ -1,6 +1,33 @@
 $(document).ready(function(){
+    $("#uploadbuttonstok").click(function(){
+        Swal.fire({
+            title: 'Apakah anda yakin ingin menambahkan',
+            showDenyButton: true,
+            confirmButtonText: 'Upload',
+            denyButtonText: `Batal`,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              $.ajax({
+                headers: {
+                    "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content')
+                },
+                url: "/updateallstok",
+                type: "post",
+                dataType: "json",
+                success: function(data){
+                    Swal.fire(`${data['jumlah']} item berhasil dimasukan`,'','success');
+                },error: function(err){
+                    Swal.fire('sepertinya ada kesalahan','','info');
+                    alert(err.responseText);
+                }
+              });
+            } else if (result.isDenied) {
+              Swal.fire('Changes are not saved', '', 'info')
+            }
+          })
+    });
     $("#generatestok").click(function(e){
-        alert('hai');
         $.ajax({
             headers: {
                 "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content')
@@ -15,8 +42,11 @@ $(document).ready(function(){
                     return `<li>${lis['kode_produk']} ${lis['nama_produk']}</li>`;
                 });
                 $("#ktless").html(li);
+                $("#jp").html("<b>Jumlah Produk : </b>"+data['jumlah produk']+" item");
+                $("#kat").html("<b>Produk dalam katalog : </b>"+data['tersedia dikatalog']+" item");
+                $("#stoklessbutton").text(data['jumlah produk']-data['tersedia dikatalog']);
+                $("#bt").html("<b>Produk diluar katalog : </b>"+(data['jumlah produk']-data['tersedia dikatalog'])+" item");
             },error: function(err){
-                alert(err.responseText);
             }   
         });
     });
@@ -39,7 +69,6 @@ $(document).ready(function(){
                 });
             },
             error: function(err){
-                alert(err.responseText);
             }
         });
     }
@@ -60,7 +89,6 @@ $(document).ready(function(){
                 $("#jumlahproduk-input").val(data[0]['jumlah']);
             },
             error: function(err){
-                alert(err.responseText);
             }
         });
     }
@@ -99,7 +127,6 @@ $(document).ready(function(){
                 
             },
             error: function(err){
-                alert(err.responseText);
                 window.location = "/stok"
             }
         });
@@ -160,7 +187,6 @@ $(document).ready(function(){
              
                 printJS({printable: response['filename'], type: 'pdf', base64: true});
             },error: function(err){
-                alert(err.responseText);
                 Swal.fire("terjadi Kesalahan");
             }
         });

@@ -1,4 +1,7 @@
-@php $whoactive = "detail stok" @endphp
+@php $whoactive = "stokharian" ;
+
+$master='admingudang';
+@endphp
 @extends('layouts.layout2')
 
 @section('pagetitle', 'Stok Harian')
@@ -8,6 +11,7 @@
     <link rel="stylesheet" href="{{ asset('css/open_sans.css') }}">
 @stop
 
+@section('title','Stok Harian')
 @section('js')
     <script src="{{url('js/detailstok.js')}}"></script>
 @stop

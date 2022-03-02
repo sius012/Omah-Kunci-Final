@@ -7,7 +7,7 @@
     padding: 5px;
     width: 420px;
 
-    border-radius: 100px;
+    border-radius: 6px;
 }
 
 .container-fluid .row .col-6 .search-box::placeholder {
@@ -21,7 +21,7 @@
     background-color: #1562AA;
 
     padding: 10px;
-    border-radius: 100px;
+    border-radius: 6px;
 }
 
 .container-fluid .row .col-6 .btn-tambah-data, .container-fluid .row .col-6 .btn-tambah-data a {
@@ -29,7 +29,7 @@
     color: white;
     text-decoration: none;
 
-    border-radius: 100px;
+    border-radius: 6px;
     font-size: small;
 }
 

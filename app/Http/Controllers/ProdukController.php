@@ -31,7 +31,7 @@ class ProdukController extends Controller
         $kategori = DB::table('produk')->groupBy("id_kategori")->get();
         $kodetype = DB::table('produk')->groupBy("id_ct")->get();
         $merek = DB::table('produk')->groupBy("merk")->get();
-        $produk = DB::table('produk')->take(50)->get();
+        $produk = DB::table('produk')->take(100)->get();
         return view("produk", ["kat" => $kategori, "produk" => $produk, "merek" => $merek, "kodetype" => $kodetype]);
     }
 
@@ -49,11 +49,12 @@ class ProdukController extends Controller
         if($kw != "" || $kw != null){
             $produk = DB::table('produk')->where("kode_produk", $kw)->where("id_kategori", $type)->where("id_ct",$ct)->where("merk",$merk)->get();
             return view("produk", ["kat" => $kategori, "produk" => $produk, "merek" => $merek, "kodetype" => $kodetype, "keyword" => $kw, "tipe" => $type, "id_ct" => $ct,"mereknya" => $merk]);
+        
         }else{
                 
-                $produk = DB::table('produk')->where("id_kategori", $type)->where("id_ct",$ct)->where("merk",$merk)->get();
-                return view("produk", ["kat" => $kategori, "produk" => $produk, "merek" => $merek, "kodetype" => $kodetype, "keyword" => $kw, "tipe" => $type, "id_ct" => $ct,"mereknya" => $merk]);
-        }
+            $produk = DB::table('produk')->where("id_kategori", $type)->where("id_ct",$ct)->where("merk",$merk)->get();
+            return view("produk", ["kat" => $kategori, "produk" => $produk, "merek" => $merek, "kodetype" => $kodetype, "keyword" => $kw, "tipe" => $type, "id_ct" => $ct,"mereknya" => $merk]);
+       }
         
         
     }
@@ -71,9 +72,9 @@ class ProdukController extends Controller
 
         $count = DB::table("produk")->where("id_kategori", $id_kat)->where("id_ct", $codetype)->where("merk",$merek_produk)->count();
 
-        $kodebarcode = $id_kat.str_pad($codetype, 2, '0', STR_PAD_LEFT).str_pad($nmerek, 2, '0', STR_PAD_LEFT).str_pad($count+1, 3, '0', STR_PAD_LEFT);
+       
         
-        DB::table('produk')->insert(["kode_produk"=>$kodebarcode,"nama_produk"=>$nama_produk,"merk" => $merek_produk, "id_kategori"=> $id_kat, "harga" => $harga_produk, 'stn' => $satuan_produk]);
+        DB::table('produk')->insert(["kode_produk"=>$kode_produk,"nama_produk"=>$nama_produk,"merk" => $merek_produk, "id_kategori"=> $id_kat, "harga" => $harga_produk, 'stn' => $satuan_produk]);
 
         $getProduk = DB::table('produk')->join('kategori', 'kategori.id_kategori', '=', 'produk.id_kategori')->get();
         return json_encode(["produk" => $getProduk]);

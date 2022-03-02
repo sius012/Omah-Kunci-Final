@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-
+use App\Events\SendGlobalNotification;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,12 +28,11 @@ Route::get('/accountsetting', function(){
     return view('profile');
 });
 
-
+Route::get('/redirecting', 'RedirectController@index');
 
 Route::middleware(["role:kasir|manager"])->group(function(){
-    Route::get('/kasir', function(){
-        return view('kasir');
-    })->name("kasir");
+    Route::get('/kasir', 'KasirController@index')
+->name("kasir");
     Route::post('/cari', 'KasirController@cari')->name('cari');
     Route::post('/tambahItem', 'KasirController@tambahTransaksiDetail');
     
@@ -67,6 +66,10 @@ Route::middleware(["role:kasir|manager"])->group(function(){
     Route::get('/caritransaksi', 'TransaksiController@index')->name('caritrans');
     Route::post('/tambahpreorder2', 'KasirController@tambahpreorder');
     Route::post('/cetakpreorder', 'KasirController@cetakpreorder');
+    Route::get('/hapusnotabesar/{no_nota}', 'TransaksiPreorder@hapusnotabesar')->name('hapusnotabesar');
+    Route::get('preorderpage', 'RiwayatPre@index');
+    Route::get('/caripreorder', 'RiwayatPre@index')->name('caripreorder');
+    Route::get('/hapuspreorder/{id}', 'RiwayatPre@hapus')->name('hapuspre');
 });
 
 
@@ -82,6 +85,7 @@ Route::middleware(["role:admingudang|manager"])->group(function(){
     Route::post('/tambahdetailstok', 'DetailStokController@tambahdetailstok');
     Route::get('/stok', 'StokController@index')->name('stok');
     Route::post('/loaddatastok', 'StokController@loaddatastok');
+    Route::post('/updateallstok', 'StokController@updateallstok');
 });
 
 Route::middleware(["role:manager"])->group(function(){
@@ -107,10 +111,15 @@ Route::post('/loaddsm', 'DSMController@loaddatadetailstok');
 Route::post('/verifiying', 'DSMController@verifiying');
 Route::post('/rejecting', 'DSMController@rejecting');
     Route::post('/printbarcode', 'ProdukController@printbarcode');
+    Route::get('manajemen_akun', 'AkunController@index')->name('ma');
+    Route::post('/updateakun/{id}', 'AkunController@updateakun')->name('updateakun');
+    Route::get('/hapusakun/{id}', 'AkunController@hapusakun')->name('hapusakun');
+    Route::get('/hapustransaksi/{id}', 'transaksiController@hapus')->name('hapustransaksi');
+    Route::get('/home', "HomeController@index")->name('home');
  });
 
 
-Route::get('/home', "HomeController@index");
+
 
 Route::get('/viewbarcode', function(){
     return view('cetakbarcode');
@@ -140,15 +149,14 @@ Route::get('/notakecil', function(){
 });
 
 Route::get('/rolesinject', function(){
-    $role = Role::create(['name' => 'admingudang']);
-    $permission = Permission::create(['name' => 'kelola']);
+    $role = Role::create(['name' => 'kasir']);
+    $permission = Permission::create(['name' => 'cashiering']);
 
 });
 
 Route::get('/layout', function(){
     return view("layouts.layout2");
 });
-
 
 
 
@@ -162,7 +170,6 @@ Route::get('request', function(){
 
 
 
-
 Route::get('/nota_besar_final', function(){
     return view('nota_besar');
 });
@@ -171,14 +178,16 @@ Route::get('/injectproduk', "SeederJoy@inject");
 
 Route::post('/printcurrentstok', "StokController@printcurrent");
 
-Route::get('manajemen_akun', function(){
-    return view('management_akun');
-});
 
 
-Route::get('manajemen_akun', function(){
-    return view('management_akun');
-});
+
 Route::get('profile', function(){
     return view('profile');
 });
+
+Route::get('send-notif/{name}', function ($name) {
+    event(new SendGlobalNotification($name));
+    return "Event has been sent!";
+});
+
+Route::post('/checkdata', 'CheckDataController@index');

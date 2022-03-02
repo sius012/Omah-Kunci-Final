@@ -1,13 +1,27 @@
-@php $whoactive = 'stok '@endphp
+@php $whoactive = 'stok';
+$master='admingudang';
+@endphp
 @extends('layouts.layout2')
 
 @section('pagetitle', 'Katalog')
+@section('title', 'Katalog')
 
 
 
 @section('js')
 <script src="{{ asset('js/print.js') }}"></script>
-  <script src="{{asset('/js/stok.js')}}"></script>
+<script src="{{asset('/js/stok.js')}}"></script>
+<script>
+  $(document).ready(function(){
+    $(".btnClose").click(function(){
+      $("#modaluploader").modal("hide");
+    });
+
+    $(".btnClosed").click(function(){
+      window.location = "/stok";
+    });
+  });
+</script>
 @stop
     
 @section('content')
@@ -43,12 +57,14 @@
 </div>
 
 
-<div class="modal fade" id="modalstok" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modalstok" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="judulmodalmerek">STOK</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="close btnClosed" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
       <div class="modal-body">
       <form action="/tambahstok" id="submitterstok">
@@ -72,7 +88,7 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary btnClosed" id="close" data-bs-dismiss="modal">Tutup</button>
         <button type="submit" class="btn btn-primary tombolsubmit">Ubah</button>
       </div>
       </form>
@@ -86,8 +102,8 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="exampleModalLabel">Produk Ke katalog</h5>
+        <button type="button" class="close btnClose" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -96,14 +112,14 @@
         <p id="kat"> </p>
         <p id="bt"> </p>
 
-        <h5>Produk yang belum masuk katalog:</h5>
+        <p>yang belum masuk katalog</p>
         <ul id="ktless">
           <li></li>
         </ul>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary btnClose"  data-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-primary" id="uploadbuttonstok">Upload(<b id="stoklessbutton"></b>)</button>
       </div>
     </div>
   </div>

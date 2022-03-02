@@ -9,7 +9,7 @@ $(document).ready(function(){
             data: {
                 ttd: $("#ttd").val(),
                 telepon: $("#telepon").val(),
-                us: $("#us").val(),
+                us: $("#us").val().replace(/[._]/g,''),
                 gm: $("#gm").val(),
                 sejumlah: $("#sejumlah").val(),
             },
@@ -22,7 +22,6 @@ $(document).ready(function(){
                 printJS({printable: data['filename'], type: 'pdf', base64: true});
             },
             error: function(err){
-                alert(err.responseText);
             }
         });
     });
@@ -43,7 +42,6 @@ $(document).ready(function(){
                 printJS({printable: data['filename'], type: 'pdf', base64: true});
             },
             error: function(err){
-                alert(err.responseText);
             }
         });
     });

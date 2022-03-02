@@ -17,6 +17,7 @@ function formatRupiah(angka, prefix){
 
 
 $(document).ready(function(){
+    $(".alerts").hide();
     $(document).on('keypress', function(event){
         let keycode = (event.keyCode ? event.keyCode : event.which);
           if(keycode == '13' && $("#searcher").val()!="") {
@@ -40,6 +41,19 @@ $(document).ready(function(){
         });
   
     });
+
+    $("#tambahproduk").click(function(event){
+      
+            
+            tambahItem(
+                $("#searcher").val(),
+                $("#hrg").val(),
+                $("#qty").val(),
+                0,
+            );
+            
+    });
+
     $("#next-button").attr("disabled","disabled");
     //loader
     function loader(){
@@ -81,7 +95,7 @@ $(document).ready(function(){
    
             },
             error: function(err){
-               // alert(err.responseText);
+               // Swal.fire("terjadi kesalahan","","info");
             }
         });    
     }
@@ -191,7 +205,7 @@ $(document).ready(function(){
                 
                 },
                 error: function(err,response,){
-                    alert(err.responseText);
+                    Swal.fire("terjadi kesalahan","","info");
                 }
             });
     });
@@ -225,36 +239,43 @@ $(document).ready(function(){
             dataType: "JSON",
             url: "/tambahItem",
             success: function(data,response){
-     
-                console.log(data['datadetail']);
-                var subtotal =0;
-                var no = 1;
-                let row = data['datadetail'].map(function(dato,i){
-                    subtotal += parseInt(dato['jumlah']) * (parseInt(dato['harga']) - parseInt(dato['potongan']));
-                    return `
-                        <tr>
-                            <td>${i+1}</td>
-                            <td>${dato['nama_produk']}</td>
-                            <td>${dato['jumlah']}</td>
-                            <td>Rp. ${parseInt(dato['harga']).toLocaleString()}</td>
-                            <td>Rp. ${parseInt(dato['potongan']).toLocaleString() }</td>
-                            <td> Rp. ${parseInt(dato['jumlah'] * (dato['harga'] - dato['potongan'])).toLocaleString()}</td>
-                            <td><button class="btn btn-danger buang"><a id_detail="${dato['id']}"><i class="fa fa-trash"></i></a></button></td>
-                        </tr>
-                    `;
+                if(data['datadetail'] == 'barang habis'){
+                    $(".alerts").show("slow");
+                }else{
+                    $(".alerts").hide("slow");
+                    console.log(data['datadetail']);
+                    var subtotal =0;
+                    var no = 1;
+                    let row = data['datadetail'].map(function(dato,i){
+                        subtotal += parseInt(dato['jumlah']) * (parseInt(dato['harga']) - parseInt(dato['potongan']));
+                        return `
+                            <tr>
+                                <td>${i+1}</td>
+                                <td>${dato['nama_produk']}</td>
+                                <td>${dato['jumlah']}</td>
+                                <td>Rp. ${parseInt(dato['harga']).toLocaleString()}</td>
+                                <td>Rp. ${parseInt(dato['potongan']).toLocaleString() }</td>
+                                <td> Rp. ${parseInt(dato['jumlah'] * (dato['harga'] - dato['potongan'])).toLocaleString()}</td>
+                                <td><button class="btn btn-danger buang"><a id_detail="${dato['id']}"><i class="fa fa-trash"></i></a></button></td>
+                            </tr>
+                        `;
+                    
+                    });
+                    $('#tabling').html(row);
+                    $("#tabling").show("slow");
+                   
+                    
+              $('#subtotal').val(subtotal.toLocaleString());
+                    subtotal1 = subtotal;
+                    id_trans = data['datadetail'][0]['kode_trans'];
+                    $("#kodetrans").val(data['datadetail'][0]['kode_trans']);
+                }
                 
-                });
-                $('#tabling').html(row);
-                $("#tabling").show("slow");
                
-                
-          $('#subtotal').val(subtotal.toLocaleString());
-                subtotal1 = subtotal;
-                id_trans = data['datadetail'][0]['kode_trans'];
-                $("#kodetrans").val(data['datadetail'][0]['kode_trans']);
          
             },
             error: function(err,response, errorThrown, jqXHR){
+                Swal.fire("terjadi kesalahan","","info");
                 alert(err.responseText);
             }
         });
@@ -291,12 +312,12 @@ $(document).ready(function(){
     });
 
     $("#selesai").click(function(){
-        
+
         if(parseInt($(".usethis").val()) < subtotalafterdiskon && $('input[name=payment]:checked').val() == "cash"){
             alert("uang kurang");
         }else{
             id_trans = $("#kodetrans").val();
-        if($("#nama").val() == null || $("#nama").val() == "" || $(".usethis").val() == "" || $(".usethis").val()==null || $('input[name=payment]:checked').val() == "" ||  $(".usethisvia").val() == " "){
+        if($("#nama").val() == null || $("#nama").val() == "" || $(".usethis").val() == "" || $(".usethis").val()==null || $('input[name=payment]:checked').val() == "" ||  $(".usethisvia").val() == " "  || $('#telp').val() == "" ||  $("#alamat").val() == ""){
             Swal.fire("Pastikan Semua Kolom terisi(kecuali diskon)","","info");
         }else{
             $.ajax({
@@ -310,6 +331,8 @@ $(document).ready(function(){
                         bayar: $(".usethis").val().replace(/[._]/g,''),
                         metode: "cash",
                         via: $(".usethisvia").val(),
+                        telp: $("#telp").val(),
+                        alamat: $("#alamat").val()
                     } 
                 },
                 type: "POST",
@@ -358,7 +381,7 @@ $(document).ready(function(){
                  window.location = "/kasir";
              },
              error: function(err){
-                alert(err.responseText);
+                Swal.fire("terjadi kesalahan","","info");
              }
         });
     });
@@ -452,7 +475,7 @@ $(document).ready(function(){
                 printJS({printable: response['filename'], type: 'pdf', base64: true});
             },  
             error: function(err){
-                alert(err.responseText);
+                Swal.fire("terjadi kesalahan","","info");
             }
         });
     };
