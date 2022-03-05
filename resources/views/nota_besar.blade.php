@@ -11,7 +11,7 @@
         * {
             margin: 0px;
 
-            font-size: 8pt;
+            font-size: 10pt;
         }
 
         body{
@@ -43,7 +43,8 @@
         .container-wrapper table .date-times {
             font-size: 8pt;
 
-            margin-left: 320px;
+            margin-left: 230px;
+            width: 200px;
         }
 
         .container-wrapper .big-title {
@@ -53,12 +54,11 @@
 
         .container-wrapper .big-title .title {
             margin: 0;
-            margin-bottom: -12px;
         }
 
         .container-wrapper .big-title .hr {
             margin: 0;
-            border: 1px solid black;
+       
             width: 200px;
             display: inline-flex;
             align-items: center;
@@ -97,25 +97,31 @@
         }
 
         #bigtitle{
-            height: 10px;
+            height: 20px;
 
         }
+        h4{
+            
+            font-size: 9pt;
+            
+        }
+
 
     </style>
 </head>
 
 <body>
     <div class="container-wrapper">
-        <table style="margin-top: 10px; width: 800px">
+        <table style="margin-top: 20px; width: 750px">
             <tr>
                 <td>
-                    <div class="address">
+                    <div class="address" style="width:200px">
                         <img style="height:20px;" src="{{ public_path('assets/logo.svg') }}" alt="">
-                        <p class="brand-address">Jl. Agus Salim D no.10 <br> Telp/Fax (024) 3554929 <br> Semarang </p>
+                        <p class="brand-address">Jl. Agus Salim D no.10 <br> Telp/Fax (024) 3554929 /085712423453 <br> Semarang </p>
                     </div>
                 </td>
                 <td></td>
-                <td>
+                <td align="right" style="width:300px" valign="top">
                     <h4 class="date-times">Semarang,
                         {{ date("d-M-Y", strtotime($data->updated_at)) }}</h4>
                 </td>
@@ -126,7 +132,6 @@
                         <h2 class="title">
                             {{ $data->termin != 3 ? "TANDA TERIMA" : "NOTA" }}
                         </h2>
-                        <div class="hr"></div>
                         <h5 class="no-nota">NO.{{ $data->no_nota }}</h5>
                     </div>
                 </td>
@@ -192,8 +197,8 @@
                     <td valign="top">
                         <h4>{{ $opsis->judul }}</h4>
                     </td>
-                    <td> {{ $opsis->ket }}</td>
-                    <td></td>
+                    <td colspan="2"> {{ $opsis->ket }}</td>
+  
 
                 </tr>
             @endforeach

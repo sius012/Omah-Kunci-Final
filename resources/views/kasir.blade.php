@@ -15,7 +15,22 @@
 <script src="{{ asset('js/mainjs/kasir.js') }}"></script>
 <script src="{{ asset('js/preorder.js') }}"></script>
 <link rel="stylesheet" href="{{ asset('css/kasir.css') }}">
-<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content')
+            },
+            url: "/removesection",
+            type: "post",
+            success: function(){
+             
+            },error: function(err){
+               
+            }
+        });
+    });
+</script>
  
 @stop
 
@@ -39,7 +54,7 @@
                             <div class="card-header">
                                 <p class="card-title p-2">Pilih Produk</p>
                                 <div class="alerts">
-                                    <p style="width:225px; left:245px; top:12px;" class="card-text bg-warning p-2 rounded text-center float-right position-absolute"><i style="width:23px;" class="fa fa-info mr-2 text-light bg-dark p-1 rounded-circle text-center"></i>Barang Tidak Tersedia</p>
+                                    <p style="width:300px; left:190px; top:12px;" class="card-text bg-warning p-2 rounded text-center float-right position-absolute"><i style="width:23px;" class="fa fa-info mr-2 text-light bg-dark p-1 rounded-circle text-center"></i>Barang Tidak Tersedia</p>
                                 </div>
                             </div>
                             <div style="border-bottom:1px solid lightgray; x" class="card-body " >
@@ -49,7 +64,7 @@
                                         <td style="width: 200px"> <input  min="1" required class="qty form-control " id="qty" placeholder="Quantity" type="number" value=1>
                                             <input style="width: 300px" required class="qty " id="hrg" placeholder="Quantity" type="hidden" value=1></td>
                                             <ul id="myUL">
-                                                </ul>
+                                             </ul>
                                     </tr>
                                 </table>
             
@@ -138,6 +153,7 @@
                     <tr>
                         <th>No.</th>
                         <th>Item</th>
+                        <th>Merek</th>
                         <th>Jumlah</th>
                         <th>Harga(/pcs)</th>
                         <th>Diskon(/pcs)</th>

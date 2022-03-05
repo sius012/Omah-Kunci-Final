@@ -22,6 +22,15 @@ $m = isset($mereknya) ? $mereknya : '';
             font-size: 8pt
         }
     </style>
+    <script>
+        $(document).ready(function(){
+           $("#modalprodukedit").modal("show");
+
+            $(".btclose").click(function(){
+                window.location = "/produk";
+            });
+        });
+    </script>
 @stop
 @section('content')
 
@@ -31,56 +40,34 @@ $m = isset($mereknya) ? $mereknya : '';
             <p class="card-title">Data Produk</p>
         </div>
         <div class="card-body">
-            <form action="{{ route('searchproduct') }}" method="GET">
+            {!! Form::open(['action'=> 'ProdukController@index','method'=>'GET']) !!}
                 @csrf
-                <div class="filter">
-                    <div class="row">
-                        <input class="form-control  mt-0 mb-5" name="kw" placeholder="Masukan Kode Barcode"
-                            value="{{ $kw }}">
-                        <div class="col"> </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="row ml-1">
-                            <div class="form-group mr-3">
-                                <label for="type">Tipe:</label>
-                                <select name="tp" id="type" class="custom-select w-75">
-                                    <option value="all">Semua</option>
-                                    @foreach ($kat as $kats)
-                                        <option value="{{ $kats->id_kategori }}"
-                                            @if ($tp == $kats->id_kategori) selected @endif>{{ $kats->id_kategori }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group mr-3 d-inline-flex">
-                                <label style="width:200px; margin:0; margin-right:-70px; margin-top:5px;" for="type">Kode Tipe:</label>
-                                <select name="ct" id="type" class="custom-select w-75">
-                                    <option value="all">Semua</option>
-                                    @foreach ($kodetype as $kt)
-                                        <option value="{{ $kt->id_ct }}"
-                                            @if ($ct == $kt->id_ct) selected @endif>{{ $kt->id_ct }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group d-inline-flex mr-3">
-                                <label style="margin-top:5px; margin-right:5px;" for="type">Merek:</label>
-                                <select name="merk" id="type" class="custom-select w-75">
-                                <option value="all">Semua</option>
-                                    @foreach ($merek as $merks)
-                                        <option value="{{ $merks->merk }}"
-                                            @if ($m == $merks->merk) selected @endif>{{ $merks->merk }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group mb-1">
-                                <button class="btn btn-primary"><i class="fa fa-search"></i> Cari</button>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-
+                <div class="form-group">
+                    <select name="tipe" id="tipe" class="form-control dynamic" data-dependent = "state">
+                        <option value="">TIPE</option>
+                        @foreach($tipe as $tipes)
+                            <option value = "{{$tipes->id_tipe}}">{{$tipes->nama_tipe}}</option>
+                        @endforeach
+                    </select>
                 </div>
+                <div class="form-group">
+                    <select name="kodetipe" id="kodetipe" class="form-control dynamic" data-dependent = "state">
+                        <option value="">TIPE KODE</option>
+                        @foreach($kodetype as $kt)
+                            <option value="{{$kt->id_kodetype}}">{{$kt->nama_kodetype}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select name="merek" id="merek" class="form-control dynamic" data-dependent = "state">
+                        <option value="">MEREK</option>
+                        @foreach($merek as $merks)
+                            <option value="{{$merks->id_merek}}">{{$merks->nama_merek}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            {{Form::submit('Cari',['class'=>'btn btn-primary mb-3'])}}
+
             </form>
             <button type="button" class="btn btn-primary mt-0 mb-3 " data-toggle="modal" data-target="#modalproduk">
                 Tambah Produk <i class="fa fa-plus ml-2"></i>
@@ -107,12 +94,12 @@ $m = isset($mereknya) ? $mereknya : '';
                             <td>{{ $no }}</td>
                             <td>{{ $produks->kode_produk }}</td>
                             <td>{{ $produks->nama_produk }}</td>
-                            <td>{{ $produks->id_kategori }}</td>
-                            <td>{{ $produks->id_ct }}</td>
-                            <td>{{ $produks->merk }}</td>
-                            <td>{{ $produks->stn }}</td>
+                            <td>{{ $produks->nama_tipe}}</td>
+                            <td>{{ $produks->nama_kodetype}}</td>
+                            <td>{{ $produks->nama_merek }}</td>
+                            <td>{{ $produks->satuan }}</td>
                             <td>Rp. {{ number_format($produks->harga) }}</td>
-                            <td></td>
+                            <td>{{$produks->diskon}}</td>
                             <td class="d-inline-flex" align="center">
                                 <a class="btn btn-warning"
                                     href={{ url('/editproduk?kodebarcode=' . $produks->kode_produk) }}><i
@@ -161,31 +148,35 @@ $m = isset($mereknya) ? $mereknya : '';
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Merek Barang</label>
                             <select name="" id="merek-produk" class="form-control">
-                                @foreach ($merek as $merks)
-                                    <option value="{{ $merks->merk }}">{{ $merks->merk }}</option>
-                                @endforeach
+                            @foreach($tipe as $tipes)
+                            <option value = "{{$tipes->id_tipe}}">{{$tipes->nama_tipe}}</option>
+                        @endforeach
                             </select>
 
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Kategori</label>
                             <select name="" id="kategori-produk" class="form-control" required>
-                                @foreach ($kat as $kats)
-                                    <option value="{{ $kats->id_kategori }}">{{ $kats->id_kategori }}</option>
-                                @endforeach
+                            @foreach($kodetype as $kt)
+                            <option value="{{$kt->id_kodetype}}">{{$kt->nama_kodetype}}</option>
+                        @endforeach
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Tipe Kode</label>
                             <select name="" id="tipe-kode" class="form-control" required>
-                                @foreach ($kodetype as $kt)
-                                    <option value="{{ $kt->id_ct }}">{{ $kt->id_ct }}</option>
-                                @endforeach
+                            @foreach($merek as $merks)
+                            <option value="{{$merks->id_merek}}">{{$merks->nama_merek}}</option>
+                        @endforeach
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Harga</label>
                             <input type="text" class="form-control uang" id="harga-produk" aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Diskon</label>
+                            <input type="text" class="form-control" id="diskon-produk" aria-describedby="emailHelp">
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Satuan</label>
@@ -195,7 +186,7 @@ $m = isset($mereknya) ? $mereknya : '';
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Kirim</button>
                 </div>
                 </form>
             </div>
@@ -233,7 +224,7 @@ $m = isset($mereknya) ? $mereknya : '';
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="staticBackdropLabel">Edit Produk</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="button btclose" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="modal-body">
                         <form action="{{ route('editproduk', ['id' => $data->kode_produk]) }}" method="POST">
@@ -241,7 +232,7 @@ $m = isset($mereknya) ? $mereknya : '';
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Kode Barcode</label>
                                 <input type="text" class="form-control" id="kodebarcode" aria-describedby="emailHelp" required
-                                    value="{{ $data->nama_produk }}" name="nama_produk">
+                                    value="{{ $data->kode_produk }}" name="nama_produk">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Nama Barang</label>
@@ -252,7 +243,7 @@ $m = isset($mereknya) ? $mereknya : '';
                                 <label for="exampleInputEmail1" class="form-label">Merek Barang</label>
                                 <select class="form-control" name="merk">
                                     @foreach ($merek as $merks)
-                                        <option value="{{ $merks->merk }}" @if ($merks->merk == $data->merk) selected @endif>
+                                        <option value="{{ $merks->id_merk }}" @if ($merks->merk == $data->merk) selected @endif>
                                             {{ $merks->merk }}</option>
                                     @endforeach
                                 </select>
@@ -278,8 +269,12 @@ $m = isset($mereknya) ? $mereknya : '';
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Harga</label>
-                                <input type="number" class="form-control" aria-describedby="emailHelp"
+                                <input type="number" class="form-control uang" aria-describedby="emailHelp"
                                     value="{{ $data->harga }}" name="harga">
+                            </div>
+                             <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Diskon</label>
+                            <input type="text" class="form-control" id="diskon-produk" aria-describedby="emailHelp" name="diskon" value={{$data->diskon}}>
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Satuan</label>
@@ -289,8 +284,8 @@ $m = isset($mereknya) ? $mereknya : '';
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-secondary btclose" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Perbarui</button>
                     </div>
                     </form>
                 </div>
@@ -304,14 +299,14 @@ $m = isset($mereknya) ? $mereknya : '';
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Barcode Print</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" data-target="#exampleModalBarcode">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Jumlah</label>
-                            <input type="email" class="form-control" id="jml" aria-describedby="emailHelp">
+                            <input max=50 min=1 type="number" class="form-control" id="jml" aria-describedby="emailHelp">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -322,4 +317,35 @@ $m = isset($mereknya) ? $mereknya : '';
                 </div>
             </div>
         </div>
+
+        <script> 
+
+$(document).ready(function(){
+
+
+   
+
+$(".uang").keyup(function(){
+        $(this).val(formatRupiah($(this).val(),""))
+});
+
+
+function formatRupiah(angka, prefix){
+var number_string = angka.replace(/[^,\d]/g, '').toString(),
+split   		= number_string.split(','),
+sisa     		= split[0].length % 3,
+rupiah     		= split[0].substr(0, sisa),
+ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+// tambahkan titik jika yang di input sudah menjadi angka ribuan
+if(ribuan){
+    separator = sisa ? '.' : '';
+    rupiah += separator + ribuan.join('.');
+}
+
+rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+return prefix == undefined ? rupiah : (rupiah ? '' + rupiah : '');
+}
+});
+</script>
     @stop

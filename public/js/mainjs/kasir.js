@@ -69,11 +69,13 @@ $(document).ready(function(){
             dataType: "JSON",
             url: "/loader", 
             success: function(data){
+
                 var no = 1;
                 var row ="";
-                var subtotal =0;
+                let subtotal =0;
+    
                 var row = data['datadetail'].map(function(dato,i){
-                    subtotal += parseInt(dato['jumlah']) * (parseInt(dato['harga']) - parseInt(dato['potongan']));
+                    subtotal += parseInt(dato['jumlah']) * (parseInt(dato['harga']) - parseInt(dato['diskon']));
                     return `
                         <tr>
                             <td>${i+1}</td>
@@ -81,12 +83,17 @@ $(document).ready(function(){
                             <td>${dato['jumlah']}</td>
                             <td>Rp. ${parseInt(dato['harga']).toLocaleString()}</td>
                             <td>Rp. ${parseInt(dato['potongan']).toLocaleString() }</td>
-                            <td> Rp. ${parseInt(dato['jumlah'] * (dato['harga'] - dato['potongan'])).toLocaleString()}</td>
-                            <td><button class="btn btn-danger buang"><a id_detail="${dato['id']}"><i class="fa fa-trash"></i></a></button></td>
+                            <td> Rp. ${parseInt(dato['jumlah'] * (dato['diskon'] - dato['diskon'])).toLocaleString()}</td>
+                            <td><a class="btn btn-danger buang" id_detail="${dato['id']}"><i class="fa fa-trash"></i></a></td>
                         </tr>
                     `
                 
                 });
+
+                $("#totality").val(subtotal.toLocaleString());
+                   
+                    
+                $('#subtotal').val(subtotal.toLocaleString());
                 
                 $('#tabling').html(row);
                 $("#tabling").show("slow");
@@ -96,6 +103,7 @@ $(document).ready(function(){
             },
             error: function(err){
                // Swal.fire("terjadi kesalahan","","info");
+               alert(err.responseText);
             }
         });    
     }
@@ -190,7 +198,7 @@ $(document).ready(function(){
                     for(var i = 0;i < data['data'].length;i++){
                         li += `<li>
 
-                                   <a kode="${data['data'][i]['kode_produk']}" harga="${data['data'][i]['harga']}" jumlah="1" potongan="0" class="sear">${data['data'][i]["kode_produk"] + " " + data['data'][i]["nama_produk"]}</a>
+                                   <a kode="${data['data'][i]['kode_produk']}" harga="${data['data'][i]['harga']}" jumlah="1" potongan="0" class="sear">${data['data'][i]["kode_produk"] + " " + data['data'][i]["nama_produk"] + " " + data['data'][i]['merk']}</a>
                                 </div>
                             
                             </li>`;
@@ -240,6 +248,7 @@ $(document).ready(function(){
             url: "/tambahItem",
             success: function(data,response){
                 if(data['datadetail'] == 'barang habis'){
+                    $(".alerts p").text( "Stok Tersedia : "+data['as']+" Item");
                     $(".alerts").show("slow");
                 }else{
                     $(".alerts").hide("slow");
@@ -247,22 +256,28 @@ $(document).ready(function(){
                     var subtotal =0;
                     var no = 1;
                     let row = data['datadetail'].map(function(dato,i){
-                        subtotal += parseInt(dato['jumlah']) * (parseInt(dato['harga']) - parseInt(dato['potongan']));
+                       
+                        subtotal += dato['diskon'].includes("%") ? parseInt(dato['jumlah']) * (parseInt(dato['harga']) - (parseInt(dato['harga']) * (parseInt(dato['diskon'].replace(/[%_]/g,''))/100))) : parseInt(dato['jumlah']) * (parseInt(dato['harga']) - parseInt(dato['diskon'])) ;
+  
                         return `
                             <tr>
                                 <td>${i+1}</td>
                                 <td>${dato['nama_produk']}</td>
+                                <td>${dato['merk']}</td>
                                 <td>${dato['jumlah']}</td>
                                 <td>Rp. ${parseInt(dato['harga']).toLocaleString()}</td>
-                                <td>Rp. ${parseInt(dato['potongan']).toLocaleString() }</td>
-                                <td> Rp. ${parseInt(dato['jumlah'] * (dato['harga'] - dato['potongan'])).toLocaleString()}</td>
-                                <td><button class="btn btn-danger buang"><a id_detail="${dato['id']}"><i class="fa fa-trash"></i></a></button></td>
+                                <td>${dato['diskon'].includes("%") ? dato['diskon'] :  "Rp. "+ parseInt(dato['diskon']).toLocaleString()}</td>
+                                <td> Rp. ${dato['diskon'].includes("%") ? parseInt(parseInt(dato['jumlah']) * (parseInt(dato['harga']) - (parseInt(dato['harga']) * (parseInt(dato['diskon'].replace(/[%_]/g,''))/100)))).toLocaleString() : parseInt(parseInt(dato['jumlah']) * (parseInt(dato['harga']) - parseInt(dato['diskon']))).toLocaleString()}</td>
+                                <td><a   class="btn btn-danger buang" id_detail="${dato['id']}"><i class="fa fa-trash"></i></a></td>
                             </tr>
                         `;
+                       
                     
                     });
+
                     $('#tabling').html(row);
                     $("#tabling").show("slow");
+                    $("#totality").val(subtotal.toLocaleString());
                    
                     
               $('#subtotal').val(subtotal.toLocaleString());
@@ -352,6 +367,7 @@ $(document).ready(function(){
                         '',
                         'info'
                     );
+                    alert(err.responseText);
                 }
             });
             //window.location = "{{url('/selesai')}}";
@@ -454,9 +470,8 @@ $(document).ready(function(){
             if (result.isConfirmed) {
               Swal.fire('Saved!', '', 'success')
             } else if (result.isDenied) {
-              Swal.fire('Changes are not saved', '', 'info');
-              alert($(e.target).children("a").attr("id_detail"));
-              hapusdetail($(e.target).children("a").attr("id_detail"));
+              Swal.fire('Item dibatalkan', '', 'info');
+              hapusdetail($(e.target).attr("id_detail") != undefined ? $(e.target).attr("id_detail") : $(e.target).closest(".buang").attr("id_detail") );
             }
           })
         
@@ -476,6 +491,7 @@ $(document).ready(function(){
             },  
             error: function(err){
                 Swal.fire("terjadi kesalahan","","info");
+                alert(err.responseText);
             }
         });
     };

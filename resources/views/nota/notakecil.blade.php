@@ -193,7 +193,7 @@ $subtotal = 0;
         }
 
         p {
-            font-size: 9pt;
+            font-size: 10pt;
         }
 
     </style>
@@ -202,7 +202,7 @@ $subtotal = 0;
 
     <div class="container">
 
-        <div class="row centering" style="margin-top:0.5px;">
+        <div class="row centering">
             <img src="{{ public_path('assets/logo.svg') }}" alt="">
             <p class="alamat">Jl. Agus Salim D no.10 <br> Telp/Fax. (024) 3554929 / 085712423453 <br> Semarang <br></p>
         </div>
@@ -214,21 +214,19 @@ $subtotal = 0;
 
                 <tr>
                     <td>{{$data[0]->no_nota}}</td>
-                    <td align="right">YTH. {{$data[0]->nama_pelanggan}}</td>
+                    <td align="right">{{date("d-m-Y" ,strtotime($data[0]->created_at))}}</td>
 
                 </tr>
                 <tr>
-                    <td></td>
-                    <td style="text-align:right;" class="ml-3">
-                        {{$data[0]->telepon}}
-                        <br>
-                        {{$data[0]->alamat}}
-                    </td>
-                    <td></td>
+                   <td>YTH. {{$data[0]->nama_pelanggan}}</td>
+                   <td align="right">KSR. {{$data[0]->name}}</td>
                 </tr>
                 <tr>
-                    <td align=>{{date("d-m-Y" ,strtotime($data[0]->created_at))}}</td>
-                    <td align="right">KSR. {{$data[0]->name}}</td>
+                   <td>{{$data[0]->telepon}}</td>
+                   <td align="right"></td>
+                </tr>
+                <tr>
+                   <td align="left" colspan="2">{{$data[0]->alamat}}</td>
                 </tr>
 
             </table>
@@ -243,16 +241,19 @@ $subtotal = 0;
                         @foreach($data2 as $dats)
                         <tr>
 
-                            <td colspan="2">{{$dats->nama_produk}}</td>
+                            <td colspan="2">{{$dats->nama_produk}} {{$dats->merk}}</td>
 
 
                         </tr>
 
                         <tr>
-                            <td style="width: 120px">{{number_format($dats->harga,"0",".",".")}}{{" x"}} {{$dats->jumlah}} </td>
-                            <td align="right">- {{$dats->potongan * $dats->jumlah}}</td>
-                            <td align="right">Rp.{{number_format(($dats->harga - $dats->potongan) * $dats->jumlah,"0",".","." )}}</td>
-                            @php $no++; $subtotal+=$dats->jumlah * ($dats->harga - $dats->potongan); @endphp
+                            <td style="width: 80px">{{number_format($dats->harga,"0",".",".")}}{{" x"}} {{$dats->jumlah}} </td>
+                            <td align="right">- {{strpos($dats->potongan,"%") !== false ? $dats->potongan : "Rp. ". number_format($dats->potongan)}}</td>
+                            <td align="right">Rp.{{number_format(strpos($dats->potongan,"%") !== false ? $dats->jumlah * ($dats->harga_produk - $dats->harga_produk * ( (int)trim($dats->potongan,"%"))/100) :  ($dats->harga_produk - $dats->potongan) * $dats->jumlah,"0",".","." )}}</td>
+                            @php $no++; 
+                            
+                            $subtotal += strpos($dats->potongan,"%") !== false ? $dats->jumlah * ($dats->harga_produk - $dats->harga_produk * ( (int)trim($dats->potongan,"%"))/100) :  ($dats->harga_produk - $dats->potongan) * $dats->jumlah;
+                            @endphp
                         </tr>
                         @endforeach
 
@@ -266,7 +267,7 @@ $subtotal = 0;
 
                     </tr>
                     <tr>
-                        <td>Potongan</td>
+                        <td>DISC</td>
                         <td align="right">Rp.{{number_format($data[0]->diskon, 0,".",".")}}</td>
 
                     </tr>

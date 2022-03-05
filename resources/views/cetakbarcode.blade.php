@@ -135,7 +135,7 @@
             <div style="display: inline-block;text-align: center; "><div class="card">
                 <span style="font-size: 13px;">{{$datas->nama_produk}}</span>
                 <div style="text-align:center !important; margin-left: 5px; margin-top: 5px; margin-bottom: 5px;">
-                <span style="size: 8px !important;">{!! DNS1D::getBarcodeHTML($datas->kode_produk, 'C128',2.6,33) !!}</span>
+                <span style="size: 8px !important;">{!! DNS1D::getBarcodeHTML($datas->kode_produk, 'C128',2.1,33) !!}</span>
                 </div>
                 <span style="font-size: 13px;">{{$datas->kode_produk}}</span>
             </div>

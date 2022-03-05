@@ -54,7 +54,7 @@
                          $(".badger").html(data.length);
                         let row=data.map(function(datas){
                             return `<a href="#" id_nb='${datas['id_transaksi']}' class="dropdown-item p-3 btnlink">
-                        <i class="fas fa-info mr-2"></i> Termin ${datas['termin']} No Nota ${datas['no_nota']} sudah mendekati jatuh tempo
+                        <i class="fas fa-info mr-2"></i>No Nota ${datas['no_nota']} sudah mendekati jatuh tempo
                     </a>`;
                         });
 
@@ -208,11 +208,7 @@
                                             <p>Riwayat Nota Besar</p>
                                         </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('/preorderpage') }}" class="nav-link {{ $whoactive == 'preorderpage' ? 'active' : '' }}">
-                                        <p>Preorder</p>
-                                    </a>
-                                </li>
+                               
                             </ul>
                         </li>
                         @endif
@@ -251,6 +247,12 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                     <a href="{{url('/dashboard')}}" class="nav-link {{$whoactive =='dashboard' ? 'active' : ''}}">
+
+                                        <p>Dashboard</p>
+                                    </a>
+                                </li>
                                 <li class="nav-item">
                                     <a href="{{url('/produk')}}" class="nav-link {{$whoactive =='produk' ? 'active' : ''}}">
 
@@ -263,11 +265,6 @@
                                         <p>Kelola Akun</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="{{url('/dsm')}}" class="nav-link {{$whoactive =='stok trafic' ? 'active' : ''}}">
-
-                                        <p>Stok Trafic</p>
-                                    </a>
                                 </li>
                             </ul>
                         </li>

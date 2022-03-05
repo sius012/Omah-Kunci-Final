@@ -15,18 +15,11 @@ class KasirController extends Controller
         
     }
 
-    public function index(Request $req){
-        
-        $no = DB::table('transaksi')->get()->count();
-        $no = str_pad($no+1, 6, '0', STR_PAD_LEFT);
-
-    
-        return view('kasir', ['no_nota'=>$no,'page'=>'kasir']);
-    }
+   
 
     public function loader(Request $req){
         if($req->session()->has('transaksi')){
-           $data = DB::table('detail_transaksi')->join('produk', 'detail_transaksi.kode_produkG', '=', 'produk.kode_produk')->where('kode_trans', $req->session()->get('transaksi')['id_transaksi'])->get();
+           $data = DB::table('detail_transaksi')->join('produk', 'detail_transaksi.kode_produk', '=', 'produk.kode_produk')->where('kode_trans', $req->session()->get('transaksi')['id_transaksi'])->get();
                 return(json_encode(["datadetail" => $data]));
             
         }
@@ -57,14 +50,17 @@ class KasirController extends Controller
 
     public function tambahTransaksiDetail(Request $req){
         $data = $req->input('data');
+        
         //checking stock
         $stock = DB::table('stok')->where('kode_produk',$data['kode_produk'])->sum('jumlah');
-        if($stock <= 0){
-            return json_encode(['datadetail'=>'barang habis']);
+        $hasilpengurangan = $stock - $data['jumlah'];
+        if($hasilpengurangan < 0){
+            return json_encode(['datadetail'=>'barang habis','as'=>$stock]);
         }
         $id_kasir = Auth::user()->id;   
       
         $harga = DB::table('produk')->where('kode_produk',$data['kode_produk'])->pluck("harga")->first();
+        $disc = DB::table('produk')->where('kode_produk',$data['kode_produk'])->pluck("diskon")->first();
         $id_trans = "";
         
         if($req->session()->has('transaksi')){
@@ -73,18 +69,18 @@ class KasirController extends Controller
         }else{
             $no = DB::table('transaksi')->get()->count();
             $no += 1;   
-            $id = DB::table('transaksi')->insertGetId(['no_nota' => str_pad($no+1, 6, '0', STR_PAD_LEFT), 'id_kasir' =>$id_kasir]);
+            $id = DB::table('transaksi')->insertGetId(['no_nota' => date("ymd").str_pad($no+1, 3, '0', STR_PAD_LEFT), 'id_kasir' =>$id_kasir]);
             $req->session()->put('transaksi', ['id_transaksi' => $id, 'no_nota' => $no]);   
             $id_trans = $id;
         }
     
         $counter = DB::table('detail_transaksi')->where('kode_trans', $id_trans)->where('kode_produk', $data['kode_produk'])->count();
         if($counter < 1){
-            DB::table('detail_transaksi')->insert(['kode_trans' => $id_trans, 'kode_produk' => $data['kode_produk'], "jumlah" => $data["jumlah"],"potongan" => $data["potongan"]]);
+            DB::table('detail_transaksi')->insert(['kode_trans' => $id_trans, 'kode_produk' => $data['kode_produk'], "jumlah" => $data["jumlah"],"potongan" => $disc,'harga_produk'=>$harga]);
         }else{
             $jumlah = DB::table('detail_transaksi')->where('kode_trans', $id_trans)->where('kode_produk', $data['kode_produk'])->pluck('jumlah')->first();
             $jml = $harga  * ((int)$jumlah + (int) $data['jumlah']);
-            $ptg = $data['potongan'];
+            $ptg = $disc;
             DB::table('detail_transaksi')->where('kode_trans', $id_trans)->where('kode_produk', $data['kode_produk'])->update(['jumlah' => $jumlah + $data['jumlah'], 'potongan' => $ptg]);
         }
         
@@ -111,7 +107,7 @@ class KasirController extends Controller
         
 
         foreach($stok as $stoks){
-            $subtotal += ($stoks->harga - $stoks->potongan) * $stoks->jumlah;
+            $subtotal += strpos($stoks->potongan,"%") !== false ? $stoks->jumlah * ($stoks->harga_produk - $stoks->harga_produk * ( (int)trim($stoks->potongan,"%"))/100) :  ($stoks->harga_produk - $stoks->potongan) * $stoks->jumlah;
         }
 
         $afterdiskon = $subtotal - $data['diskon']; 
@@ -201,6 +197,23 @@ class KasirController extends Controller
 
     	return response()->json(["filename" => $base64]);
     }
+
+    public function printnotakecil(Request $req){
+        $id = $req->id;
+        $data = DB::table('transaksi')->join('users', 'users.id', '=', 'transaksi.id_kasir')->where('kode_trans',$id)->get();
+        $data2 = DB::table('detail_transaksi')->join('produk', 'produk.kode_produk','=','detail_transaksi.kode_produk')->where('kode_trans',$id)->get();
+
+        $pdf = PDF::loadview('nota.notakecil', ["data" => $data,"data2"=>$data2]);
+        $path = public_path('pdf/');
+            $fileName =  date('mdy').'-'.$data[0]->kode_trans. '.' . 'pdf' ;
+            $pdf->save(storage_path("pdf/$fileName"));
+        $storagepath = storage_path("pdf/$fileName");
+        $base64 = chunk_split(base64_encode(file_get_contents($storagepath)));
+
+    	return response()->json(["filename" => $base64]);
+    }
+
+
 
     public function printpreorder($id){
         $data = DB::table('preorder')->where('id', $id)->get();

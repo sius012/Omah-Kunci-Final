@@ -110,22 +110,22 @@
 
 <body>
     <div class="container-wrapper">
-        <table style="margin-top: 10px; width: 750px">
+        <table style="margin-top: 20px; width: 720px">
             <tr>
-                <td>
+                <td style="width:170x">
                     <div class="address">
                         <img style="height:20px;" src="{{ public_path('assets/logo.svg') }}" alt="">
-                        <p class="brand-address">Jl. Agus Salim D no.10 <br> Telp/Fax (024) 3554929 <br> Semarang </p>
+                        <p class="brand-address">Jl. Agus Salim D no.10 <br> Telp/Fax (024) 3554929 /085712423453 <br> Semarang </p>
                     </div>
                 </td>
-                <td></td>
-                <td align="right" valign="top" style>
+                <td style="width: 10px"></td>
+                <td align="left" valign="top" style="width: 200px">
                     <h4 class="date-times">Semarang, {{date('d-M-Y', strtotime($data->created_at))}}
                      
                 </td>
             </tr>
             <tr>
-                <td align="center" id="bigtitle" colspan="3">
+                <td  align="center" id="bigtitle" colspan="3">
                     <div class="big-title">
                         <h2 class="title">
                             PEMESANAN

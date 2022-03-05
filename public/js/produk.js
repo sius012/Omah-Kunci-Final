@@ -1,9 +1,14 @@
+
+
+
 $(document).ready(function(){  
     $(".cetak-barcode").click(function(e){
        $("#cetaker").attr('kode_produk', $(this).attr('kode_produk'));
     });
 
     $("#cetaker").click(function(e){
+      
+        Swal.showLoading();
         $.ajax({
             headers: {
                 "X-CSRF-TOKEN" : $("meta[name=csrf-token").attr('content')
@@ -15,9 +20,11 @@ $(document).ready(function(){
             url: "/printbarcode",
             type: "post",
             success: function(response){
+                Swal.hideLoading();
                 printJS({printable: response['filename'], type: 'pdf', base64: true});
             },
             error: function(err){
+    
             }
         });
     }
@@ -182,10 +189,11 @@ $(document).ready(function(){
             nama_produk : $("#nama-produk").val(),
             merek_produk : $("#merek-produk").val(),
             kategori_produk : $("#kategori-produk").val(),
-            harga_produk : $("#harga-produk").val(),
+            harga_produk : $("#harga-produk").val().replace(/[._]/g,''),
             satuan_produk : $("#satuan-produk").val(),
             code_type : $("#tipe-kode").val(),
             nomermerek : $("#nomer-merek").val(),
+            diskon: $("#diskon-produk").val(),
         };
       
 
@@ -213,6 +221,8 @@ $(document).ready(function(){
 
             },
             error: function(err){
+                Swal.fire("Terjadi Kesalahan","","info");
+                alert(err.responseText);
             }
         });
     });

@@ -66,12 +66,10 @@ $master='admingudang';
 
                     <div class="form-group">
                         <label for="produk-select">Produk</label>
-                        <select class="custom-select" name="produk-select" id="produk-select">
-                            <option selected>Pilih Produk</option>
-                            @foreach($produk as $produks)
-                            <option value="{{$produks->kode_produk}}">{{$produks->kode_produk}} {{$produks->nama_produk}}</option>
-                            @endforeach
-                        </select>
+                        <input class="custom-select" name="produk-select" id="produk-select">
+                        
+                          <ul id="myUL">
+                         </ul>
                     </div>
                     <div class="form-group">
                         <label for="jumlah-select">Jumlah</label>
@@ -80,9 +78,8 @@ $master='admingudang';
                     <div class="form-group">
                         <label for="status-select">Status</label>
                         <select class="custom-select" name="status-select" id="status-select" required>
-                            <option value="Masuk">Masuk</option>
-                            <option value="Keluar">Keluar</option>
-                            <option value="Penyesuaian">Penyesuaian</option>
+                            <option value="masuk">Masuk</option>
+                            <option value="keluar">Keluar</option>
                         </select>
                     </div>
                     <div class="form-group">

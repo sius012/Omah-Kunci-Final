@@ -106,11 +106,19 @@ $master='kasir' @endphp
 
 <div class="card">
 
-  <div class="card-header">
+  <div class="card-header"
   <form id="preorderform" action="/tambahpreorder">
   <h4 id="tt" class="m">Tanda Terima</h4><span id="nn" style="color:#747474;" class="mr-2"> No Nota : ?</span><i style="color:#747474;" class="fa fa-copy mr-3"></i>
   </div>
   <div class="card-body">
+  <label for="notabesar">Tahap Pembayaran</label>
+  <select name=""  class="custom-select mb-3" id="notabesar">
+      <option value="pintugarasi">1</option>
+      <option value="pintugadandp">2</option>
+      <option value="pintugadandp">3</option>
+
+ 
+    </select>
   <label for="notabesar">Pilih Nota Besar</label>
   <select name=""  class="custom-select mb-3" id="notabesar">
       <option value="pintugarasi">Pintu Garasi</option>

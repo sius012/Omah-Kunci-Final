@@ -94,13 +94,11 @@ input {
 }
 
 table td{
-    border: 2px solid black;
     padding: 10px;
 }
 
 table{
-    width: 100%;
-    
+ 
 }
 
 

@@ -31,7 +31,10 @@ Route::get('/accountsetting', function(){
 Route::get('/redirecting', 'RedirectController@index');
 
 Route::middleware(["role:kasir|manager"])->group(function(){
-    Route::get('/kasir', 'KasirController@index')
+    Route::post('/tampilreturn', 'TransaksiController@tampilreturn');
+    Route::post("/printnotakecilbc", 'KasirController@printnotakecil');
+    Route::post('/removesection','Kasir2Controller@remover');
+    Route::get('/kasir', 'Kasir2Controller@index')
 ->name("kasir");
     Route::post('/cari', 'KasirController@cari')->name('cari');
     Route::post('/tambahItem', 'KasirController@tambahTransaksiDetail');
@@ -74,6 +77,7 @@ Route::middleware(["role:kasir|manager"])->group(function(){
 
 
 Route::middleware(["role:admingudang|manager"])->group(function(){
+    Route::post('/searchpro', 'DetailStokController@searcher');
     Route::post('/tambahstok', 'StokController@tambahstok');
     Route::post('/loadsinglestok', 'StokController@loadsinglestok');
 
@@ -86,9 +90,11 @@ Route::middleware(["role:admingudang|manager"])->group(function(){
     Route::get('/stok', 'StokController@index')->name('stok');
     Route::post('/loaddatastok', 'StokController@loaddatastok');
     Route::post('/updateallstok', 'StokController@updateallstok');
+   
 });
 
 Route::middleware(["role:manager"])->group(function(){
+    Route::post('/checkdata', 'CheckDataController@index');
     Route::get('/produk', 'ProdukController@index')->name('produk');
     Route::post('/tambahbarang', 'ProdukController@tambahbarang');
     Route::post('/hapusbarang', 'ProdukController@hapusbarang');
@@ -111,15 +117,19 @@ Route::post('/loaddsm', 'DSMController@loaddatadetailstok');
 Route::post('/verifiying', 'DSMController@verifiying');
 Route::post('/rejecting', 'DSMController@rejecting');
     Route::post('/printbarcode', 'ProdukController@printbarcode');
-    Route::get('manajemen_akun', 'AkunController@index')->name('ma');
+    Route::get('/manajemen_akun', 'AkunController@index')->name('ma');
     Route::post('/updateakun/{id}', 'AkunController@updateakun')->name('updateakun');
     Route::get('/hapusakun/{id}', 'AkunController@hapusakun')->name('hapusakun');
     Route::get('/hapustransaksi/{id}', 'transaksiController@hapus')->name('hapustransaksi');
-    Route::get('/home', "HomeController@index")->name('home');
+    Route::get('/dashboard', "HomeController@index")->name('home');
+    Route::get('/importexcel', function(){
+        return view('exceltodb');
+    });
+    Route::post('/injectitem', 'SeederJoyEvo@inject');
  });
 
 
-
+Route::get('/check','FakeInject@index');
 
 Route::get('/viewbarcode', function(){
     return view('cetakbarcode');
@@ -141,53 +151,18 @@ Route::get('/viewbarcode', function(){
 
 
 
+
+
 //cetak
 
 
-Route::get('/notakecil', function(){
-    return view('nota.notakecil');
-});
 
-Route::get('/rolesinject', function(){
-    $role = Role::create(['name' => 'kasir']);
-    $permission = Permission::create(['name' => 'cashiering']);
-
-});
-
-Route::get('/layout', function(){
-    return view("layouts.layout2");
-});
 
 
 
 
 // Theodhore 19 Februari 2022
 
-Route::get('request', function(){
-    return view('request');
-});
 
 
 
-
-Route::get('/nota_besar_final', function(){
-    return view('nota_besar');
-});
-
-Route::get('/injectproduk', "SeederJoy@inject");
-
-Route::post('/printcurrentstok', "StokController@printcurrent");
-
-
-
-
-Route::get('profile', function(){
-    return view('profile');
-});
-
-Route::get('send-notif/{name}', function ($name) {
-    event(new SendGlobalNotification($name));
-    return "Event has been sent!";
-});
-
-Route::post('/checkdata', 'CheckDataController@index');

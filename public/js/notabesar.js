@@ -15,7 +15,8 @@ $(document).ready(function(){
         <label for='warnatipepg'>Warna/Tipe : </label>
         <input required class="form-control readonly" id="warnatipepg">
         <label for='waktupg'>Waktu : </label>
-        <input required class="form-control readonly" id="waktupg">
+        <input type="text-area" required class="form-control readonly" id="waktupg" value="2 Bulan dari Penerimaan DP 50% dan persetujuan warna, tipe, ukuran lebar dan tinggi lapangan">
+        <textarea type="text-area" required class="form-control readonly" id="waktupg" value="">2 Bulan dari Penerimaan DP 50% dan persetujuan warna, tipe, ukuran lebar dan tinggi lapangan</textarea>
     `;
 
     var pgadp = `
@@ -24,7 +25,7 @@ $(document).ready(function(){
     <label for='warnatipepgadp'>Warna/Tipe : </label>
     <input required class="form-control readonly" id="warnatipepgadp">
     <label for='waktupgadp'>Waktu : </label>
-    <input required class="form-control readonly" id="waktupgadp">
+    <textarea type="text-area" required class="form-control readonly" id="waktupgadp" value="">2 Bulan dari Penerimaan DP 50% dan persetujuan warna, tipe, ukuran lebar dan tinggi lapangan</textarea>
 `;
 
 var ag = `
@@ -129,6 +130,9 @@ $("#trigger").click(function(e){
             type: "post",
             dataType: "json",
             success: function(data){
+                if(data["peringatan"] != undefined){
+                    alert("hai");
+                }
                 console.log(data);
                 $("#tt").text(data["nb"][0]["termin"] == 3 ? "PELUNASAN" : "Termin: "+data["nb"][0]["termin"]);
                 $("#baseinputnb .col").show();
@@ -268,6 +272,7 @@ $("#trigger").click(function(e){
             brp: $("#brp").val(),
             gm: $("#gm").val(),
             total: $("#total").val().replace(/[._]/g,'')
+            
         }
 
         console.log(formData);
@@ -282,6 +287,7 @@ $("#trigger").click(function(e){
                 ketopsi: currentopsi,
                 id_transaksi: $("#id_trans").val(),
                 tanggal: $("#tgl").val(),
+                tp: $("#tp").val()
             },
             type: "POST",
             url: url,
@@ -306,6 +312,7 @@ $("#trigger").click(function(e){
             },
             error: function(err,response){
                 Swal.fire("terjadi kesalahan");
+                alert(err.responseText);
             }
         });
        

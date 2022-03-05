@@ -60,7 +60,6 @@ class PreorderController extends Controller
         $tanggal2 = Carbon::createFromFormat("Y.m.d", date("Y.m.d",strtotime($tanggal)))->addDays(20)->format("Y-m-d");
 
 
-        $tanggal3 =  Carbon::createFromFormat("Y.m.d", date("Y.m.d",strtotime($tanggal)))->addDays(40)->format("Y-m-d");
 
         $id;
         $id2 = "";
@@ -72,12 +71,28 @@ class PreorderController extends Controller
         }else{
             $counter = DB::table('nota_besar')->count();
             $counter = $counter+1;
-            $no = date("ymmd").$counter;
+            $no = date("ymd").$counter;
             $counting = DB::table('nota_besar')->where("no_nota",$no)->count();
             if($counting < 1){
-                $id = DB::table('nota_besar')->insertGetId(array_merge($req->input('formData'),['no_nota' => $no, 'termin' => 1, "status" => "dibayar",'created_at'=>$tanggal]));
-                $id2 = DB::table('nota_besar')->insertGetId(['ttd'=> $formdata["ttd"],'ttd'=> $formdata["ttd"],'up'=> $formdata["up"],'gm'=> $formdata["gm"],'total'=> $formdata["total"],'no_nota' => $no, 'termin' => 2, "status" => "ready",'jatuh_tempo'=>$tanggal2]);
-                $id3 = DB::table('nota_besar')->insertGetId(['ttd'=> $formdata["ttd"],'ttd'=> $formdata["ttd"],'up'=> $formdata["up"],'gm'=> $formdata["gm"],'total'=> $formdata["total"],'no_nota' => $no, 'termin' => 3,'jatuh_tempo'=>$tanggal3]);
+                switch ($req->tp) {
+
+
+                        case '2':
+                            $id = DB::table('nota_besar')->insertGetId(array_merge($req->input('formData'),['no_nota' => $no, 'termin' => 1, "status" => "dibayar",'created_at'=>$tanggal, 'jatuh_tempo'=>$tanggal2,'tp' => $req->tp]));
+                            $id3 = DB::table('nota_besar')->insertGetId(['ttd'=> $formdata["ttd"],'ttd'=> $formdata["ttd"],'up'=> $formdata["up"],'gm'=> $formdata["gm"],'total'=> $formdata["total"],'no_nota' => $no, 'termin' => 3,'jatuh_tempo'=>$tanggal2]);
+                            break;
+
+                        case '3':
+                            $id = DB::table('nota_besar')->insertGetId(array_merge($req->input('formData'),['no_nota' => $no, 'termin' => 1, "status" => "dibayar",'created_at'=>$tanggal, 'jatuh_tempo'=>$tanggal2, 'tp' => $req->tp]));
+                            $id2 = DB::table('nota_besar')->insertGetId(['ttd'=> $formdata["ttd"],'ttd'=> $formdata["ttd"],'up'=> $formdata["up"],'gm'=> $formdata["gm"],'total'=> $formdata["total"],'no_nota' => $no, 'termin' => 2, "status" => "ready",'jatuh_tempo'=>$tanggal2,'tp' => $req->tp]);
+                            $id3 = DB::table('nota_besar')->insertGetId(['ttd'=> $formdata["ttd"],'ttd'=> $formdata["ttd"],'up'=> $formdata["up"],'gm'=> $formdata["gm"],'total'=> $formdata["total"],'no_nota' => $no, 'termin' => 3,'jatuh_tempo'=>$tanggal2,'tp' => $req->tp]);
+                        break;
+                    
+                    default:
+                        # code...
+                        break;
+                }
+                
             }
           
         }
@@ -148,6 +163,9 @@ class PreorderController extends Controller
         $formdata = $req->input("formData");
         
         $termin = DB::table("nota_besar")->where("id_transaksi", $id)->get()[0]->termin;
+
+
+
         $no_nota = DB::table("nota_besar")->where("id_transaksi", $id)->get()[0]->no_nota;
         DB::table("nota_besar")->where("no_nota", $no_nota)->where("termin",$termin)->update(["status" => "dibayar"]);
         DB::table("nota_besar")->where("no_nota", $no_nota)->where("termin",$termin+1)->update(["status" => "ready"]);
@@ -180,13 +198,28 @@ class PreorderController extends Controller
 
     public function getnb(Request $req){
         $id_trans = $req->input("id_transaksi");
+
+       
         $data1 = DB::table('nota_besar')->where('id_transaksi', $id_trans)->get();
         $data2 = DB::table('nb_detail')->where('id_nb', $id_trans)->get();
         $nn = $data1[0]->no_nota;
-        $termin = $data1[0]->termin;
         
-        $td = DB::table("nota_besar")->where("no_nota", $nn)->where("termin", "<", $termin)->sum("us");
-        return json_encode(["nb" => $data1,  "opsi" => $data2, "td"=>$td]);
+        $termin = $data1[0]->termin;
+
+         //cek apakah termin sebelumnya sudah lunas
+         $status = DB::table('nota_besar')->where("no_nota",$nn)->where("termin", $termin-1)->get()[0]->status;
+
+         if($status == "dibayar"){
+            
+            $td = DB::table("nota_besar")->where("no_nota", $nn)->where("termin", "<", $termin)->sum("us");
+            return json_encode(["nb" => $data1,  "opsi" => $data2, "td"=>$td,]);
+         }else{
+            $data1 = DB::table('nota_besar')->where("no_nota",$nn)->where("termin", $termin-1)->get();
+            $td = DB::table("nota_besar")->where("no_nota", $nn)->where("termin", "<", $termin-1)->sum("us");
+            return json_encode(["nb" => $data1,  "opsi" => $data2, "td"=>$td, "peringatan"=>"Termin Sebelumnya harus dilunasi"]);
+         }
+        
+      
     }
 
     public function cetaknotabesar(Request $req){

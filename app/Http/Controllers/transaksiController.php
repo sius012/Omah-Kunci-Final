@@ -12,12 +12,12 @@ class transaksiController extends Controller
         $data = [];
       
         
-        $get = DB::table("transaksi")->orderBy("updated_at" ,'asc')->where('no_nota', $req->no_nota)->get()->toArray();
+        $get = DB::table("transaksi")->orderBy("updated_at" ,'desc')->where('no_nota', $req->no_nota)->get()->toArray();
 
         if($req->has('no_nota')){
-            $get = DB::table("transaksi")->orderBy("updated_at" ,'asc')->where('no_nota', $req->no_nota)->get()->toArray();
+            $get = DB::table("transaksi")->orderBy("updated_at" ,'desc')->where('no_nota', $req->no_nota)->get()->toArray();
         }else{
-            $get = DB::table("transaksi")->orderBy("updated_at" ,'asc')->get()->toArray();
+            $get = DB::table("transaksi")->orderBy("updated_at" ,'desc')->get()->toArray();
         }
         
 
@@ -43,6 +43,15 @@ class transaksiController extends Controller
     //  dd($data);
 
         return view("transaksi", compact('data'));
+
+        
+    }
+
+    public function tampilreturn(Request $req){
+        $id=$req->id_trans;
+        $datatrans = DB::table('transaksi')->join('detail_transaksi','detail_transaksi.kode_trans','=','transaksi.kode_trans')->join('produk','detail_transaksi.kode_produk','=','produk.kode_produk')->where('transaksi.kode_trans', $id)->get();
+     
+        return json_encode($datatrans);
 
         
     }

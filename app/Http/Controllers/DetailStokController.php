@@ -26,14 +26,25 @@ class DetailStokController extends Controller
         $data = $req->input('data');
         $data['id_ag'] = Auth::user()->id;
         DB::table('detail_stok')->insert($data);
-        if($data['status'] = 'masuk'){
+        if($data['status'] == 'masuk'){
             $jml = DB::table('stok')->where('kode_produk', $data['kode_produk'])->pluck('jumlah');
             $jml = $jml[0];
-            DB::table('stok')->where('kode_produk', $data['kode_produk'])->update(['jumlah'=> $jml + $data['jumlah']]);
-        }else{
+            DB::table('stok')->where('kode_produk', $data['kode_produk'])->update(['jumlah'=> (int) $jml + (int) $data['jumlah']]);
+        }else if($data['status'] == 'keluar'){
             $jml = DB::table('stok')->where('kode_produk', $data['kode_produk'])->pluck('jumlah');
             $jml = $jml[0];
-            DB::table('stok')->where('kode_produk', $data['kode_produk'])->update(['jumlah'=> $jml - $data['jumlah']]);
+            DB::table('stok')->where('kode_produk', $data['kode_produk'])->update(['jumlah'=> (int) $jml - (int) $data['jumlah']]);
         }   
+    }
+
+    public function searcher(Request $req){
+        $kw = $req->kw;
+
+        $data = DB::table('produk')->where('kode_produk', 'LIKE', "%".$kw."%")->orWhere('nama_produk', 'LIKE', "%".$kw."%")->orWhere('id_kategori', 'LIKE', "%".$kw."%")->orWhere('id_ct', 'LIKE', "%".$kw."%")->take(10)->get();
+
+        return json_encode($data);
+
+
+        
     }
 }

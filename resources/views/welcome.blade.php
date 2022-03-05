@@ -59,7 +59,7 @@
                                 <h2 style="color: #FAE511" class="card-title">OmahKunci</h2>
                             </div>
                             <p class="card-text w-75 text-light">
-                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                "Aplikasi Pengelolaan Toko OmahKunci"
                             </p>
                         </div>
                     </div>
@@ -69,9 +69,9 @@
                                 @if (Route::has('login'))
                                 <div class="d-inline-flex ml-3">
                                     @auth
-                                    <a class="nav-link home-btn" href="{{ url('/redirecting') }}">Beranda</a>
+                                    <a class="nav-link home-btn m-3" href="{{ url('/redirecting') }}">Beranda</a>
                                     @else
-                                    <a class="nav-link login-btn" href="{{ route('login') }}">Login</a>
+                                    <a class="nav-link login-btn mr-3" href="{{ route('login') }}">Login</a>
 
                                     @if (Route::has('register'))
                                     <a class="nav-link register-btn" href="{{ route('register') }}">Register</a>

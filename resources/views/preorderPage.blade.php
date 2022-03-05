@@ -81,7 +81,7 @@ $no=1;
                 <div>Tanggal Transaksi</div>
             </th>
             <th rowspan="2" style="width:120px;">
-                <div class="mt-3"><a href="{{route('hapuspre',['id'=>$datas->id])}}" class="btn btn-danger hapustrans"><i style="" class="fa fa-trash"></i></a></div>
+                <div class="mt-3">@if(auth()->user()->roles[0]['name'] == 'manager')<a href="{{route('hapuspre',['id'=>$datas->id])}}" class="btn btn-danger hapustrans"><i style="" class="fa fa-trash"></i></a>@endif</div>
             </th>
         </tr>
       

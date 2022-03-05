@@ -27,12 +27,23 @@ class ProdukController extends Controller
         $produk = DB::table('produk')->join('kategori', 'produk.id_kategori', '=', 'kategori.id_kategori')->get();
         return json_encode($produk);
     }
-    public function index(){
-        $kategori = DB::table('produk')->groupBy("id_kategori")->get();
-        $kodetype = DB::table('produk')->groupBy("id_ct")->get();
-        $merek = DB::table('produk')->groupBy("merk")->get();
-        $produk = DB::table('produk')->take(100)->get();
-        return view("produk", ["kat" => $kategori, "produk" => $produk, "merek" => $merek, "kodetype" => $kodetype]);
+    public function index(Request $req){
+        $kategori = DB::table('tipes')->get();
+        $kodetype = DB::table('kode_types')->get();
+        $merek = DB::table('mereks')->get();
+        $produk = DB::table('new_produks')->join('mereks','new_produks.id_merek','mereks.id_merek')->join('tipes','new_produks.id_tipe','tipes.id_tipe')->join('kode_types','new_produks.id_ct','kode_types.id_kodetype');
+
+        if($req->filled("tipe")){
+            $produk->where('new_produks.id_tipe',$req->tipe);
+        }
+        if($req->filled("kodetipe")){
+            $produk->where('new_produks.id_ct',$req->kodetipe);
+        }
+        if($req->filled("merek")){
+            $produk->where('new_produks.id_merek',$req->merek);
+        }
+
+        return view("produk", ["tipe" => $kategori, "produk" => $produk->get(), "merek" => $merek, "kodetype" => $kodetype]);
     }
 
     public function search(Request $req){
@@ -46,15 +57,11 @@ class ProdukController extends Controller
         $ct = $req->ct;
         $merk = $req->merk;
 
-        if($kw != "" || $kw != null){
-            $produk = DB::table('produk')->where("kode_produk", $kw)->where("id_kategori", $type)->where("id_ct",$ct)->where("merk",$merk)->get();
+     
+            $produk = DB::table('produk')->where("kode_produk", "LIKE","%".$kw."%")->orWhere("id_kategori", "LIKE","%".$kw."%")->orWhere("id_ct","LIKE","%".$kw."%")->orWhere("merk","LIKE","%".$kw."%")->get();
             return view("produk", ["kat" => $kategori, "produk" => $produk, "merek" => $merek, "kodetype" => $kodetype, "keyword" => $kw, "tipe" => $type, "id_ct" => $ct,"mereknya" => $merk]);
         
-        }else{
-                
-            $produk = DB::table('produk')->where("id_kategori", $type)->where("id_ct",$ct)->where("merk",$merk)->get();
-            return view("produk", ["kat" => $kategori, "produk" => $produk, "merek" => $merek, "kodetype" => $kodetype, "keyword" => $kw, "tipe" => $type, "id_ct" => $ct,"mereknya" => $merk]);
-       }
+    
         
         
     }
@@ -67,6 +74,7 @@ class ProdukController extends Controller
         $harga_produk = $req->input('harga_produk');
         $satuan_produk = $req->input('satuan_produk');
         $codetype = $req->input('code_type');
+        $diskon = $req->input('diskon');
 
         $nmerek = $req->input("nomermerek");
 
@@ -74,7 +82,7 @@ class ProdukController extends Controller
 
        
         
-        DB::table('produk')->insert(["kode_produk"=>$kode_produk,"nama_produk"=>$nama_produk,"merk" => $merek_produk, "id_kategori"=> $id_kat, "harga" => $harga_produk, 'stn' => $satuan_produk]);
+        DB::table('produk')->insert(["kode_produk"=>$kode_produk,"nama_produk"=>$nama_produk,"merk" => $merek_produk, "id_kategori"=> $id_kat, "harga" => $harga_produk, 'stn' => $satuan_produk,"diskon"=>$diskon]);
 
         $getProduk = DB::table('produk')->join('kategori', 'kategori.id_kategori', '=', 'produk.id_kategori')->get();
         return json_encode(["produk" => $getProduk]);
@@ -90,7 +98,7 @@ class ProdukController extends Controller
 
     public function updatebarang(Request $req,$id){
         DB::table('produk')->where('kode_produk',$id)->
-                            update(["nama_produk" => $req->input('nama_produk'),"id_ct" => $req->input('id_ct'),"stn" => $req->input('stn'),"merk" => $req->input('merk'),"id_kategori" => $req->input('id_kategori'), "harga" => $req->input('harga')]);
+                            update(["nama_produk" => $req->input('nama_produk'),"id_ct" => $req->input('id_ct'),"stn" => $req->input('stn'),"merk" => $req->input('merk'),"id_kategori" => $req->input('id_kategori'), "harga" => $req->input('harga'),'diskon'=>str_replace([".",","],"",$req->diskon)]);
                             return redirect()->route('produk');
        
         }

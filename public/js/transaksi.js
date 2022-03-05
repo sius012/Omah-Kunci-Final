@@ -3,6 +3,25 @@ $(document).ready(function(e){
 
     $(document).on('click', '.infopreorder', function(e){
     });
+
+    $(".printing").click(function(){
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content')
+            },
+            url: "/printnotakecilbc",
+            data: {
+                id: $(this).attr('id_trans')
+            },
+            type: "post",
+            success: function(response){
+                printJS({printable: response['filename'], type: 'pdf', base64: true});
+            },error: function(err){
+                alert(err.responseText);
+            }
+        });
+    });
+
     $(".content-wrapper").on("click", ".datatrans", function(event){
         $("#exampleModal").modal('show');
     
@@ -137,22 +156,42 @@ $(document).ready(function(e){
       
      });
 
-     $(".hapustrans").click(function(e){
-        e.preventDefault();
-        Swal.fire({
-            title: 'Apakah anda yakin ingin menghapus',
-            confirmButtonText: 'Hapus',
-            cancelButtonText: "Batal",
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                window.location = $(this).attr('href');
-            } else if (result.isDenied) {
-              
-            }
-          });
-        
-     });
+     $(".returntrans").click(function(e){
+         e.preventDefault();
+         $("#returnform").modal("show");
+         $.ajax({
+             headers: {
+                "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content'),
+             },
+             data: {
+                 'id_trans' : $(this).attr('id_trans')
+             },
+             url: "/tampilreturn",
+             type: "post",
+             dataType: "json",
+             success: function(data){
+                 let no = 1;
+                 let row = data.map(function(r,i){
+                    return `
+                        <tr>
+                            <td>${i+1}</td>
+                            <td>${r['nama_produk']}${r['merk']}</</td>
+                            <td>${r['harga']}</</td>
+                            <td>${r['potongan']}</</td>
+                            <td>${r['jumlah']}</td>
+                            <td><input type="checkbox"></td>
+                        </tr>
+                    `;
+                 });
+
+                 $("#returncont").html(row);
+
+             },error: function(err){
+                 alert(err.responseText);
+             }
+             
+         })
+     })
       
   
 

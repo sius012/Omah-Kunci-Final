@@ -1,6 +1,8 @@
 @php
 $whoactive = "riwayattransaksi";
 $master='kasir';
+$hastoday = false;
+$haslampau = false;
 @endphp
 @extends('layouts.layout2')
 @section('titlepage', 'Transaksi')
@@ -14,7 +16,9 @@ $master='kasir';
 
 @endsection
 @section('js')
+<script src="{{ asset('js/print.js') }}"></script>
 <script src="{{ asset('js/transaksi.js') }}"></script>
+
 @stop
 @section('content')
 <form action="/caritransaksi" type="get">
@@ -27,11 +31,16 @@ $master='kasir';
 </div>
 </form>
 
-<div class="row">
-    <h5 class="date">Hari Ini</h5>
-</div>
+
 
 @foreach($data as $datas)
+@if(\Carbon\Carbon::parse($datas['created_at'])->isToday() == 1 and $hastoday == false)
+<h4>Hari Ini</h4>
+@php $hastoday=true @endphp
+@elseif(\Carbon\Carbon::parse($datas['created_at'])->isToday() == 0 and $haslampau == false)
+<h4>Sebelumnya</h4>
+@php $haslampau=true @endphp
+@endif
 <div class="card datatrans p-3" id_trans="{{$datas['kode_trans']}}">
     <input type="hidden">
     <table class="table table-borderless text-center">
@@ -52,7 +61,8 @@ $master='kasir';
                 <div>Tanggal Transaksi</div>
             </th>
             <th rowspan="2" style="width:120px;">
-                <div class="mt-3">@if(Auth::user()->roles[0]['name'] == 'manager')<a href="{{route('hapustransaksi',['id'=>$datas['kode_trans']])}}" class="btn btn-danger hapustrans"><i style="" class="fa fa-trash"></i></a>@endif</div>
+            <div class="mt-3"><a id_trans="{{$datas['kode_trans']}}" class="btn btn-warning printing"><i style="" class="fa fa-print"></i></a></div>
+                <div class="mt-3">@if(Auth::user()->roles[0]['name'] == 'manager')<a href="{{route('hapustransaksi',['id'=>$datas['kode_trans']])}}" id_trans="{{$datas['kode_trans']}}" class="btn btn-danger returntrans"><i style="" class="fa fa-undo"></i></a>@endif</div>
             </th>
         </tr>
         <tr>
@@ -75,5 +85,41 @@ $master='kasir';
     </table>
 </div>
 @endforeach
+
+<div class="modal fade" tabindex="-3" role="dialog" id="returnform">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Return Transaksi</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Ini adalah daftar barang yang dibeli</p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama dan Merek</th>
+                    <th>harga</th>
+                    <th>diskon(/pcs)</th>
+                    <th>Jumlah</th>
+                    <th>Aksi</th>
+                </tr>
+
+            </thead>
+            <tbody id="returncont">
+                
+            </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 @endsection

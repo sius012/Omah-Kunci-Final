@@ -1,4 +1,43 @@
 $(document).ready(function () {
+ 
+
+
+    $("#produk-select").keyup(function(){
+        $("#myUL").show();
+        let kw = $(this).val();
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content')
+            },
+            data: {
+                kw: kw
+            },
+            url: "/searchpro",
+            type: "post",
+            dataType: "json",
+            success: function(data){
+                var li = "";
+                for(var i = 0;i < data.length;i++){
+                    li += `<li>
+
+                               <a kode="${data[i]['kode_produk']}" harga="${data[i]['harga']}" jumlah="1" potongan="0" class="sear">${data[i]["kode_produk"] + " " + data[i]["nama_produk"]}</a>
+                            </div>
+                        
+                        </li>`;
+                }
+               
+                $("#myUL").html(li);
+               
+            }
+            
+        })
+    });
+
+    $("#myUL").on("click", ".sear",function(event){
+        $("#produk-select").val($(event.target).attr("kode"));  
+    }); 
+
+
     loaddetail();
     $("#detailstoksubmitter").submit(function (e) {
         e.preventDefault();
@@ -9,6 +48,8 @@ $(document).ready(function () {
             'status': $("#status-select").val(),
             'keterangan': $("#keterangan").val(),
         };
+
+        alert($("#status-select").val());
 
         console.log(data);
         $.ajax({
@@ -21,7 +62,7 @@ $(document).ready(function () {
             url: "/tambahdetailstok",
             type: "post",
             success: function (data) {
-                Swal.fire('Berhasil Ditambahkan', 'tunggu verifikasi dari manager ya..', 'success');
+                Swal.fire('Berhasil Ditambahkan', '', 'success');
                 loaddetail();
                 $("#examplemodal").modal('hide');
             },
@@ -65,8 +106,6 @@ $(document).ready(function () {
                                         <th style="width:70px;">Jumlah</th>
                                         <th style="width:90px;">Status</th>
                                         <th style="width:120px;">Keterangan</th>
-                                    
-                                        <th style="width:120px;">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody class="tbody">
@@ -77,7 +116,6 @@ $(document).ready(function () {
                                         <td>${rows['jumlah']} ${rows['stn']}</td>
                                         <td><div class="status bg-danger">${rows['status']}</div></td>
                                         <td>${rows['keterangan']}</td>
-                                        <td><div class="${rows['status2'] == 'terverifikasi' ? 'status2' : ''}">${rows['status2']}</div></td>
                                     </tr
                                 </tbody>
                             </table>
@@ -91,4 +129,12 @@ $(document).ready(function () {
             }
         });
     }
+
+    $(document).click(function(){
+        $("#myUL").hide();
+    });
+
+    $("#myUL").click(function(e){
+    e.stopPropagation(); 
+    });
 });
