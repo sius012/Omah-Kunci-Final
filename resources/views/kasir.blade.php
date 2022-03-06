@@ -14,6 +14,7 @@
 <script src="{{ asset('js/print.js') }}"></script>
 <script src="{{ asset('js/mainjs/kasir.js') }}"></script>
 <script src="{{ asset('js/preorder.js') }}"></script>
+<script src="{{ asset('js/mytools/tools.js') }}"></script>
 <link rel="stylesheet" href="{{ asset('css/kasir.css') }}">
 <script>
     $(document).ready(function(){

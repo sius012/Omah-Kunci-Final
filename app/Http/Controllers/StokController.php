@@ -11,10 +11,24 @@ use PDF;
 
 class StokController extends Controller
 {
-    public function index(){
-        $data = DB::table('stok')->join('produk', 'stok.kode_produk','=','produk.kode_produk')->select('stok.*', 'produk.nama_produk')->get();
-        $produk = DB::table('produk')->get();
-        return view('stok', ['data' => $data, 'produk'=>$produk]);
+    public function index(Request $req){
+     
+
+        $kategori = DB::table('tipes')->get();
+        $kodetype = DB::table('kode_types')->get();
+        $merek = DB::table('mereks')->get();
+        $produk = DB::table('stok')->join('new_produks','new_produks.kode_produk','=','stok.kode_produk')->join('mereks','new_produks.id_merek','mereks.id_merek')->join('tipes','new_produks.id_tipe','tipes.id_tipe')->join('kode_types','new_produks.id_ct','kode_types.id_kodetype');
+        if($req->filled("tipe")){
+            $produk->where('new_produks.id_tipe',$req->tipe);
+        }
+        if($req->filled("kodetipe")){
+            $produk->where('new_produks.id_ct',$req->kodetipe);
+        }
+        if($req->filled("merek")){
+            $produk->where('new_produks.id_merek',$req->merek);
+        }
+
+        return view("stok", ["tipe" => $kategori,"produk"=>$produk->get(), "data" => $produk->get(), "merek" => $merek, "kodetype" => $kodetype]);
     }
 
 
@@ -48,10 +62,37 @@ class StokController extends Controller
     }
 
 
-    public function printcurrent(){
-        $data = DB::table('stok')->join('produk','produk.kode_produk','=','stok.kode_produk')->get();
+    public function printcurrent(Request $req){
+        $kategori = DB::table('tipes')->get();
+        $kodetype = DB::table('kode_types')->get();
+        $merek = DB::table('mereks')->get();
+        $produk = DB::table('stok')->join('new_produks','new_produks.kode_produk','=','stok.kode_produk')->join('mereks','new_produks.id_merek','mereks.id_merek')->join('tipes','new_produks.id_tipe','tipes.id_tipe')->join('kode_types','new_produks.id_ct','kode_types.id_kodetype')->groupBy("new_produks.id_tipe");
+        if($req->filled("id_tipe")){
+            $produk->where('new_produks.id_tipe',$req->id_tipe);
+        }
+        if($req->filled("id_kodetype")){
+            $produk->where('new_produks.id_ct',$req->id_kodetype);
+        }
+        if($req->filled("id_merek")){
+            $produk->where('new_produks.id_merek',$req->id_merek);
+        }
+
+
+        $req2 = $produk->get();
+
+        $arraying = [];
+
+        foreach($req2 as $i => $produks){
+
+            $dato = DB::table('stok')->join('new_produks','new_produks.kode_produk','=','stok.kode_produk')->join('mereks','new_produks.id_merek','mereks.id_merek')->join('tipes','new_produks.id_tipe','tipes.id_tipe')->join('kode_types','new_produks.id_ct','kode_types.id_kodetype')->where("new_produks.id_tipe",$produks->id_tipe)->get();
+            $arraying[$i] = $dato;
+            
+        }
         
-        $pdf = PDF::loadview('stokprint', ["data" => $data]);
+
+
+        
+        $pdf = PDF::loadview('stokprint', ["data" => $arraying]);
         $path = public_path('pdf/');
             $fileName =  date('mdy').'-'."Data Stok". '.' . 'pdf' ;
             $pdf->save(storage_path("pdf/$fileName"));
@@ -62,18 +103,18 @@ class StokController extends Controller
     }
 
     public function loaddatastok($aksi=null){
-        $jmlall = DB::table('produk')->count();
-        $jmlstok = DB::table('produk')->join('stok','stok.kode_produk','=','produk.kode_produk')->count();
+        $jmlall = DB::table('new_produks')->count();
+        $jmlstok = DB::table('new_produks')->join('stok','stok.kode_produk','=','new_produks.kode_produk')->count();
 
         $stoknessarray = [];
-        $stoknessproduk = DB::table('produk')->join('stok','stok.kode_produk','=','produk.kode_produk')->get();
+        $stoknessproduk = DB::table('new_produks')->join('stok','stok.kode_produk','=','new_produks.kode_produk')->get();
 
         foreach($stoknessproduk as $sp){
             array_push($stoknessarray, $sp->kode_produk);
         }
 
 
-        $stoklessproduk =  DB::table('produk')->whereNotIn('kode_produk',$stoknessarray)->get();
+        $stoklessproduk =  DB::table('new_produks')->whereNotIn('kode_produk',$stoknessarray)->get();
 
        return $aksi != null ? $stoklessproduk : json_encode(['jumlah produk' => $jmlall,'tersedia dikatalog'=> $jmlstok,'stokless' => $stoklessproduk]);
     }
@@ -82,7 +123,7 @@ class StokController extends Controller
         $data = $this->loaddatastok('ambilsaja');
         $jumlah = 0;
         foreach($data as $datas){
-            DB::table('stok')->insert(['kode_produk'=>$datas->kode_produk,'jumlah'=>0]);
+            DB::table('stok')->insert(['kode_produk'=>$datas->kode_produk,'jumlah'=>10]);
             $jumlah += 1;
         }
 

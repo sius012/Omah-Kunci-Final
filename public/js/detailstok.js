@@ -73,13 +73,16 @@ $(document).ready(function () {
     });
 
 
-    function loaddetail() {
+    function loaddetail(kw = null) {
         $.ajax({
             headers: {
                 "X-CSRF-TOKEN": $("meta[name='csrf-token']").attr('content')
             },
             url: "/loaddatadetailstok",
             type: "post",
+            data:{
+                kw: kw
+            },
             dataType: "JSON",
             success: function (data) {
 
@@ -113,8 +116,8 @@ $(document).ready(function () {
                                         <td>${rows['created_at']}</td>
                                         <td>${rows['kode_produk']}</td>
                                         <td>${rows['nama_produk']}</td>
-                                        <td>${rows['jumlah']} ${rows['stn']}</td>
-                                        <td><div class="status bg-danger">${rows['status']}</div></td>
+                                        <td>${rows['jumlah']} ${rows['satuan']}</td>
+                                        <td><div class="status ${rows['status'] != 'masuk' ? "bg-danger": "bg-success"}">${rows['status']}</div></td>
                                         <td>${rows['keterangan']}</td>
                                     </tr
                                 </tbody>
@@ -136,5 +139,26 @@ $(document).ready(function () {
 
     $("#myUL").click(function(e){
     e.stopPropagation(); 
+    });
+
+    $("#cetaksubmitter").submit(function(e){
+        e.preventDefault();
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr("content")
+            },
+            url: "/printstoktrack",
+            data: {
+                "berdasarkan" : $("#berdasarkan").val()
+                
+            },
+            dataType: "json",
+            type:"post",
+            success: function(data){
+                printJS({printable: data['filename'], type: 'pdf', base64: true});
+            },error: function(err){
+                alert(err.responseText);
+            }
+        })
     });
 });

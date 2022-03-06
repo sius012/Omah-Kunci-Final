@@ -8,6 +8,7 @@ $master='admingudang';
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/detail_stok.css') }}">
+    <script src="{{ asset('js/print.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/open_sans.css') }}">
 @stop
 
@@ -26,6 +27,12 @@ $master='admingudang';
             </div>
             <div class="col-6">
                 <button type="button" class="btn float-right btn-tambah-data" data-toggle="modal" data-target="#exampleModal">Tambah Data</button>
+                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+            <button type="button" class="btn float-right btn-primary" data-toggle="modal" data-target="#cetakmodal"><i class="fa fa-print"></i></button>
             </div>
         </div>
     </div>
@@ -86,6 +93,50 @@ $master='admingudang';
                         <label for="keterangan">Keterangan</label><br>
                         <textarea required cols="88.5" rows="5" class="form-control" name="keterangan" id="keterangan"></textarea>
                     </div>
+                    
+               
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            
+            </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade bd-example-modal-lg" id="cetakmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cetak Stok Harian</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form id="cetaksubmitter"> 
+                    <div class="form-group">
+                        <label for="tanggal">Pilih Berdasarkan</label><br>
+                        <select name="" id="berdasarkan" class="form-control">
+                            <option value="harian">Harian</option>
+                            <option value="mingguan">Mingguan</option>
+                            <option value="bulanan">Bulanan</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="produk-select">Unduh PDF</label>
+                        <input type="checkbox" class="form-control" name="produk-select" id="produk-select">
+                        
+           
+                    </div>
+                   
                     
                
                 

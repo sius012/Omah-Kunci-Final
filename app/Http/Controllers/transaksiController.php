@@ -8,6 +8,26 @@ use function GuzzleHttp\json_encode;
 
 class transaksiController extends Controller
 {
+    
+    public function kembali(Request $req){
+        $kode = $req->input('kode');
+
+        $datos = [];
+        foreach($kode as $kodes){
+         $jml = DB::table('detail_transaksi')->where('kode_trans',$req->id_trans)->where('kode_produk',$kodes)->get()[0]->jumlah;
+         $status = DB::table('detail_transaksi')->where('kode_trans',$req->id_trans)->where('kode_produk',$kodes)->pluck('status')->first();
+      
+         if($status != 'return'){
+            $jmlstok =  DB::table('stok')->where('kode_produk',$kodes)->pluck('jumlah')->first();
+            DB::table('detail_transaksi')->where('kode_trans',$req->id_trans)->where('kode_produk',$kodes)->update(['status'=>'return']);
+            DB::table('stok')->where('kode_produk',$kodes)->update(['jumlah'=>$jmlstok + $jml]);
+         }
+        
+        }
+        
+        return back();
+        
+    }
     public function index(Request $req){
         $data = [];
       
@@ -49,12 +69,13 @@ class transaksiController extends Controller
 
     public function tampilreturn(Request $req){
         $id=$req->id_trans;
-        $datatrans = DB::table('transaksi')->join('detail_transaksi','detail_transaksi.kode_trans','=','transaksi.kode_trans')->join('produk','detail_transaksi.kode_produk','=','produk.kode_produk')->where('transaksi.kode_trans', $id)->get();
+        $datatrans = DB::table('transaksi')->join('detail_transaksi','detail_transaksi.kode_trans','=','transaksi.kode_trans')->join('new_produks','detail_transaksi.kode_produk','=','new_produks.kode_produk')->join('mereks','mereks.id_merek','=','new_produks.id_merek')->where('transaksi.kode_trans', $id)->get();
      
         return json_encode($datatrans);
 
         
     }
+
 
     public function showDetail(Request $req){
         $id = $req->input("id");

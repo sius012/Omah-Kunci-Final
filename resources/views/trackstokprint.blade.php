@@ -112,30 +112,33 @@
             <h3>Data STOK Produk</h3>
         <p style="margin-bottom: 20px">Tanggal : {{date('d-M-Y')}}</p>
 
-
-            @foreach($data as $datas)
-            @php  $no = 1@endphp
-            <p style="margin-bottom:0px;padding:0px"><b>Tipe : {{$datas[0]->nama_tipe}}</b></p>
+     
             <table class="table-data" style="width:180mm !important; margin-top: 20px; margin: 20px" >
-              
-                    <tr>
+            <tr>
                         <th >No</th>
                         <th style="width:60px">Kode Produk</th>
                         <th>Nama Produk</th>
-                        <th >Tipe</th>
-                        <th>Tipe Kode</th>
-                        <th>Merek</th>
-                        <th >Jumlah</th>
+                        <th >Merek/th>
+                        <th>Jumlah</th>
+                        <th>Status</th>
+                        <th>Keterangan</th>
+                        <th>A. Gudang</th>
                     </tr>
-                    @foreach($datas as $da)
+    
+            @php  $no = 1@endphp
+         
+              
+              
+                    @foreach($data1 as $da)
                     <tr>
                        <td >{{$no}}</td>
                         <td>{{$da->kode_produk}}</td>
                         <td>{{$da->nama_produk}}</td>
-                        <td >{{$da->nama_tipe}}</td>
-                        <td>{{$da->nama_kodetype}}</td>
-                        <td>{{$da->nama_merek}}</td>
-                        <td >{{$da->jumlah}} {{$da->satuan}}</td>
+                        <td >{{$da->nama_merek}}</td>
+                        <td>{{$da->jumlah}}</td>
+                        <td>{{$da->status}}</td>
+                        <td >{{$da->keterangan}}</td>
+                        <td >{{$da->name}}</td>
                     </tr>
                     @php $no++ @endphp
               
@@ -143,7 +146,7 @@
                     @endforeach
                 
             </table>
-            @endforeach
+          
  
  
 </body>

@@ -28,10 +28,13 @@
     <link rel="stylesheet" href="{{asset('plugins/daterangepicker/daterangepicker.css')}}">
     <!-- summernote -->
     <link rel="stylesheet" href='{{asset("plugins/summernote/summernote-bs4.min.css")}}'>
+    <link rel="stylesheet" href='{{asset("css/select2.min.css")}}'>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-
     <script src="{{asset('plugins/jquery/jquery.js')}}"> </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+ 
+  
     <script src="{{ asset('js/sweetalert2.all.min.js')}}"></script>
 
 
@@ -139,9 +142,9 @@
 
             <!-- Sidebar -->
             <div class="sidebar  p-0 overflow-x-hidden" style="overflow-x: hidden !important" >
-                <a href="index3.html" class="brand-link m-0 d-flex align-items-center justify-content-center" style="border-bottom:2px solid white;padding: 15px">
+                <a href="index3.html" class="brand-link m-0 d-flex align-items-center justify-content-center" style="border-bottom:2px solid yellow;padding: 15px">
                     <img style="margin-right: -40px;" src="{{asset('assets/omahkunci.svg')}}" alt="AdminLTE Logo" class="brand-image m-0">
-                    <span class="brand-text font-weight-light">OmahKunci</span>
+                    <span class="brand-text font-weight-light" style="color:yellow">Omah Kunci</span>
                 </a>
                 <!-- Sidebar user panel (optional) -->
                 <div class="mt-3 pb-3 mb-3 d-block pl-0  " >

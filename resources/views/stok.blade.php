@@ -3,52 +3,78 @@ $master='admingudang';
 @endphp
 @extends('layouts.layout2')
 
-@section('pagetitle', 'Katalog')
 @section('title', 'Katalog')
 
 
 
 @section('js')
 <script src="{{ asset('js/print.js') }}"></script>
-<script src="{{asset('/js/stok.js')}}"></script>
-<script>
-  $(document).ready(function(){
-    $(".btnClose").click(function(){
-      $("#modaluploader").modal("hide");
-    });
+<script src="{{ asset('js/stok.js') }}"></script>
 
-    $(".btnClosed").click(function(){
-      window.location = "/stok";
-    });
-  });
-</script>
 @stop
     
 @section('content')
 <div class="card">
 <div class="card-header"><h3>Kelola Stok <i class='fas fa-box ml-2'></i></h3>
 <div class="card-body">
-<button type="button m-3" class="btn btn-primary" data-toggle="modal" data-target="#modalstok">Tambah Stok Baru</button>
+<div class="wrapper">
+<form action="{{route('stok')}}" method="GET">
+                @csrf
+                <h5 class="card-title">Cari Berdasarkan : </h5>
+                <br>
+                <div class="wrappers d-inline-flex mt-3">
+                <div class="form-group d-inline-flex">
+                    <select name="tipe" id="tipe" class="form-control dynamic w-50 form-control-sm" data-dependent = "state">
+                        <option value="">TIPE</option>
+                        @foreach($tipe as $tipes)
+                            <option value = "{{$tipes->id_tipe}}">{{$tipes->nama_tipe}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div style="margin-left: -100px;" class="form-group d-inline-flex">
+                    <select name="kodetipe" id="kodetipe" class="form-control dynamic w-75 form-control-sm" data-dependent = "state">
+                        <option value="">TIPE KODE</option>
+                        @foreach($kodetype as $kt)
+                            <option value="{{$kt->id_kodetype}}">{{$kt->nama_kodetype}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div style="margin-left: -30px;" class="form-group d-inline-flex">
+                    <select name="merek" id="merek" class="form-control dynamic w-75 form-control-sm" data-dependent = "state">
+                        <option value="">MEREK</option>
+                        @foreach($merek as $merks)
+                            <option value="{{$merks->id_merek}}">{{$merks->nama_merek}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                </div>
+              <button type="submit" class="btn btn-primary btn-sm">Cari</button>
+            </div>
+</form>
+
 <button type="button m-3" class="btn btn-warning"  id="generatestok" ><i class="fas fa-upload"></i>Produk ke Stok</button>
 <a class="btn btn-warning float-right" href="#" id="stokprint"><i class="fa fa-print mr-2"></i>Print</a>
 <div>
 
-    <table class="table mt-3 ">
-        <thead>
+    <table class="table table-striped mt-3 table-bordered ">
+        <thead class="thead-dark">
             <tr class="text-center">
-                <th>NO</th><th>kode_produk</th><th>Nama Produk</th><th>jumlah</th><th>tanggal dibuat</th><th>Aksi</th>
+                <th style="width: 50px">NO</th><th style="width:100px">Kode Produk</th><th align="left" class="w-50" style="text-align: left">Nama Produk</th><th>jumlah</th><th>Aksi</th>
             </tr>
         </thead>
         <tbody id="stokfiller">
         @php
         $no = 1
         @endphp
-        @foreach($data as $datas)
+        @forelse($data as $datas)
             <tr class="text-center">
-                <td>{{$no}}</td><td>{{$datas->kode_produk}}</td><td>{{$datas->nama_produk}}</td><td>{{$datas->jumlah}}</td><td>{{$datas->created_at}}</td>@if(auth()->user()->roles[0]['name'] == "manager")<td align='center'><button class="btn btn-warning mr-3 editstok" kode_stok="{{$datas->id}}"><i class='fa fa-edit'></i></button>@endif<button class='btn btn-danger hapusstok' kode_stok="{{$datas->id}}"><i class='fa fa-trash'></i></button></button></td>
+                <td>{{$no}}</td><td>{{$datas->kode_produk}}</td><td align="left">{{$datas->nama_produk}} {{$datas->nama_merek}}</td><td>{{$datas->jumlah}} {{$datas->satuan}}</td>@if(auth()->user()->roles[0]['name'] == "manager")<td align='center'><button class="btn btn-warning mr-3 editstok" kode_stok="{{$datas->id}}"><i class='fa fa-edit'></i></button>@endif<button class='btn btn-danger hapusstok' kode_stok="{{$datas->id}}"><i class='fa fa-trash'></i></button></button></td>
             </tr>
             @php $no++ @endphp
-        @endforeach
+        @empty
+            <h3 class="mb-3 mt-3">Tidak Ditemukan</h3>
+          
+        @endforelse
 
         </tbody>
     </table>

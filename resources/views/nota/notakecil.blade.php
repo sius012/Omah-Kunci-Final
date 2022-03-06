@@ -241,14 +241,14 @@ $subtotal = 0;
                         @foreach($data2 as $dats)
                         <tr>
 
-                            <td colspan="2">{{$dats->nama_produk}} {{$dats->merk}}</td>
+                            <td colspan="2">{{$dats->nama_produk}} {{$dats->nama_merek}}</td>
 
 
                         </tr>
 
                         <tr>
                             <td style="width: 80px">{{number_format($dats->harga,"0",".",".")}}{{" x"}} {{$dats->jumlah}} </td>
-                            <td align="right">- {{strpos($dats->potongan,"%") !== false ? $dats->potongan : "Rp. ". number_format($dats->potongan)}}</td>
+                            <td align="left">- {{$dats->prefix !== 'rupiah' ? $dats->potongan."%" : "Rp.". number_format($dats->potongan)}}</td>
                             <td align="right">Rp.{{number_format(strpos($dats->potongan,"%") !== false ? $dats->jumlah * ($dats->harga_produk - $dats->harga_produk * ( (int)trim($dats->potongan,"%"))/100) :  ($dats->harga_produk - $dats->potongan) * $dats->jumlah,"0",".","." )}}</td>
                             @php $no++; 
                             

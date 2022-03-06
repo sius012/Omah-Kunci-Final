@@ -19,9 +19,24 @@
     <style>
         *{
             margin: 0;
+            font-size: 5pt !important;
+            font-weight: bold;
+        }
+
+        img{
+            width: 20px;
+            position: relative;
+            transform: rotate(-90);
+            left: 4px;
+            bottom:5px;
+        }
+
+        .kode{
+            letter-spacing: 5pt;
+            font-size: 4pt !important;
         }
     body{
-        width: 60mm;
+        width: 100mm;
         
     }
 .container{
@@ -34,7 +49,6 @@
 .pie{
     position: relative;
     background: red ;
-    padding: 20px ;
     display: inline;
     margin: 0.5px;
 }
@@ -42,10 +56,12 @@
 .card{
   
      background-color: white;
-     width: 60mm;
-     height: 30mm;
-    border:1px solid black;
-    padding: 3px;
+     width: 33mm;
+     height: 15mm;
+    border:1px solid gray;
+    border-radius: 7px;
+  
+    padding-top:0px;
 }
 
     </style>
@@ -68,13 +84,13 @@
             align-items: center;
     
 
-            margin-top: 35px;
+            margin-top: 0px;
         }
 
         .container .address {
   
 
-            margin-bottom: 40px;
+            margin-bottom: 0px;
         }
 
         .container .data-wrapper {
@@ -119,7 +135,7 @@
         }
         span{
             font-size: 6pt;
-            margin:0;
+            margin:0px;
         }
     </style>
 </head>
@@ -130,18 +146,19 @@
          
    
     @foreach($data as $datas)
-        <div style="margin-top: 0px;  justify-content: center;flex-direction: unset;width: 60mm;align-items: center;">
+        <div style="margin-top: 0px;  justify-content: center;flex-direction: unset;width: 100mm;align-items: center;">
       
-            <div style="display: inline-block;text-align: center; "><div class="card">
-                <span style="font-size: 13px;">{{$datas->nama_produk}}</span>
-                <div style="text-align:center !important; margin-left: 5px; margin-top: 5px; margin-bottom: 5px;">
-                <span style="size: 8px !important;">{!! DNS1D::getBarcodeHTML($datas->kode_produk, 'C128',2.1,33) !!}</span>
+            <div style="display: inline-block;text-align: center; width:300px"><div class="card">
+                <span style="text-align:left;font-size: 13px;left:6px;margin-top:4px;width:150px;position:absolute">{{$datas->nama_produk}} {{$datas->nama_merek}}</span>
+                <div style="text-align:center !important; margin-left: 5px; margin-top: 15px; margin-bottom: 0px;">
+                <span style="size: 8px !important;">{!! DNS1D::getBarcodeHTML($datas->kode_produk, 'C128',1.1,30) !!}</span>
                 </div>
-                <span style="font-size: 13px;">{{$datas->kode_produk}}</span>
+                <span class="kode" style="align-left: left;font-size: 13px; margin-left:3px">{{$datas->kode_produk}}</span>
+                <img src="{{public_path('assets/ok.png')}}" alt="">
             </div>
      
         </div>
     @endforeach
 </body>
-
+,
 </html>

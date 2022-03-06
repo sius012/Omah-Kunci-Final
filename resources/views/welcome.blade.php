@@ -27,7 +27,7 @@
         .container .row .col-4 .link-wrapper .login-btn,
         .home-btn,
         .register-btn {
-            background-color: #BFAE00;
+            background-color: yellow;
             color: black;
 
             padding: 5px;
@@ -43,7 +43,7 @@
 <body>
     <div class="wrapper m-3 ml-4">
         <div class="header d-inline-flex">
-            <img class="img-header" src="{{ asset('assets/Group 1.svg') }}">
+            <img style="height: 70px;" class="img-header" src="{{ asset('assets/Group 1.svg') }}">
             <h3 class="card-title ml-3 mt-3 text-light">OmahKunci</h3>
         </div>
     </div>
@@ -65,7 +65,7 @@
                     </div>
                     <div class="row">
                         <div class="col-4">
-                            <div style="margin-left: -18px;" class="flex-center position-ref full-height mt-3 link-wrapper">
+                            <div style="margin-left: -30px;" class="flex-center position-ref full-height mt-3 link-wrapper">
                                 @if (Route::has('login'))
                                 <div class="d-inline-flex ml-3">
                                     @auth
@@ -84,7 +84,7 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <img style="height: 330px;" src="{{ asset('assets/security.svg') }}">
+                    <img style="height: 330px; margin-left: 60px; margin-top: 90px;" src="{{ asset('assets/security.svg') }}">
                 </div>
             </div>
             <div style="width: 1210px;" class="row mt-5">

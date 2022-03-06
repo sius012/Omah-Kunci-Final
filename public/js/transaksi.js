@@ -173,17 +173,17 @@ $(document).ready(function(e){
                  let no = 1;
                  let row = data.map(function(r,i){
                     return `
-                        <tr>
-                            <td>${i+1}</td>
-                            <td>${r['nama_produk']}${r['merk']}</</td>
-                            <td>${r['harga']}</</td>
+                        <tr ${r['status'] == 'return' ? 'style="background: lightyellow"' : ""}>
+                            <td ><input ${r['status'] == 'return' ? 'disabled' : ""} name="kode[]" style="margin-top: -6px;" class="form-control" type="checkbox" value="${r['kode_produk']}"></td>
+                            <td>${r['nama_produk'] + " "}${r['nama_merek']}</</td>
+                            <td>${parseInt(r['harga']).toLocaleString()}</</td>
                             <td>${r['potongan']}</</td>
                             <td>${r['jumlah']}</td>
-                            <td><input type="checkbox"></td>
+                            <td>${r['status']}</td>
                         </tr>
                     `;
                  });
-
+                 $("#id_trans").val(data[0]['kode_trans']);
                  $("#returncont").html(row);
 
              },error: function(err){

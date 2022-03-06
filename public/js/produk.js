@@ -2,6 +2,7 @@
 
 
 $(document).ready(function(){  
+ 
     $(".cetak-barcode").click(function(e){
        $("#cetaker").attr('kode_produk', $(this).attr('kode_produk'));
     });
@@ -24,7 +25,7 @@ $(document).ready(function(){
                 printJS({printable: response['filename'], type: 'pdf', base64: true});
             },
             error: function(err){
-    
+                alert(err.responseText);
             }
         });
     }
@@ -157,6 +158,7 @@ $(document).ready(function(){
         });
     }
 
+    
 
     function loadProduk(){
         $.ajax({
@@ -187,14 +189,17 @@ $(document).ready(function(){
         var dataform = {
             kode_produk : $("#kode-produk").val(),
             nama_produk : $("#nama-produk").val(),
-            merek_produk : $("#merek-produk").val(),
-            kategori_produk : $("#kategori-produk").val(),
+            merek_produk : $(".merek-selected").is("input") ? $(".merek-selected").val() + " [custom]" :  $(".merek-selected").val(),
+            tipe_produk :  $(".tipe-selected").is("input") ? $(".tipe-selected").val() + " [custom]" :  $(".tipe-selected").val(),
             harga_produk : $("#harga-produk").val().replace(/[._]/g,''),
             satuan_produk : $("#satuan-produk").val(),
-            code_type : $("#tipe-kode").val(),
+            kodetype :  $(".kodetipe-selected").is("input") ? $(".kodetipe-selected").val() + " [custom]" :  $(".kodetipe-selected").val(),
             nomermerek : $("#nomer-merek").val(),
-            diskon: $("#diskon-produk").val(),
+            diskon: $("#diskon").val(),
+            discontype : $("#typediskon").val()
         };
+
+        alert(dataform.kodetype);
       
 
         $.ajax({
@@ -205,10 +210,12 @@ $(document).ready(function(){
             
             type: "POST",
             url: url, 
+            dataType: "json",
             success: function(data){
-                Swal.fire("Barang Berhasil ditambahkan", "Barang telah tersimpan","success").then(function(){
-                    window.location = "/produk";
-                });
+                  alert("Nama produk :"+data['nama_produk']+" Merek : "+data['merek']+" Tipe/Kodetipe : "+data["tipe"]+"/"+data['tipekode']+" Kode : "+data['kode']);
+                // Swal.fire("Barang Berhasil ditambahkan", "Barang telah tersimpan","success").then(function(){
+                //     window.location = "/produk";
+                // });
 
                 //clear the modal
                 if(url == "/updateproduk"){
@@ -216,8 +223,11 @@ $(document).ready(function(){
                 
                 $("#submitterproduk").modal("hide");
                 }else{
-                    $(".tambahbarangform input").val("");
+                
                 }
+                window.location = "/produk"
+
+               
 
             },
             error: function(err){
@@ -358,3 +368,5 @@ $(document).ready(function(){
 
     
 });
+
+$(".form-control").select2();

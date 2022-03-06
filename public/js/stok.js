@@ -182,12 +182,17 @@ $(document).ready(function(){
                 "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content'),
             },
             url: "/printcurrentstok",
+            data:{
+                'id_merek' : $("#merek").val(),
+                "id_kodetype" : $("#kodetype").val(),
+                "id_tipe" : $("#tipe").val()
+            },
             type: "post",
             success: function(response){
              
                 printJS({printable: response['filename'], type: 'pdf', base64: true});
             },error: function(err){
-                Swal.fire("terjadi Kesalahan");
+                alert(err.responseText);
             }
         });
     });

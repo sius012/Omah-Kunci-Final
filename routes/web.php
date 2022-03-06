@@ -31,6 +31,7 @@ Route::get('/accountsetting', function(){
 Route::get('/redirecting', 'RedirectController@index');
 
 Route::middleware(["role:kasir|manager"])->group(function(){
+    route::post('/doreturn', 'transaksiController@kembali')->name('doreturn');
     Route::post('/tampilreturn', 'TransaksiController@tampilreturn');
     Route::post("/printnotakecilbc", 'KasirController@printnotakecil');
     Route::post('/removesection','Kasir2Controller@remover');
@@ -64,7 +65,6 @@ Route::middleware(["role:kasir|manager"])->group(function(){
     Route::get('/transaksipreorder', 'TransaksiPreorder@index');
     Route::post('/resettrans', 'PreorderController@resettrans');
     Route::get('/prosesbayar/{id}/', "PreorderController@index")->name("prosesbayar");
-    Route::post('/bayarcicilan', 'KasirController@bayarcicilan');
     Route::get('/showdetail/{no_nota}', 'TransaksiPreorder@index')->name('showdetail');
     Route::get('/caritransaksi', 'TransaksiController@index')->name('caritrans');
     Route::post('/tambahpreorder2', 'KasirController@tambahpreorder');
@@ -80,9 +80,9 @@ Route::middleware(["role:admingudang|manager"])->group(function(){
     Route::post('/searchpro', 'DetailStokController@searcher');
     Route::post('/tambahstok', 'StokController@tambahstok');
     Route::post('/loadsinglestok', 'StokController@loadsinglestok');
-
     Route::post('/editstok', 'StokController@editstok');
     Route::post('/hapusstok', 'StokController@hapusstok');
+    Route::post('/printstoktrack', 'DetailStokController@printstoktrack');
 
     Route::get('/detailstok', 'DetailStokController@index');
     Route::post('/loaddatadetailstok', 'DetailStokController@loaddatadetailstok');
@@ -90,6 +90,7 @@ Route::middleware(["role:admingudang|manager"])->group(function(){
     Route::get('/stok', 'StokController@index')->name('stok');
     Route::post('/loaddatastok', 'StokController@loaddatastok');
     Route::post('/updateallstok', 'StokController@updateallstok');
+    Route::post('/printcurrentstok', 'StokController@printcurrent');
    
 });
 

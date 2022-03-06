@@ -75,15 +75,16 @@ $(document).ready(function(){
                 let subtotal =0;
     
                 var row = data['datadetail'].map(function(dato,i){
-                    subtotal += parseInt(dato['jumlah']) * (parseInt(dato['harga']) - parseInt(dato['diskon']));
+                    subtotal += doDisc(dato['jumlah'],dato['harga'],dato['potongan'],dato['prefix']);
                     return `
                         <tr>
                             <td>${i+1}</td>
                             <td>${dato['nama_produk']}</td>
+                            <td>${dato['nama_merek']}</td>
                             <td>${dato['jumlah']}</td>
                             <td>Rp. ${parseInt(dato['harga']).toLocaleString()}</td>
                             <td>Rp. ${parseInt(dato['potongan']).toLocaleString() }</td>
-                            <td> Rp. ${parseInt(dato['jumlah'] * (dato['diskon'] - dato['diskon'])).toLocaleString()}</td>
+                            <td> Rp. ${doDisc(dato['jumlah'],dato['harga'],dato['potongan'],dato['prefix']).toLocaleString()}</td>
                             <td><a class="btn btn-danger buang" id_detail="${dato['id']}"><i class="fa fa-trash"></i></a></td>
                         </tr>
                     `
@@ -198,7 +199,7 @@ $(document).ready(function(){
                     for(var i = 0;i < data['data'].length;i++){
                         li += `<li>
 
-                                   <a kode="${data['data'][i]['kode_produk']}" harga="${data['data'][i]['harga']}" jumlah="1" potongan="0" class="sear">${data['data'][i]["kode_produk"] + " " + data['data'][i]["nama_produk"] + " " + data['data'][i]['merk']}</a>
+                                   <a kode="${data['data'][i]['kode_produk']}" harga="${data['data'][i]['harga']}" jumlah="1" potongan="0" class="sear">${data['data'][i]["kode_produk"] + " " + data['data'][i]["nama_produk"] + " " + data['data'][i]['nama_merek']}</a>
                                 </div>
                             
                             </li>`;
@@ -240,7 +241,7 @@ $(document).ready(function(){
                         kode_produk : id,
                         harga: harga,
                         jumlah: jumlah,
-                        potongan: potongan
+                        potongan: potongan,
                     } 
             },
             type: "POST",
@@ -257,17 +258,17 @@ $(document).ready(function(){
                     var no = 1;
                     let row = data['datadetail'].map(function(dato,i){
                        
-                        subtotal += dato['diskon'].includes("%") ? parseInt(dato['jumlah']) * (parseInt(dato['harga']) - (parseInt(dato['harga']) * (parseInt(dato['diskon'].replace(/[%_]/g,''))/100))) : parseInt(dato['jumlah']) * (parseInt(dato['harga']) - parseInt(dato['diskon'])) ;
+                        subtotal += doDisc(dato['jumlah'],dato['harga_produk'],dato['potongan'],dato['prefix']) ;
   
                         return `
                             <tr>
                                 <td>${i+1}</td>
                                 <td>${dato['nama_produk']}</td>
-                                <td>${dato['merk']}</td>
+                                <td>${dato['nama_merek']}</td>
                                 <td>${dato['jumlah']}</td>
                                 <td>Rp. ${parseInt(dato['harga']).toLocaleString()}</td>
-                                <td>${dato['diskon'].includes("%") ? dato['diskon'] :  "Rp. "+ parseInt(dato['diskon']).toLocaleString()}</td>
-                                <td> Rp. ${dato['diskon'].includes("%") ? parseInt(parseInt(dato['jumlah']) * (parseInt(dato['harga']) - (parseInt(dato['harga']) * (parseInt(dato['diskon'].replace(/[%_]/g,''))/100)))).toLocaleString() : parseInt(parseInt(dato['jumlah']) * (parseInt(dato['harga']) - parseInt(dato['diskon']))).toLocaleString()}</td>
+                                <td>${renderDisc(dato['potongan'],dato['prefix'])}</td>
+                                <td> Rp.${doDisc(dato['jumlah'],dato['harga_produk'],dato['potongan'],dato['prefix']).toLocaleString()}</td>
                                 <td><a   class="btn btn-danger buang" id_detail="${dato['id']}"><i class="fa fa-trash"></i></a></td>
                             </tr>
                         `;
@@ -418,8 +419,8 @@ $(document).ready(function(){
              success: function(data){
                  loader();
              },
-             error: function(){
-                alert("gagal");
+             error: function(err){
+                alert(err.responseText);
              }
           
         });
