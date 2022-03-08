@@ -19,7 +19,7 @@
     <style>
    
         * {
-            font-family: Arial, Helvetica, sans-serif;
+         
             margin: 0px;
         }
 
@@ -109,7 +109,7 @@
   
             <br>
             <br>
-            <h3>Data STOK Produk</h3>
+            <h3>Stok Harian Produk</h3>
         <p style="margin-bottom: 20px">Tanggal : {{date('d-M-Y')}}</p>
 
      
@@ -118,7 +118,7 @@
                         <th >No</th>
                         <th style="width:60px">Kode Produk</th>
                         <th>Nama Produk</th>
-                        <th >Merek/th>
+                        <th >Merek</th>
                         <th>Jumlah</th>
                         <th>Status</th>
                         <th>Keterangan</th>

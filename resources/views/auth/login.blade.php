@@ -15,14 +15,14 @@
             font-family: 'Quicksand', sans-serif;
         }
         body{
-            background-color: #1562AA;
+            background-image: linear-gradient(to right, #06335C, #1562AA);
         }
         .container .col .title{
             color: #FAE511;
             font-weight: bold;
         }
         .container .top{
-            margin-top: 100px
+            margin-top: 60px
         }
         .container .row .username label{
             color: white;
@@ -48,7 +48,7 @@
         }
         .container .login button{
             color: white;
-            background-color: #0D5497;
+            background-color: #022F59;
             font-weight: bold;
 
             text-decoration: none;
@@ -59,7 +59,7 @@
         }
         .container .request-akuns a{
             background-color: white;
-            color: #1562AA;
+            color: #022F59;
             font-weight: bold;
 
             padding: 11px;
@@ -77,10 +77,7 @@
 @csrf
     <div class="container">
         <div class="col d-flex align-items-center justify-content-center top">
-            <img src="{{asset('assets/Group 1.svg')}}" alt="">
-        </div>
-        <div class="col d-flex align-items-center justify-content-center">
-            <h3 class="title">Omah Kunci</h3>
+            <img style="height: 80px; margin-bottom: 10px;" src="{{asset('assets/Group 2.svg')}}" alt="">
         </div>
 
         <br>
@@ -102,7 +99,7 @@
             <button type="submit">Log In</button>
         </div>
         <a class="d-flex align-items-center justify-content-center text-light mt-3" href="#">Lupa Password ?</a>
-        <hr class="bg-light" style="width: 350px;">
+        <hr class="bg-light mb-4" style="width: 298px;">
         <div class="request-akuns d-flex align-items-center justify-content-center">
             <a class="request-akunr" href="{{url('/register')}}">Request Akun</a>
         </div>

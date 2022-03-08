@@ -17,6 +17,28 @@ class KasirController extends Controller
         
     }
 
+    public function index(){
+        $data = DB::table("new_produks")->join("tipes",'new_produks.id_tipe',"=","tipes.id_tipe")->orderBy("tipes.id_tipe")->get();
+        $produk = [];
+
+            foreach($data as $i => $datos){
+
+                $getter1 =  DB::table("new_produks")->join("tipes",'new_produks.id_tipe',"=","tipes.id_tipe")->join("kode_types",'kode_types.id_ct',"=","kode_types.id_kodetype")->where("kode_types.id_kodetype",$datos->id_ct)->orderBy("kode_types.id_ct")->get();
+                
+                foreach($getter1 as $j => $gs1){
+                    $getter2 =  DB::table("new_produks")->join("mereks",'mereks.id_merek',"=","new_produks.id_merek")->where("new_produks.id_kodetype",$datos->id_kodetype)->where("mereks.id_merek",$gs1->id_merek)->orderBy("mereks.id_merek")->get();
+                    foreach($getter2 as $k => $gt2){
+                         $produk[$i][$j][$gt2] = "";
+                        
+                    }
+                    
+                }
+            }
+
+            dd($produk);
+            return view("kasir");
+    }
+
    
 
     public function loader(Request $req){
@@ -101,7 +123,8 @@ class KasirController extends Controller
         $alamat = $data['alamat'];
         $subtotal = 0;
         $id_transaksi = $req->session()->get('transaksi')['id_transaksi'];
-  
+        $diantar = $data['antarkah'];
+        $metode = $data['via'];
 
 
 
@@ -114,7 +137,7 @@ class KasirController extends Controller
         }
 
         $afterdiskon = $subtotal - $data['diskon']; 
-        $status = "lunas";
+        $status = $data["bayar"] - $afterdiskon >= 0 ? "lunas":"belum lunas";
        
 
         foreach($stok as $produks){
@@ -123,8 +146,10 @@ class KasirController extends Controller
         }
 
 
+        
 
-        DB::table('transaksi')->where('kode_trans', $id_transaksi)->update(["nama_pelanggan" => $data['nama_pelanggan'],'telepon' => $telp,'alamat'=>$alamat,"subtotal" => $afterdiskon, "status" => $status, "diskon" => $data["diskon"],"metode" => $data['metode'],"bayar" => $data["bayar"]]);
+        DB::table('transaksi')->where('kode_trans', $id_transaksi)->update(["nama_pelanggan" => $data['nama_pelanggan'],'telepon' => $telp,'alamat'=>$alamat,"subtotal" => $subtotal, "status" => $status, "diskon" => $data["diskon"],"metode" => $data['via'],"bayar" => $data["bayar"],"antar"=>$diantar]);
+
         
 
     }
@@ -174,6 +199,12 @@ class KasirController extends Controller
         $data2 = DB::table('detail_transaksi')->join('new_produks', 'new_produks.kode_produk','=','detail_transaksi.kode_produk')->join("mereks","mereks.id_merek","=","new_produks.id_merek")->where('kode_trans',$id)->get();
 
         $pdf = PDF::loadview('nota.notakecil', ["data" => $data,"data2"=>$data2]);
+        if($data[0]->antar == "ya"){
+            $pdf = PDF::loadview('nota.notakecilkirim', ["data" => $data,"data2"=>$data2]);
+        }else{
+            
+        }
+        
         $path = public_path('pdf/');
             $fileName =  date('mdy').'-'.$data[0]->kode_trans. '.' . 'pdf' ;
             $pdf->save(storage_path("pdf/$fileName"));
@@ -186,9 +217,18 @@ class KasirController extends Controller
     public function printnotakecil(Request $req){
         $id = $req->id;
         $data = DB::table('transaksi')->join('users', 'users.id', '=', 'transaksi.id_kasir')->where('kode_trans',$id)->get();
+       
         $data2 = DB::table('detail_transaksi')->join('new_produks', 'new_produks.kode_produk','=','detail_transaksi.kode_produk')->join("mereks","mereks.id_merek","=","new_produks.id_merek")->where('kode_trans',$id)->get();
+    
+       
+        
 
         $pdf = PDF::loadview('nota.notakecil', ["data" => $data,"data2"=>$data2]);
+         if($data[0]->antar == "ya"){
+            $pdf = PDF::loadview('nota.notakecilkirim', ["data" => $data,"data2"=>$data2]);
+        }else{
+            
+        }
         $path = public_path('pdf/');
             $fileName =  date('mdy').'-'.$data[0]->kode_trans. '.' . 'pdf' ;
             $pdf->save(storage_path("pdf/$fileName"));

@@ -8,7 +8,18 @@ use Illuminate\Support\Facades\DB;
 class Kasir2Controller extends Controller
 {
     public function index(Request $req){
-      
+        $data = DB::table("new_produks")->join("tipes",'new_produks.id_tipe',"=","tipes.id_tipe")->groupBy("tipes.id_tipe")->get();
+        $produk = [];
+
+            foreach($data as $i => $datos){
+                $getter1 = DB::table("new_produks")->join("tipes",'new_produks.id_tipe',"=","tipes.id_tipe")->where("id_ct",$datos->id_ct)->orderBy("id_ct")->get();
+                foreach($getter1 as $ij=> $rows){
+                    $getter2 = DB::table("new_produks")->join("tipes",'new_produks.id_tipe',"=","tipes.id_tipe")->where("id_merek",$rows->id_merek)->orderBy("id_ct")->get();
+                }
+            }
+
+         
+       
        
         $no = DB::table('transaksi')->get()->count();
         $no = str_pad($no+1, 6, '0', STR_PAD_LEFT);

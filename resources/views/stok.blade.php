@@ -47,6 +47,15 @@ $master='admingudang';
                         @endforeach
                     </select>
                 </div>
+                <div style="margin-left: 20px;" class="form-group d-inline-flex">
+                    <select name="jumlahstok" id="jumlahstok" class="form-control dynamic w-100 form-control-sm" data-dependent = "state">
+                        <option value="">Jumlah Stok</option>
+  
+                            <option value="ps">Paling Sedikit</option>
+                            <option value="pb">Paling Banyak</option>
+                            <option value="hbs">Stok Habis</option>
+                    </select>
+                </div>
                 </div>
               <button type="submit" class="btn btn-primary btn-sm">Cari</button>
             </div>

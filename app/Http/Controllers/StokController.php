@@ -27,6 +27,15 @@ class StokController extends Controller
         if($req->filled("merek")){
             $produk->where('new_produks.id_merek',$req->merek);
         }
+        if($req->filled("jumlahstok")){
+            if($req->jumlahstok == "ps"){
+                $produk->orderBy("jumlah","asc");
+            }else if($req->jumlahstok == "pb"){
+                $produk->orderBy("jumlah","desc");
+            }else{
+                $produk->where("jumlah","<=",0)->orderBy("jumlah","asc");
+            }
+        }
 
         return view("stok", ["tipe" => $kategori,"produk"=>$produk->get(), "data" => $produk->get(), "merek" => $merek, "kodetype" => $kodetype]);
     }

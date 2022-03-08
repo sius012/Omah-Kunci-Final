@@ -130,12 +130,6 @@ $master='admingudang';
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label for="produk-select">Unduh PDF</label>
-                        <input type="checkbox" class="form-control" name="produk-select" id="produk-select">
-                        
-           
-                    </div>
                    
                     
                
@@ -143,7 +137,7 @@ $master='admingudang';
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button type="submit" class="btn btn-primary">Cetak</button>
             
             </div>
             </form>

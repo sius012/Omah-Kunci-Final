@@ -15,22 +15,27 @@
 
     <!-- Styles -->
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
         * {
             margin: 0;
             padding: 0;
+            
+            font-family: 'Lato', sans-serif;
         }
 
         body {
-            background-image: linear-gradient(to right, #1562AA, #4FA2EE, white);
+            background-image: linear-gradient(to right, #06335C, #1562AA);
         }
 
         .container .row .col-4 .link-wrapper .login-btn,
         .home-btn,
         .register-btn {
-            background-color: yellow;
+            background-color: #ffec26;
             color: black;
 
             padding: 5px;
+            margin-right: 10px;
+
             width: 100px;
             border-radius: 8px;
 
@@ -41,10 +46,9 @@
     </style>
 </head>
 <body>
-    <div class="wrapper m-3 ml-4">
+    <div class="wrapper m-3 ml-4 mb-2">
         <div class="header d-inline-flex">
-            <img style="height: 70px;" class="img-header" src="{{ asset('assets/Group 1.svg') }}">
-            <h3 class="card-title ml-3 mt-3 text-light">OmahKunci</h3>
+            <img style="height: 60px;" class="img-header" src="{{ asset('assets/Group 1.svg') }}">
         </div>
     </div>
 
@@ -55,23 +59,23 @@
                     <div class="row mt-5">
                         <div class="col">
                             <div class="wrapper-inline d-inline-flex">
-                                <h2 class="card-title text-light mr-3">Amankan Lingkungan anda bersama</h2>
-                                <h2 style="color: #FAE511" class="card-title">OmahKunci</h2>
+                                <h2 class="card-title text-light mr-3 font-weight-bold">Amankan Lingkungan anda bersama</h2>
+                                <h2 style="color: #FAE511" class="card-title font-weight-bold">Omah Kunci</h2>
                             </div>
                             <p class="card-text w-75 text-light">
-                                "Aplikasi Pengelolaan Toko OmahKunci"
+                                Aplikasi Pengelolaan toko Omah Kunci
                             </p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-4">
-                            <div style="margin-left: -30px;" class="flex-center position-ref full-height mt-3 link-wrapper">
+                            <div style="margin-left: -18px;" class="flex-center position-ref full-height mt-3 link-wrapper">
                                 @if (Route::has('login'))
                                 <div class="d-inline-flex ml-3">
                                     @auth
-                                    <a class="nav-link home-btn m-3" href="{{ url('/redirecting') }}">Beranda</a>
+                                    <a class="nav-link home-btn" href="{{ url('/redirecting') }}">Beranda</a>
                                     @else
-                                    <a class="nav-link login-btn mr-3" href="{{ route('login') }}">Login</a>
+                                    <a class="nav-link login-btn" href="{{ route('login') }}">Login</a>
 
                                     @if (Route::has('register'))
                                     <a class="nav-link register-btn" href="{{ route('register') }}">Register</a>
@@ -84,12 +88,12 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <img style="height: 330px; margin-left: 60px; margin-top: 90px;" src="{{ asset('assets/security.svg') }}">
+                    <img style="height: 330px;" src="{{ asset('assets/security.svg') }}">
                 </div>
             </div>
             <div style="width: 1210px;" class="row mt-5">
-                <footer style="width: 1600px; margin-left:-80px; margin-top: 13px; padding: 20px;">
-                    <p class="card-text text-center text-light mt-2">
+                <footer class="ml-1 mt-4 pb-4" style="width: 1600px; margin-left:-100px; margin-top: 13px; padding: 20px;">
+                    <p class="card-text text-left text-light mt-2 ml-0 mb-4">
                         Copyright © 2022 Omah Kunci. All rights reserved.
                     </p>
                 </footer>

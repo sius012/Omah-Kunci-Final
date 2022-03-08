@@ -31,7 +31,7 @@ Route::get('/accountsetting', function(){
 Route::get('/redirecting', 'RedirectController@index');
 
 Route::middleware(["role:kasir|manager"])->group(function(){
-    route::post('/doreturn', 'transaksiController@kembali')->name('doreturn');
+    route::post('/doreturn', 'ReturController@kembali')->name('doreturn');
     Route::post('/tampilreturn', 'TransaksiController@tampilreturn');
     Route::post("/printnotakecilbc", 'KasirController@printnotakecil');
     Route::post('/removesection','Kasir2Controller@remover');
@@ -149,7 +149,7 @@ Route::get('/viewbarcode', function(){
 
 
 
-
+Route::get("/cobaexport","ExportProdukController@export");
 
 
 

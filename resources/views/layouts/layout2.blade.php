@@ -36,7 +36,7 @@
  
   
     <script src="{{ asset('js/sweetalert2.all.min.js')}}"></script>
-
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script>

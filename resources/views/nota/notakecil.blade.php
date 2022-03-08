@@ -1,6 +1,9 @@
 @php
+namespace App\Http\Controllers;
 $no = 1;
 $subtotal = 0;
+
+
 @endphp
 
 <!DOCTYPE html>
@@ -204,14 +207,16 @@ $subtotal = 0;
 
         <div class="row centering">
             <img src="{{ public_path('assets/logo.svg') }}" alt="">
-            <p class="alamat">Jl. Agus Salim D no.10 <br> Telp/Fax. (024) 3554929 / 085712423453 <br> Semarang <br></p>
+            <p class="alamat">Jl. Agus Salim D no.10 <br> Telp/Fax.  085712423453 / (024) 3554929 <br> Semarang <br></p>
         </div>
 
 
         <hr style="margin:0;">
         <div>
             <table>
-
+                <tr>
+                    <td colspan=2>{{$data[0]->status == "return" ? "RETUR /Invoice:".$data[0]->keterangan : "TANDA TERIMA"}}  </td>
+                </tr>
                 <tr>
                     <td>{{$data[0]->no_nota}}</td>
                     <td align="right">{{date("d-m-Y" ,strtotime($data[0]->created_at))}}</td>
@@ -247,12 +252,12 @@ $subtotal = 0;
                         </tr>
 
                         <tr>
-                            <td style="width: 80px">{{number_format($dats->harga,"0",".",".")}}{{" x"}} {{$dats->jumlah}} </td>
-                            <td align="left">- {{$dats->prefix !== 'rupiah' ? $dats->potongan."%" : "Rp.". number_format($dats->potongan)}}</td>
-                            <td align="right">Rp.{{number_format(strpos($dats->potongan,"%") !== false ? $dats->jumlah * ($dats->harga_produk - $dats->harga_produk * ( (int)trim($dats->potongan,"%"))/100) :  ($dats->harga_produk - $dats->potongan) * $dats->jumlah,"0",".","." )}}</td>
+                            <td style="width: 130px"> {{$dats->jumlah}} {{$dats->satuan}} {{" x"}} {{number_format($dats->harga,"0",".",".")}}</td>
+                            <td align="left">-{{$dats->prefix !== 'rupiah' ? $dats->potongan."%" : "Rp.". number_format($dats->potongan)}}</td>
+                            <td style="width: 70x" align="right">{{number_format(Tools::doDisc($dats->jumlah,$dats->harga_produk,$dats->potongan,$dats->prefix),0,".",".")}}</td>
                             @php $no++; 
                             
-                            $subtotal += strpos($dats->potongan,"%") !== false ? $dats->jumlah * ($dats->harga_produk - $dats->harga_produk * ( (int)trim($dats->potongan,"%"))/100) :  ($dats->harga_produk - $dats->potongan) * $dats->jumlah;
+                            $subtotal += Tools::doDisc($dats->jumlah,$dats->harga_produk,$dats->potongan,$dats->prefix);
                             @endphp
                         </tr>
                         @endforeach
@@ -263,28 +268,28 @@ $subtotal = 0;
 
                     <tr>
                         <td>Subtotal</td>
-                        <td align="right">Rp.{{number_format($subtotal,0,".",".")}}</td>
+                        <td align="right">{{number_format($subtotal,0,".",".")}}</td>
 
                     </tr>
                     <tr>
                         <td>DISC</td>
-                        <td align="right">Rp.{{number_format($data[0]->diskon, 0,".",".")}}</td>
+                        <td align="right">{{number_format($data[0]->diskon, 0,".",".")}}</td>
 
                     </tr>
                     <tr>
                         <td></td>
-                        <td align="right">Rp.{{number_format($subtotal - $data[0]->diskon, 0,".",".") }}</td>
+                        <td align="right">{{number_format($subtotal - $data[0]->diskon, 0,".",".") }}</td>
 
                     </tr>
 
                     <tr>
                         <td>Dibayar</td>
-                        <td align="right">Rp. {{number_format($data[0]->bayar,0,".",".") }}</td>
+                        <td align="right">{{number_format($data[0]->bayar,0,".",".") }}</td>
 
                     </tr>
                     <tr>
                         <td>Kembalian</td>
-                        <td align="right">Rp. {{number_format( $data[0]->bayar - ($subtotal - $data[0]->diskon),0,".",".") }}</td>
+                        <td align="right">{{number_format( $data[0]->bayar - ($subtotal - $data[0]->diskon),0,".",".") }}</td>
 
                     </tr>
 

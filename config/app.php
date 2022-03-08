@@ -238,7 +238,7 @@ return [
         'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
 
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-
+        'Tools' => App\Http\Controllers\Tools::class,
     ],
 
 ];

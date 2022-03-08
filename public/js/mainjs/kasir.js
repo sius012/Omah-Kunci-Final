@@ -55,6 +55,20 @@ $(document).ready(function(){
     });
 
     $("#next-button").attr("disabled","disabled");
+    $("#suratjalan").attr("disabled","disabled");
+    $("#suratjalan").attr("disabled","disabled");
+    $(".antartd").hide();
+    $("#antarkah").change(function(e){
+
+        if($(this).val() !== "antar"){
+            $("#suratjalan").attr("disabled","disabled");
+            $(".antartd").hide();
+        }else{
+            $(".antartd").show();
+            $("#suratjalan").removeAttr("disabled");
+        }
+    }
+    );
     //loader
     function loader(){
         $("#tabling").hide();
@@ -256,7 +270,9 @@ $(document).ready(function(){
                     console.log(data['datadetail']);
                     var subtotal =0;
                     var no = 1;
+                    
                     let row = data['datadetail'].map(function(dato,i){
+                       
                        
                         subtotal += doDisc(dato['jumlah'],dato['harga_produk'],dato['potongan'],dato['prefix']) ;
   
@@ -270,11 +286,20 @@ $(document).ready(function(){
                                 <td>${renderDisc(dato['potongan'],dato['prefix'])}</td>
                                 <td> Rp.${doDisc(dato['jumlah'],dato['harga_produk'],dato['potongan'],dato['prefix']).toLocaleString()}</td>
                                 <td><a   class="btn btn-danger buang" id_detail="${dato['id']}"><i class="fa fa-trash"></i></a></td>
+                                <td class="antartd"><input class="form-control antarcheck" value="${dato['kode_produk']}" type="checkbox"></td>
                             </tr>
                         `;
                        
                     
                     });
+                   
+                    if($("#antarkah").val() !== "antar"){
+                        $("#suratjalan").attr("disabled","disabled");
+                        $(".antartd").hide();
+                    }else{
+                        $(".antartd").show();
+                        $(".suratjalan").removeAttr("disabled");
+                    }
 
                     $('#tabling').html(row);
                     $("#tabling").show("slow");
@@ -291,8 +316,6 @@ $(document).ready(function(){
          
             },
             error: function(err,response, errorThrown, jqXHR){
-                Swal.fire("terjadi kesalahan","","info");
-                alert(err.responseText);
             }
         });
 
@@ -328,7 +351,9 @@ $(document).ready(function(){
     });
 
     $("#selesai").click(function(){
+        alert($("#antarkah").val());
 
+  
         if(parseInt($(".usethis").val()) < subtotalafterdiskon && $('input[name=payment]:checked').val() == "cash"){
             alert("uang kurang");
         }else{
@@ -348,7 +373,8 @@ $(document).ready(function(){
                         metode: "cash",
                         via: $(".usethisvia").val(),
                         telp: $("#telp").val(),
-                        alamat: $("#alamat").val()
+                        alamat: $("#alamat").val(),
+                        antarkah: $("#antarkah").val(),
                     } 
                 },
                 type: "POST",
@@ -496,5 +522,14 @@ $(document).ready(function(){
             }
         });
     };
+
+    $("#suratjalan").click(function(){
+        $(".antarcheck:checked").each(function(){
+            alert($(this).val());
+        })
+    });
+
+    $("#list-return").hide();
+
 
 });

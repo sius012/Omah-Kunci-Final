@@ -37,6 +37,7 @@
         }
     body{
         width: 100mm;
+        margin: 5mm;
         
     }
 .container{
@@ -149,7 +150,7 @@
         <div style="margin-top: 0px;  justify-content: center;flex-direction: unset;width: 100mm;align-items: center;">
       
             <div style="display: inline-block;text-align: center; width:300px"><div class="card">
-                <span style="text-align:left;font-size: 13px;left:6px;margin-top:4px;width:150px;position:absolute">{{$datas->nama_produk}} {{$datas->nama_merek}}</span>
+                <span style="text-align:left;font-size: 13px;left:25px;margin-top:4px;width:150px;position:absolute">{{$datas->nama_produk}} {{$datas->nama_merek}}</span>
                 <div style="text-align:center !important; margin-left: 5px; margin-top: 15px; margin-bottom: 0px;">
                 <span style="size: 8px !important;">{!! DNS1D::getBarcodeHTML($datas->kode_produk, 'C128',1.1,30) !!}</span>
                 </div>
