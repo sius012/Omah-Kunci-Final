@@ -192,7 +192,7 @@
             </tr>
             <tr><td></td></tr>
             @foreach($opsi as $opsis)
-            @if($opsis->judul != "waktu")
+            @if($opsis->judul != "waktu" || $opsis->judul = 'Waktu')
                 <tr>
 
                     <td valign="top">

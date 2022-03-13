@@ -26,7 +26,7 @@ $(document).ready(function(){
         });
     });
 
-    $("#tombolcetak2").click(function(e){
+    $(".tombolcetak2").click(function(e){
         let id = $(this).attr('id_pre');
         $.ajax({
             headers: {
@@ -44,5 +44,28 @@ $(document).ready(function(){
             error: function(err){
             }
         });
+    });
+
+    function printpreorder(id_trans){
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content')
+            },
+            data: {
+                id: id_trans,
+            },
+            type: 'post',
+            dataType: "json",
+            url: "/cetakpreorder",
+            success: function(data){
+                printJS({printable: data['filename'], type: 'pdf', base64: true});
+            },
+            error: function(err){
+            }
+        });
+    }
+
+    $(".btncetak").click(function(){
+        printpreorder($(this).attr("id_pre"));
     });
 });

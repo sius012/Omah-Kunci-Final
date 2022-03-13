@@ -6,7 +6,7 @@
     <title>@yield('title')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="icon" href="{{ asset('assets/Group 1.svg') }}">
+    <link rel="icon" href="{{ asset('assets/preloader.svg') }}">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -28,15 +28,12 @@
     <link rel="stylesheet" href="{{asset('plugins/daterangepicker/daterangepicker.css')}}">
     <!-- summernote -->
     <link rel="stylesheet" href='{{asset("plugins/summernote/summernote-bs4.min.css")}}'>
-    <link rel="stylesheet" href='{{asset("css/select2.min.css")}}'>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
     <script src="{{asset('plugins/jquery/jquery.js')}}"> </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
- 
-  
     <script src="{{ asset('js/sweetalert2.all.min.js')}}"></script>
-    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+
 
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script>
@@ -65,10 +62,10 @@
                         $(".titler").html(row.length + " Notifikasi");
                        
                     },error: function(err){
-                        alert(err.responseText);
+                      //  alert(err.responseText);
                     }
                 }
-            )
+            );
         });
     </script>
     @yield('css')
@@ -79,7 +76,8 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center m-0">
-            <img clagss="animation__shake" src="{{asset('assets/Group 1.svg')}}" alt="AdminLTELogo" height="60" width="60">
+            <img clagss="animation__shake" src="{{asset('assets/preloader.svg')}}" alt="AdminLTELogo" height="60" width="60">
+            <h3 id="preloader-title">Omah Kunci</h3>
         </div>
 
         <!-- Navbar -->
@@ -133,7 +131,7 @@
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4 m-0 overflow-hidden" style="overflow-x: hidden !important">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4 m-0 overflow-hidden" style="overflow-x: hidden !important;">
             <!-- Brand Logo -->
             <!-- <a href="index3.html" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -141,10 +139,10 @@
     </a> -->
 
             <!-- Sidebar -->
-            <div class="sidebar  p-0 overflow-x-hidden" style="overflow-x: hidden !important" >
-                <a href="index3.html" class="brand-link m-0 d-flex align-items-center justify-content-center" style="border-bottom:2px solid yellow;padding: 15px">
-                    <img style="margin-right: -40px;" src="{{asset('assets/omahkunci.svg')}}" alt="AdminLTE Logo" class="brand-image m-0">
-                    <span class="brand-text font-weight-light" style="color:yellow">Omah Kunci</span>
+            <div class="sidebar  p-0 overflow-x-hidden" style="overflow-x: hidden !important;" >
+                <a href="index3.html" class="brand-link m-0 d-flex align-items-center justify-content-center" style="border-bottom:2px solid white;padding: 15px; background-color: #06335C;">
+                    <img style="margin-right: -40px;" src="{{asset('assets/preloader.svg')}}" alt="AdminLTE Logo" class="brand-image m-0">
+                    <span style="color: #FAE511;" class="brand-text font-weight-bold">OmahKunci</span>
                 </a>
                 <!-- Sidebar user panel (optional) -->
                 <div class="mt-3 pb-3 mb-3 d-block pl-0  " >
@@ -156,6 +154,28 @@
                     <div class="">
                         <p class="d-block text-light">{{Auth::user()->name}}</p>
                     </div>
+                    @php  
+                        $role = "Guest";
+                        switch(Auth::user()->roles[0]['name']){
+                            case "manager":
+                                $role = "Manager";
+                                break;
+                            case "admin gudang":
+                                $role = "Admin Gudang";
+                                break;
+                            case "kasir":
+                                $role="Kasir";
+                                break;
+                            default:
+                                $role="Guest";
+                                break;
+                        }
+                    
+                    
+                    @endphp
+
+                    
+                    <p class="text-light mb-0 mt-0">{{$role }}</p>
                 </div>
 
                 <!-- SidebarSearch Form -->
@@ -177,10 +197,9 @@
                with font-awesome or any other icon font library -->
                         @if(auth()->user()->roles[0]['name'] == 'kasir' or auth()->user()->roles[0]['name'] == 'manager' )
                         <li class="nav-item menu-open">
-                            <a href="#" class="nav-link {{$master=='kasir' ? 'active' : ''}}">
-                                <p>
+                            <a style="background-color: white; " href="#" class="nav-link {{$master=='kasir' ? 'actives' : ''}}">
+                                <p style="color: #1363ae;">
                                     Kasir
-                                    <i class="right fas fa-angle-left mr-3"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
@@ -211,7 +230,7 @@
                                             <p>Riwayat Nota Besar</p>
                                         </a>
                                 </li>
-                               
+                            
                             </ul>
                         </li>
                         @endif
@@ -219,10 +238,9 @@
 
                         @if(auth()->user()->roles[0]['name'] == 'admin gudang' or auth()->user()->roles[0]['name'] == 'manager')
                         <li class="nav-item menu-open">
-                            <a href="#" class="nav-link {{$master =='admingudang' ? 'active' : ''}}">
-                                <p>
+                            <a style="background-color: white;" href="#" class="nav-link {{$master =='admingudang' ? 'actives' : ''}}">
+                                <p style="color: #1363ae;">
                                     Admin Gudang
-                                    <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
@@ -243,19 +261,12 @@
 
                         @if(auth()->user()->roles[0]['name'] == 'manager' )
                         <li class="nav-item menu-open">
-                            <a href="#" class="nav-link {{$master=='manager' ? 'active' : ''}}">
-                                <p>
+                            <a style="background-color: white;" href="#" class="nav-link {{$master=='manager' ? 'actives' : ''}}">
+                                <p style="color: #1363ae;">
                                     Manager
-                                    <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                     <a href="{{url('/dashboard')}}" class="nav-link {{$whoactive =='dashboard' ? 'active' : ''}}">
-
-                                        <p>Dashboard</p>
-                                    </a>
-                                </li>
                                 <li class="nav-item">
                                     <a href="{{url('/produk')}}" class="nav-link {{$whoactive =='produk' ? 'active' : ''}}">
 
@@ -263,11 +274,16 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
+                                    <a href="{{url('/paket')}}" class="nav-link {{$whoactive =='paket' ? 'active' : ''}}">
+
+                                        <p>Paket</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="{{ url('manajemen_akun') }}" class="nav-link  {{$whoactive =='kelolakun' ? 'active' : ''}}">
 
                                         <p>Kelola Akun</p>
                                     </a>
-                                </li>
                                 </li>
                             </ul>
                         </li>
@@ -341,7 +357,7 @@
         <script src="{{asset('plugins/daterangepicker/daterangepicker.js')}}"></script>
         <!-- Tempusdomiasset Bootstrap 4 -->
         <script src="{{asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
-        <!-- Summernoteasset>
+        <!-- Summernoteasset> -->
 <script src="{{asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
 <!-- overlayScrassetbars -->
         <script src="{{asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>

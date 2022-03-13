@@ -1,9 +1,8 @@
-td,th{
-    border: 2px solid black !important;
-
-  overflow: hidden;
-  font-weight: bold !important;
+*{
+    font-weight: normal;
 }
+
+
 
 
 .row .col-12 .search-box {
@@ -50,7 +49,25 @@ table{
 
 col{
     width: 10px !important;
-    flex: 0 0 230px;
+
+    
+}
+
+col div{
+    font-weight: 700;
+    margin: 10px;
+}
+
+.cardo .row{
+
+    padding: 15px;
+}
+.cardo{
+    box-shadow: inset !important;
+    background-color: white;
+    margin:10px;
+    border-radius: 2px;
+    font-size: 10pt;
 }
 
 

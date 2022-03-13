@@ -5,7 +5,7 @@ $hastoday = false;
 $haslampau = false;
 @endphp
 @extends('layouts.layout2')
-@section('titlepage', 'Transaksi')
+@section('pagetitle', ' Riwayat Transaksi')
 @section('title', 'Riwayat Transaksi')
 
 
@@ -21,61 +21,88 @@ $haslampau = false;
 
 @stop
 @section('content')
-<form action="/caritransaksi" type="get">
-    @csrf
-<div class="row">
-    <div class="col-12">
-        <input class="search-box " type="text" placeholder="Ketik Nomor Invoice..." name="no_nota">
-        <button style="border:none; background-color:transparent;"><i class="fas fa-search ml-1 search-icon"></i></button>
-    </div>
+
+<div class="card ml-2">
+<div class="card-header">
+  Filter
 </div>
-</form>
+  <div class="card-body">
+  <form action="{{url('/transaksi')}}" method="get">
+                @csrf
+                
+                <div class="wrappers d-inline-flex mb-0">
+                <input class="search-box form-control form-control-sm mr-2" type="text" placeholder="Ketik Nomor Invoice..." name="no_nota">
+                <div style="width: 200px;" class="form-group mr-2">
+                    <select name="status" id="tipe" class="form-control dynamic w-100 form-control-sm" data-dependent = "state">
+                        <option value="">STATUS</option>
+                            <option value = "lunas">LUNAS</option>
+                            <option value = "belum lunas">BELUM LUNAS</option>
+                            <option value = "return">RETUR</option>
+                    </select>
+                </div>
+                <div style="width: 200px;" class="form-group">
+                    <select name="waktu" id="tipe" class="form-control dynamic w-100 form-control-sm" data-dependent = "state">
+                        <option value="">WAKTU</option>
+                            <option value = "terbaru">TERBARU</option>
+                            <option value = "terlama">TERLAMA</option>
+                    </select>
+                </div>
 
+               
+                </div>
+                <button class="btn btn-primary btn-sm ml-2" type="submit">Cari</button>
+                </form>
 
-<div class="card">
-    <table>
-        <tr>
-            <td >dddd</div></td>
-            <td>Nama</td>
-            <td>Total</td>
-            <td>Dibayar</td>
-            <td>Inv</td>
-        </tr>
-        <tr>
-            <th>0101000</th>
-            <th>Dionisius</th>
-            <th>Rp. 400</th>
-            <th>Rp. 5000</th>
-            <th>100</th>
-        </tr>
-    </table>
+                <button data-toggle="modal" data-target="#modaluser" class="btn btn-info"><i class="fa fa-excel; mr-3"></i>Unduh Daftar Pelangan</button>
+  </div>
 </div>
 
 @foreach($data as $datas)
 @if(\Carbon\Carbon::parse($datas['created_at'])->isToday() == 1 and $hastoday == false)
-<h4>Hari Ini</h4>
+<h4 class="font-weight-bold ml-2 mb-2">Hari Ini</h4>
 @php $hastoday=true @endphp
 @elseif(\Carbon\Carbon::parse($datas['created_at'])->isToday() == 0 and $haslampau == false)
 <h4>Sebelumnya</h4>
 @php $haslampau=true @endphp
 @endif
-<div class="card">
+<div class="cardo">
 <div class="container">
-  <div class="row">
-  <div class="col text-center"><div style="width: 120px;">Inv.</div></div>
-    <div class="col text-center"><div style="width: 120px;"     >Nama</div></div>
-    <div class="col text-center"><div style="width: 120px;">Tagihan</div></div>
-    <div class="col text-center"><div style="width: 150px;">Dibayar</div></div>
-    <div class="col text-center"><div style="width: 150px;">Status</div></div>
-    <div class="col text-center"><div style="width: 200px;">Coba Aja</div></div>
+  <div class="row text-center">
+  <div class="col text-center"><div class="text-center" style="width: 120px;">Inv.</div></div>
+    <div class="col text-center"><div class="text-center" style="width: 130px;"  >Nama</div></div>
+    <div class="col text-center"><div class="text-center" style="width: 120px;">Tagihan</div></div>
+    <div class="col text-center"><div class="text-center" style="width: 150px;">Dibayar</div></div>
+    <div class="col text-center"><div class="text-center" style="width: 150px;">Status</div></div>
+    <div class="col text-center"><div class="text-center" style="width: 130px;"></div></div>
     
-    <div class="w-100"></div>
-    <div class="col text-center"><div style="width: 120px;">{{$datas['no_nota']}}</div></div>
-    <div class="col text-center"><div style="width: 120px;">Coba Aja</div></div>
-    <div class="col text-center"><div style="width: 120px;">Coba Aja</div></div>
-    <div class="col text-center"><div style="width: 150px;">Coba Aja</div></div>
-    <div class="col text-center"><div style="width: 150px;">Coba Aja</div></div>
-    <div class="col text-center e"><div style="width: 200px;" class=""> @if(Auth::user()->roles[0]['name'] == 'manager' and $datas["status"]!="draf") <div class="d-inline-flex"><a id_trans="{{$datas['kode_trans']}}" class="btn btn-warning printing btn-sm"><i style="" class="fa fa-print"></i></a><a id_trans="{{$datas['kode_trans']}}" class="btn btn-danger btn-sm returntrans"><i style="" class="fa fa-undo"></i></a></div>@endif</div></div>
+    <div class="w-100 mb-2"></div>
+    <div class="col text-center"><div style="width: 120px;" class="font-weight-bold">{{$datas['no_nota']}}</div></div>
+    <div class="col text-center"><div style="width: 120px;" class="font-weight-bold">{{$datas['nama_pelanggan']}}</div></div>
+    <div class="col text-center"><div style="width: 120px; font-weight:700">Rp.     {{number_format($datas['subtotal'] - $datas['diskon'])}}</div></div>
+    <div class="col text-center"><div style="width: 150px; font-weight:700"> Rp. {{number_format($datas['bayar'])}}</div></div>
+    <div class="col-2 text-center">
+      <div style="width: 150px;">
+        @if($datas['status']=="lunas")
+        <span  class="bg-success font-weight-bold pl-3 pr-3 text-center rounded-pill" style="width:10px ">LUNAS</span>
+        @elseif($datas['status']=='belum lunas')
+        <button data-toggle="modal" data-target="#exampleModalCenter" class="btn-bayar bg-danger font-weight-bold pl-3 pr-3 text-center rounded-pill" id_trans="{{$datas['kode_trans']}}">Belum Lunas</button>
+        @elseif($datas['status']=='return') <span class="bg-warning font-weight-bold pl-3 pr-3 text-center rounded-pill">RETUR</span>
+        @elseif($datas['status']=='draf')<span class="bg-primary font-weight-bold pl-3 pr-3 text-center rounded-pill">DRAF</span>
+        @endif
+    </div>
+  </div>
+    <div class="col text-center e">
+      <div style="width: 130px;" class="">
+        @if((Auth::user()->roles[0]['name'] == 'manager' or Auth::user()->roles[0]['name'] == 'kasir') and $datas["status"]!="draf")
+        <div class="d-inline">
+          <a id_trans="{{$datas['kode_trans']}}" class="btn btn-warning printing btn-sm m-1 w-25"><i style="" class="fa fa-print"></i></a>
+          <a style="padding-left: 12px; padding-right: 12px;" id_trans="{{$datas['kode_trans']}}" class="btn btn-primary btn-sm returntrans"><i style="" class="fa fa-info"></i></a>
+        </div>
+        @elseif($datas['status']=='draf')
+        <a href="{{route('hapusdraft',['id'=>$datas['kode_trans']])}}" id_trans="{{$datas['kode_trans']}}" class="btn btn-danger hapustrans btn-sm m-1 w-25"><i style="" class="fa fa-trash"></i></a>
+        @endif
+    </div>
+  </div>
   </div>
 </div>
 </div>
@@ -85,12 +112,15 @@ $haslampau = false;
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Return Transaksi</h5>
+        <h5 class="modal-title">Detail Transaksi</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
+        <p id="np">Nama Pelanggan :</p>
+        <p id="tp">Nama Pelanggan :</p>
+        <p id="almt">Nama Pelanggan :</p>
         <p>Ini adalah daftar barang yang dibeli</p>
         <form action="{{route('doreturn')}}" method="post">
         @csrf
@@ -113,13 +143,80 @@ $haslampau = false;
         </table>
       </div>
       <div class="modal-footer">
-      <button type="button" class="btn btn-primary" data-dismiss="modal">Cetak</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-warning">Kembalikan</button>
+          <button type="submit" class="btn btn-warning" id="re-button">Kembalikan</button>
 </form>
       </div>
     </div>
   </div>
 </div>
 </div>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Pelunasan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+            <label for="">Masukan Nominal</label>
+            <input type="text" class="form-control" id="nominal-bayar">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" >Tutup</button>
+        <button type="button" class="btn btn-primary" id="tombolbayar" id_trans="">Bayar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="modaluser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Unduh Data Pelanggan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="{{url('/downloaddatauser')}}" id="usercetak" method="post">
+        @csrf
+      <div class="modal-body">
+        <div class="form-row mb-3">
+          <div class="col">
+                <label for="">Mulai dari</label>
+                <input name="md" class="form-control" id="md" type="date">
+          </div>
+          <div class="col">
+               <label for="">Sampai dengan</label>
+                <input name="sd" class="form-control" id="sd" type="date">
+          </div>
+        </div>
+        <div class="form-check">
+        <input name="telepon" id="telepon" type="checkbox" class="form-check-input">
+          <label for="telepon" class="">No Telepon</label>
+         
+        </div>
+        <div class="form-check">
+        <input name="alamat" id="alamat" type="checkbox" class="form-check-input">
+          <label for="alamat" class="">Alamat</label>
+         
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        <button type="submit" class="btn btn-primary">Cetak</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 @endsection

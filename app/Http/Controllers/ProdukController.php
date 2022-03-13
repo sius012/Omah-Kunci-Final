@@ -78,18 +78,22 @@ class ProdukController extends Controller
         $td = $req->discontype;
 
         if(strpos($id_tipe,'[custom]')){
-            $newtipe = DB::table("tipes")->insertGetId(["nama_tipe"=>str_replace("[custom]","",$id_tipe)]);
-            $id_tipe = $newtipe;
+            $id_tipeo = DB::table("tipes")->max("id_tipe");
+            
+            $newtipe = DB::table("tipes")->insertGetId(["id_tipe" => $id_tipeo+1, "nama_tipe"=>str_replace("[custom]","",$id_tipe)]);
+            $id_tipe = $id_tipeo+1;
+            
         }
         if(strpos($id_merek,'[custom]')){
-          
-            $newmerek = DB::table("mereks")->insertGetId(["nama_merek"=>str_replace("[custom]","",$id_merek)]);
-            $id_merek = $newmerek;
+            $id_mereko = DB::table("mereks")->max("id_merek");
+            $newmerek = DB::table("mereks")->insertGetId(["id_merek" => $id_mereko+1 ,"nama_merek"=>str_replace("[custom]","",$id_merek)]);
+            $id_merek = $id_mereko+1;
         }
         if(strpos($id_codetype,'[custom]')){
-         
-            $newkodetype = DB::table("kode_types")->insertGetId(["nama_kodetype"=>str_replace("[custom]","",$id_codetype)]);
-            $id_codetype = $newkodetype;
+            $id_codetypeo = DB::table("kode_types")->max("id_kodetype");
+            $newkodetype = DB::table("kode_types")->insertGetId(["id_kodetype" => $id_codetypeo+1, "nama_kodetype"=>str_replace("[custom]","",$id_codetype)]);
+            $id_codetype = $id_codetypeo+1;
+            
         }
 
 
@@ -106,7 +110,21 @@ class ProdukController extends Controller
     }
 
     public function hapusproduk($kode){
-       
+       $dato =  DB::table('new_produks')->where('kode_produk', $kode)->first();
+
+        $jmltipe = DB::table("new_produks")->where("id_tipe", $dato->id_tipe)->count();
+        $jmlkodetipe = DB::table("new_produks")->where("id_kodetype", $dato->id_kodetype)->count();
+        $jmlmerek = DB::table("new_produks")->where("id_merek", $dato->id_merek)->count();
+
+        if($jmltipe < 2){
+            DB::table("tipes")->where("id_tipe", $dato->id_tipe);
+        }
+        if($jmlkodetipe < 2){
+            DB::table("kode_types")->where("id_kodetype", $dato->id_kodetype);
+        }
+        if($jmlmerek < 2){
+            DB::table("mereks")->where("id_merek", $dato->id_merek);
+        }
 
         DB::table('new_produks')->where('kode_produk', $kode)->delete();
         return redirect()->route('produk');

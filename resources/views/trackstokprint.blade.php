@@ -113,14 +113,16 @@
         <p style="margin-bottom: 20px">Tanggal : {{date('d-M-Y')}}</p>
 
      
+        @isset($m2)
+           <h5>Daftar Barang masuk melalui stok harian</h5>
             <table class="table-data" style="width:180mm !important; margin-top: 20px; margin: 20px" >
             <tr>
                         <th >No</th>
+                        <th>Tanggal</th>
                         <th style="width:60px">Kode Produk</th>
                         <th>Nama Produk</th>
                         <th >Merek</th>
                         <th>Jumlah</th>
-                        <th>Status</th>
                         <th>Keterangan</th>
                         <th>A. Gudang</th>
                     </tr>
@@ -129,14 +131,14 @@
          
               
               
-                    @foreach($data1 as $da)
+                    @foreach($m2 as $da)
                     <tr>
                        <td >{{$no}}</td>
+                       <td>{{date("d-m-y",strtotime($da->created_at))}}</td>
                         <td>{{$da->kode_produk}}</td>
                         <td>{{$da->nama_produk}}</td>
                         <td >{{$da->nama_merek}}</td>
                         <td>{{$da->jumlah}}</td>
-                        <td>{{$da->status}}</td>
                         <td >{{$da->keterangan}}</td>
                         <td >{{$da->name}}</td>
                     </tr>
@@ -146,7 +148,171 @@
                     @endforeach
                 
             </table>
-          
+        @endisset
+
+        @isset($m1)
+        <h5>Daftar Barang masuk melalui transaksi</h5>
+            <table class="table-data" style="width:180mm !important; margin-top: 20px; margin: 20px" >
+            <tr>
+                        <th >No</th>
+                        <th style="width:60px">Tanggal</th>
+                        <th style="width:60px">Kode Produk</th>
+                        <th>Nama Produk</th>
+                        <th >Merek</th>
+                        <th>Jumlah</th>
+                    </tr>
+    
+            @php  $no = 1@endphp
+         
+              
+              
+                    @foreach($m1 as $da)
+                    <tr>
+                       <td >{{$no}}</td>
+                       <td>{{date("d-m-y",strtotime($da->created_at))}}</td>
+                        <td>{{$da->kode_produk}}</td>
+                        <td>{{$da->nama_produk}}</td>
+                        <td >{{$da->nama_merek}}</td>
+                        <td>{{$da->jumlah}}</td>
+
+                    </tr>
+                    @php $no++ @endphp
+              
+
+                    @endforeach
+                
+            </table>
+        @endisset
+
+
+        @isset($k2)
+            <h5>Daftar Barang keluar melalui stok harian</h5>
+            <table class="table-data" style="width:180mm !important; margin-top: 20px; margin: 20px" >
+            <tr>
+            <th >No</th>
+                        <th style="width:60px">Kode Produk</th>
+                        <th>Tanggal</th>
+                        <th>Nama Produk</th>
+                        
+                        <th >Merek</th>
+                        <th>Jumlah</th>
+                        <th>Keterangan</th>
+                        <th>A. Gudang</th>
+                    </tr>
+    
+            @php  $no = 1@endphp
+         
+              
+              
+                    @foreach($k2 as $da)
+                    <tr>
+                       <td >{{$no}}</td>
+                       <td>{{date("d-m-y",strtotime($da->created_at))}}</td>
+                        <td>{{$da->kode_produk}}</td>
+                        <td>{{$da->nama_produk}}</td>
+                        <td >{{$da->nama_merek}}</td>
+                        <td>{{$da->jumlah}}</td>
+                        <td >{{$da->keterangan}}</td>
+                        <td >{{$da->name}}</td>
+                    </tr>
+                    @php $no++ @endphp
+              
+
+                    @endforeach
+                
+            </table>
+        @endisset
+
+        
+        @isset($k1)
+            <h5>Produk yang keluar melalui transaksi</h5>
+            <table class="table-data" style="width:180mm !important; margin-top: 20px; margin: 20px" >
+            <tr>
+                        <th >No</th>
+                        <th>Tanggal</th>
+                        <th style="width:60px">Kode Produk</th>
+                        <th>Nama Produk</th>
+                      
+                        <th >Merek</th>
+                       @if(Auth::user()->roles[0]['name']=='manager') <th>Harga</th> @endif
+                        <th>Jumlah</th>
+                    </tr>
+    
+            @php  
+            $jumlah=0;
+            $total=0;
+            
+            $no = 1@endphp
+         
+
+              
+                    @foreach($k1 as $da)
+                    <tr>
+                       <td >{{$no}}</td>
+                       <td>{{$da->created_at}}</td>
+                        <td>{{$da->kode_produk}}</td>
+                        <td>{{$da->nama_produk}}</td>
+                        <td >{{$da->nama_merek}}</td>
+                        @if(Auth::user()->roles[0]['name']="manager") <td >{{number_format(Tools::doDisc($da->jumlah,$da->harga_produk,$da->potongan,$da->prefix),0,",",".")}}</td>@endif
+                        <td>{{$da->jumlah}}</td>
+
+                    </tr>
+                    @php
+                    $total += Tools::doDisc($da->jumlah,$da->harga_produk,$da->potongan,$da->prefix);
+                    $jumlah += $da->jumlah;
+                    
+                    
+                    $no++ @endphp
+                    
+                    @endforeach
+                    <tr>
+                        <td colspan="5">Total</td>
+                        <td>Rp. {{number_format($total,0,",",".")}}</td>
+                        <td>{{$jumlah}}</td>
+
+                    </tr>
+                
+            </table>
+        @endisset
+
+        
+        @isset($suplier)
+            <h5>Data retur ke suplier</h5>
+            <table class="table-data" style="width:180mm !important; margin-top: 20px; margin: 20px" >
+            <tr>
+                        <th >No</th>
+                        <th>Kode Produk</th>
+                        <th >Tanggal</th>
+                        <th>Nama Produk</th>
+                        <th >Merek</th>
+                        <th>Jumlah</th>
+                        <th>Keterangan</th>
+                        <th>Admin Gudang</th>
+                    </tr>
+    
+            @php  $no = 1@endphp
+         
+              
+              
+                    @foreach($suplier as $da)
+                    <tr>
+                       <td >{{$no}}</td>
+                        <td>{{$da["kode_produk"]}}</td>
+                        <td>{{date("d-m-yy",strtotime($da['tanggal']))}}</td>
+                        <td>{{$da["nama_produk"]}}</td>
+                        <td>{{$da["nama_merek"]}}</td>
+                        <td >{{$da["jumlah"]}}</td>
+                        <td>{{$da["keterangan"]}}</td>
+                        <td>{{$da["Nama Admin"]}}</td>
+                    </tr>
+                    @php $no++ @endphp
+              
+
+                    @endforeach
+                
+            </table>
+        @endisset
+        
  
  
 </body>

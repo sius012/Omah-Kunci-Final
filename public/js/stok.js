@@ -1,4 +1,7 @@
 $(document).ready(function(){
+    $(".btnClosed").click(function(){
+        $("#modaluploader").modal("hide");
+    });
     $("#uploadbuttonstok").click(function(){
         Swal.fire({
             title: 'Apakah anda yakin ingin menambahkan',
@@ -17,6 +20,7 @@ $(document).ready(function(){
                 dataType: "json",
                 success: function(data){
                     Swal.fire(`${data['jumlah']} item berhasil dimasukan`,'','success');
+                    window.location = "/stok";
                 },error: function(err){
                     Swal.fire('sepertinya ada kesalahan','','info');
                     alert(err.responseText);

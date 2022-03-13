@@ -14,8 +14,11 @@
             font-size: 10pt;
         }
 
-        body{
+        body {
             max-height: 5000px;
+        }
+
+        td{
         }
 
         .container-wrapper {
@@ -37,7 +40,7 @@
         .container-wrapper table .address .brand-address {
             margin-top: 0;
 
-            font-size: 8pt;
+            font-size: 6pt;
         }
 
         .container-wrapper table .date-times {
@@ -58,7 +61,7 @@
 
         .container-wrapper .big-title .hr {
             margin: 0;
-       
+
             width: 200px;
             display: inline-flex;
             align-items: center;
@@ -96,15 +99,18 @@
             width: 750px;
         }
 
-        #bigtitle{
+        #bigtitle {
             height: 20px;
 
         }
-        h4{
-            
+
+        h4 {
+
             font-size: 9pt;
-            
+            margin: 0px;
+            padding: 0px !important;
         }
+
 
 
     </style>
@@ -115,15 +121,16 @@
         <table style="margin-top: 20px; width: 750px">
             <tr>
                 <td>
-                    <div class="address" style="width:200px">
+                    <div class="address" style="width:120px">
                         <img style="height:20px;" src="{{ public_path('assets/logo.svg') }}" alt="">
-                        <p class="brand-address">Jl. Agus Salim D no.10 <br> Telp/Fax (024) 3554929 /085712423453 <br> Semarang </p>
+                        <p class="brand-address">Jl. Agus Salim D no.10 <br> Telp/Fax 085712423453 / (024) 3554929  <br>
+                            Semarang </p>
                     </div>
                 </td>
-                <td></td>
-                <td align="right" style="width:300px" valign="top">
+                <td style="width:170px"></td>
+                <td align="right" style="width:50px" valign="top">
                     <h4 class="date-times">Semarang,
-                        {{ date("d-M-Y", strtotime($data->updated_at)) }}</h4>
+                        {{ date("d-M-Y")}}</h4>
                 </td>
             </tr>
             <tr>
@@ -138,7 +145,7 @@
 
             </tr>
             <tr>
-                <td valign="top">
+                <td style="width:100px" valign="top">
                     <h4>Telah terima dari</h4>
                 </td>
                 <td> {{ $data->ttd }}</td>
@@ -184,13 +191,15 @@
                 <td></td>
             </tr>
             <tr>
-                <td  style="padding-bottom: 5px;" valign="top">
+                <td style="padding-bottom: 5px;" valign="top">
                     <h4>Total</h4>
                 </td>
-                <td style="padding-bottom: 5px;">  Rp. {{ number_format($data->total)}}</td>
+                <td style="padding-bottom: 5px;"> Rp. {{ number_format($data->total) }}</td>
                 <td></td>
             </tr>
-            <tr><td></td></tr>
+            <tr>
+                <td></td>
+            </tr>
             @foreach($opsi as $opsis)
                 <tr>
 
@@ -198,13 +207,26 @@
                         <h4>{{ $opsis->judul }}</h4>
                     </td>
                     <td colspan="2"> {{ $opsis->ket }}</td>
-  
+
 
                 </tr>
             @endforeach
-          
-            <tr align="center" >
-                <td colspan="3" style="padding-top:50px; padding-bottom:30px">
+            @if($data->termin == 3)
+                <tr>
+
+                    <td valign="top">
+                        <h4>Kunci</h4>
+                    </td>
+                    <td colspan="2"> {{ $data->kunci }}</td>
+                   
+
+                </tr>
+
+            @endif
+
+            @if($data->termin != 3)
+            <tr align="center">
+                <td colspan="3" style="padding-top:25px; padding-bottom:30px">
                     <h4 class="ttd-header">Mengetahui,</h4>
 
                 </td>
@@ -224,6 +246,7 @@
                     </div>
                 </td>
             </tr>
+            @endif
         </table>
     </div>
 </body>

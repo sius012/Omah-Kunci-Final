@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PelangganExport;
 use function GuzzleHttp\json_encode;
 
 class transaksiController extends Controller
@@ -32,26 +34,35 @@ class transaksiController extends Controller
         $data = [];
       
         
-        $get = DB::table("transaksi")->orderBy("updated_at" ,'desc')->where('no_nota', $req->no_nota)->get()->toArray();
+        $get = DB::table("transaksi");
 
-        if($req->has('no_nota')){
-            $get = DB::table("transaksi")->orderBy("updated_at" ,'desc')->where('no_nota', $req->no_nota)->get()->toArray();
-        }else{
-            $get = DB::table("transaksi")->orderBy("updated_at" ,'desc')->get()->toArray();
+        if($req->filled('no_nota')){
+            $get->where('no_nota',$req->no_nota);
+        }
+
+        if($req->filled('status')){
+            $get->where('status',$req->status);
+        }
+
+        if($req->filled('waktu')){
+            if($req->waktu == 'terbaru'){
+                $get->orderBy('created_at','desc');
+            }else{
+                $get->orderBy('created_at','asc');
+            }
+        }else{  
+            $get->orderBy('created_at','desc');
         }
         
+        
 
 
         
 
-        foreach($get as $d){
+        foreach($get->get() as $d){
             $row = (array) $d;
           
-            if($d->metode == "kredit"){
-                 $transaksikredit = DB::table("cicilan")->where("kode_transaksi", $d->kode_trans)->get()->toArray();
-                 array_push($row, (array) $transaksikredit);
-            
-            }
+
 
         
             array_push($data, $row);
@@ -101,9 +112,22 @@ class transaksiController extends Controller
     }
 
     public function hapus($id){
-        DB::table('transaksi')->where('kode_trans',$id)->delete();
-        DB::table('detail_transaksi')->where('kode_trans',$id)->delete();
+        $checking = DB::table('transaksi')->where('kode_trans',$id)->pluck("status")->first();
+        if($checking == "draf"){
+            DB::table('transaksi')->where('kode_trans',$id)->delete();
+            DB::table('detail_transaksi')->where('kode_trans',$id)->delete();
+        }
+    
 
         return back();
+    }
+
+    public function downloaduser(Request $req){
+        $md = $req->md;
+        $sd = $req->sd;
+        $tlp = isset($req->telepon) ? $req->telepon : null;
+        $almt = isset($req->alamat) ? $req->alamat : null;
+
+        return Excel::download(new PelangganExport($md,$sd,$tlp,$almt),'Pelanggan.xlsx');
     }
 }

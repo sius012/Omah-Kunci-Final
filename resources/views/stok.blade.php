@@ -24,7 +24,7 @@ $master='admingudang';
                 <br>
                 <div class="wrappers d-inline-flex mt-3">
                 <div class="form-group d-inline-flex">
-                    <select name="tipe" id="tipe" class="form-control dynamic w-50 form-control-sm" data-dependent = "state">
+                    <select name="tipe" id="tipe" class="form-control dynamic w-50 form-control-sm mr-5" data-dependent = "state">
                         <option value="">TIPE</option>
                         @foreach($tipe as $tipes)
                             <option value = "{{$tipes->id_tipe}}">{{$tipes->nama_tipe}}</option>
@@ -39,7 +39,7 @@ $master='admingudang';
                         @endforeach
                     </select>
                 </div>
-                <div style="margin-left: -30px;" class="form-group d-inline-flex">
+                <div style="margin-left: -40px;" class="form-group d-inline-flex">
                     <select name="merek" id="merek" class="form-control dynamic w-75 form-control-sm" data-dependent = "state">
                         <option value="">MEREK</option>
                         @foreach($merek as $merks)
@@ -57,18 +57,18 @@ $master='admingudang';
                     </select>
                 </div>
                 </div>
-              <button type="submit" class="btn btn-primary btn-sm">Cari</button>
+              <button type="submit" class="btn btn-primary btn-sm ml-2">Cari</button>
             </div>
 </form>
 
-<button type="button m-3" class="btn btn-warning"  id="generatestok" ><i class="fas fa-upload"></i>Produk ke Stok</button>
+<button type="button m-3" class="btn btn-warning"  id="generatestok" ><i class="fas fa-upload mr-2"></i>Produk ke Stok</button>
 <a class="btn btn-warning float-right" href="#" id="stokprint"><i class="fa fa-print mr-2"></i>Print</a>
 <div>
 
     <table class="table table-striped mt-3 table-bordered ">
         <thead class="thead-dark">
             <tr class="text-center">
-                <th style="width: 50px">NO</th><th style="width:100px">Kode Produk</th><th align="left" class="w-50" style="text-align: left">Nama Produk</th><th>jumlah</th><th>Aksi</th>
+                <th style="width: 50px">NO</th><th style="width:100px">Kode Produk</th><th align="left" class="w-25" style="text-align: left">Nama Produk</th><th>Merek</th><th>Tipe</th><th>Tipekode</th><th>Jumlah</th>
             </tr>
         </thead>
         <tbody id="stokfiller">
@@ -77,7 +77,7 @@ $master='admingudang';
         @endphp
         @forelse($data as $datas)
             <tr class="text-center">
-                <td>{{$no}}</td><td>{{$datas->kode_produk}}</td><td align="left">{{$datas->nama_produk}} {{$datas->nama_merek}}</td><td>{{$datas->jumlah}} {{$datas->satuan}}</td>@if(auth()->user()->roles[0]['name'] == "manager")<td align='center'><button class="btn btn-warning mr-3 editstok" kode_stok="{{$datas->id}}"><i class='fa fa-edit'></i></button>@endif<button class='btn btn-danger hapusstok' kode_stok="{{$datas->id}}"><i class='fa fa-trash'></i></button></button></td>
+                <td>{{$no}}</td><td>{{$datas->kode_produk}}</td><td align="left">{{$datas->nama_produk}}</td><td>{{$datas->nama_merek}}</td><td>{{$datas->nama_tipe}}</td><td>{{$datas->nama_kodetype}}</td><td>{{$datas->jumlah}} {{$datas->satuan}}</td>
             </tr>
             @php $no++ @endphp
         @empty
@@ -97,8 +97,8 @@ $master='admingudang';
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="judulmodalmerek">STOK</h5>
-        <button type="button" class="close btnClosed" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <button type="button btnClosed"  aria-label="Close">
+          <span  class="close "  aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
@@ -138,7 +138,7 @@ $master='admingudang';
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Produk Ke katalog</h5>
-        <button type="button" class="close btnClose" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close btnClosed" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -153,7 +153,7 @@ $master='admingudang';
         </ul>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btnClose"  data-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-secondary btnClosed"  data-dismiss="modal">Tutup</button>
         <button type="button" class="btn btn-primary" id="uploadbuttonstok">Upload(<b id="stoklessbutton"></b>)</button>
       </div>
     </div>

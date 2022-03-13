@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AkunController extends Controller
 {
@@ -16,7 +17,13 @@ class AkunController extends Controller
         $id= $req->id;
         $idroles = $req->roleid;
 
+        
+
         DB::table('model_has_roles')->where('model_id', $id)->update(['role_id'=>$idroles]);
+        if($req->filled("sandi")){
+            DB::table('users')->where('id', $id)->update(['password'=>Hash::make($req->sandi)]);    
+        }
+      
         return redirect()->route('ma');
     }
 

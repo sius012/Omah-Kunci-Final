@@ -35,6 +35,7 @@
                                     <th>Nama</th>
                                     <th>email</th>
                                     <th>role</th>
+                                    <th>password</th>
                                     <th style="width:140px;">aksi</th>
                                 </tr>
                             </thead>
@@ -57,6 +58,17 @@
                                                     <option value="3" @if($akuns->rolename=='kasir') selected
                                                         @endif>Kasir</option>
                                                 </select></td>
+                                                <td> 
+
+      <div class="input-group">
+       
+        <input type="password" name="sandi" class="form-control" id="validationServerUsername" placeholder="Password Baru" aria-describedby="inputGroupPrepend3" required>
+        <div class="input-group-prepend">
+          <span class="input-group-text btnshow" id="inputGroupPrepend3" c><i class="fa fa-eye-slash"></i></span>
+        </div>
+      </div>
+
+    </td>
                                             <td type="submit" class="d-flex align-items-center justify-content-center mb-0">@if($akuns->id
                                                 != auth()->user()->id)<button type="submit"
                                                     class="mr-1 btn btn-primary p-1 px-2"><i

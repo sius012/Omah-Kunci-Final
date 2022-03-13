@@ -18,6 +18,7 @@
             max-height: 5000px;
         }
 
+
         .container-wrapper {
             margin: 30px;
             margin-top: 0;
@@ -110,16 +111,16 @@
 
 <body>
     <div class="container-wrapper">
-        <table style="margin-top: 20px; width: 720px">
+        <table style="margin-top: 20px; width: 500px">
             <tr>
-                <td style="width:170x">
+                <td style="width:170px">
                     <div class="address">
                         <img style="height:20px;" src="{{ public_path('assets/logo.svg') }}" alt="">
                         <p class="brand-address">Jl. Agus Salim D no.10 <br> Telp/Fax (024) 3554929 /085712423453 <br> Semarang </p>
                     </div>
                 </td>
-                <td style="width: 10px"></td>
-                <td align="left" valign="top" style="width: 200px">
+                <td style="width: 200px"></td>
+                <td align="center" valign="top" style="width: 0px">
                     <h4 class="date-times">Semarang, {{date('d-M-Y', strtotime($data->created_at))}}
                      
                 </td>
@@ -156,20 +157,19 @@
                 <td class="notabesar" valign="top" > Rp. {{ number_format($data->us) }}</td>
                 <td></td>
             </tr>
-            <tr>
-                <td>
-                    <h4>Guna Membayar</h4>
-                </td>
-                <td> {{ $data->gm }}</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td  valign="top">
-                    <h4>Sejumlah</h4>
-                </td>
-                <td  valign="top">  {{$data->sejumlah}}</td>
-                <td></td>
-            </tr>
+            @foreach($data2 as $i => $datas)
+                <tr>
+                    @if($i == 0)
+                    <th valign="top" align="left">Barang yang dibeli</th>
+                    @else
+                    <td></td>
+                    @endif
+                    <td>{{$datas->nama_produk}} {{$datas->nama_merek}} </td>
+                    <td style="width:50px"> {{$datas->jumlah}} {{$datas->satuan}}</td>
+                  
+                </tr>
+            @endforeach
+
             <tr><td></td></tr>
         
           

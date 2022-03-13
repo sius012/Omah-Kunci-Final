@@ -214,9 +214,28 @@ $subtotal = 0;
         <hr style="margin:0;">
         <div>
             <table>
+                @php 
+                    $status = '';
+                    switch($data[0]->status){
+                        case 'return':
+                            $status =  "RETUR" ;
+                        break;
+                        case 'lunas':
+                            $status =  "TANDA TERIMA" ;
+                        break;
+                        case 'belum lunas':
+                            $status =  "SURAT JALAN" ;
+                        break;
+                    }
+                @endphp
                 <tr>
-                    <td colspan=2>{{$data[0]->status == "return" ? "RETUR /Invoice:".$data[0]->keterangan : "TANDA TERIMA"}}  </td>
+                    <td style="text-align: center; font-size: 1rem;" colspan=2>{{$status}}</td>
                 </tr>
+                @if($data[0]->status == 'return')
+                <tr>
+                    <td style="text-align: center;" colspan=2>Invoice: {{ $data[0]->keterangan  }}</td>
+                </tr>
+                @endif
                 <tr>
                     <td>{{$data[0]->no_nota}}</td>
                     <td align="right">{{date("d-m-Y" ,strtotime($data[0]->created_at))}}</td>
@@ -253,7 +272,7 @@ $subtotal = 0;
 
                         <tr>
                             <td style="width: 130px"> {{$dats->jumlah}} {{$dats->satuan}} {{" x"}} {{number_format($dats->harga,"0",".",".")}}</td>
-                            <td align="left">-{{$dats->prefix !== 'rupiah' ? $dats->potongan."%" : "Rp.". number_format($dats->potongan)}}</td>
+                            <td align="left">-{{$dats->prefix !== 'rupiah' ? $dats->potongan."%" : number_format($dats->potongan,"0",",",".")}}</td>
                             <td style="width: 70x" align="right">{{number_format(Tools::doDisc($dats->jumlah,$dats->harga_produk,$dats->potongan,$dats->prefix),0,".",".")}}</td>
                             @php $no++; 
                             
@@ -264,6 +283,7 @@ $subtotal = 0;
 
                     </tbody>
                 </table>
+                @if($data[0]->status !== 'return')
                 <table>
 
                     <tr>
@@ -294,8 +314,15 @@ $subtotal = 0;
                     </tr>
 
                 </table>
+             
+                @endif
                 <hr style="margin:0;">
+                @if($data[0]->status != 'return')
+              
                 <p style="margin:3px;">* Barang yang sudah dibeli <br> tidak dapat ditukar<br><br>
+                @endif
+               
+                
 
                     Terimakasih</p>
             </div>

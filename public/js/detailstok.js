@@ -1,45 +1,47 @@
 $(document).ready(function () {
- 
-
-
-    $("#produk-select").keyup(function(){
-        $("#myUL").show();
-        let kw = $(this).val();
-        $.ajax({
-            headers: {
-                "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content')
-            },
-            data: {
-                kw: kw
-            },
-            url: "/searchpro",
-            type: "post",
-            dataType: "json",
-            success: function(data){
-                var li = "";
-                for(var i = 0;i < data.length;i++){
-                    li += `<li>
-
-                               <a kode="${data[i]['kode_produk']}" harga="${data[i]['harga']}" jumlah="1" potongan="0" class="sear">${data[i]["kode_produk"] + " " + data[i]["nama_produk"]}</a>
-                            </div>
-                        
-                        </li>`;
-                }
-               
-                $("#myUL").html(li);
-               
-            }
-            
-        })
+    $("#toggle-tanggal").hide();
+    $("#berdasarkan").change(function () {
+        if ($(this).val() == "tanggal") {
+            $("#toggle-tanggal").show();
+            $("#toggle-hmb").hide();
+        } else {
+            $("#toggle-tanggal").hide();
+            $("#toggle-hmb").show();
+        }
     });
 
-    $("#myUL").on("click", ".sear",function(event){
-        $("#produk-select").val($(event.target).attr("kode"));  
-    }); 
+
+
+
+
+
+
+
+    $(document).click(function () {
+        $(".myUL").hide();
+    });
+
+    $(document).on("click", ".myUL", function (e) {
+        e.stopPropagation();
+    });
+
+    $(document).on("click", ".sear", function (event) {
+        $(event.target).closest(".parent1").children("input").val($(event.target).attr("kode"));
+        $(event.target).closest(".form-row").children(".parent1").children(".nama-produk").val($(event.target).attr("nama"));
+
+    });
+
+
+
+    $(".myUL").on("click", ".sear", function (event) {
+        $("#produk-select").val($(event.target).attr("kode"));
+        $(".myUL").hide();
+    });
 
 
     loaddetail();
     $("#detailstoksubmitter").submit(function (e) {
+        
         e.preventDefault();
         var data = {
             'created_at': $("#tanggal").val(),
@@ -47,6 +49,7 @@ $(document).ready(function () {
             'jumlah': $("#jumlah").val(),
             'status': $("#status-select").val(),
             'keterangan': $("#keterangan").val(),
+            
         };
 
         alert($("#status-select").val());
@@ -80,13 +83,13 @@ $(document).ready(function () {
             },
             url: "/loaddatadetailstok",
             type: "post",
-            data:{
+            data: {
                 kw: kw
             },
             dataType: "JSON",
             success: function (data) {
 
-                let row = data.map(function (rows, i) {
+                let row = data["data1"].map(function (rows, i) {
 
                     return `
                         <div class="card bg-light">
@@ -117,7 +120,7 @@ $(document).ready(function () {
                                         <td>${rows['kode_produk']}</td>
                                         <td>${rows['nama_produk']}</td>
                                         <td>${rows['jumlah']} ${rows['satuan']}</td>
-                                        <td><div class="status ${rows['status'] != 'masuk' ? "bg-danger": "bg-success"}">${rows['status']}</div></td>
+                                        <td><div class="status ${rows['status'] != 'masuk' ? "bg-danger" : "bg-success"}">${rows['status']}</div></td>
                                         <td>${rows['keterangan']}</td>
                                     </tr
                                 </tbody>
@@ -126,39 +129,180 @@ $(document).ready(function () {
                         
                        `;
                 });
+
+
+                let row2 = data["data2"].map(function (rows) {
+                    var subrow = "";
+
+                    for (var i = 0; i < rows['jumlahproduk']; i++) {
+                        subrow += `
+                        <tr>
+                        <td>${i + 1}</td>
+                        <td>${rows['produk' + i]["kode_produk"]}</td>
+                        <td>${rows['produk' + i]["nama_produk"]}</td>
+                        <td> ${rows['produk' + i]["nama_merek"]}</td>
+                        <td>${rows['jumlah' + i]} ${rows['produk' + i]["satuan"]}</td>
+                    </tr`;
+                    }
+                    return `
+                        <div class="card bg-light">
+                            <div class="card-header">
+                                <div class="row">
+                                <div class="col">
+                                    Retur ke Suplier
+                                </div>
+                                <div class="col-2">
+                                <div class=''>Nama Admin: ${rows['name']}</div>
+                                </div>
+                            <div class="col-2">
+                                <div class="  float-right">${rows['tanggal']}</div>
+                            </div>
+                                </div>
+                            </div>
+                            <table class="table table-borderless">
+                                <thead class="thead">
+                                    <tr>
+                                       <th style="width:10px;">No</th>
+                                        <th style="width:100px;">Kode Produk</th>
+                                        <th style="width:180px;">Nama</th>
+                                        <th style="width:180px;">Merek</th>
+                                        <th style="width:70px;">Jumlah</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tbody">
+                               ${subrow
+                        }
+                                </tbody>
+                            </table>
+                            <div class='card-footer'>Keterangan: ${rows['keterangan']}</div>
+                        </div>
+                        
+                       `;
+                });
+
+
                 $("#dscont").html(row);
+                $("#rscont").html(row2);
             },
             error: function (err) {
+                alert(err.responseText);
             }
         });
     }
 
-    $(document).click(function(){
+    $(document).click(function () {
         $("#myUL").hide();
     });
 
-    $("#myUL").click(function(e){
-    e.stopPropagation(); 
+    $("#myUL").click(function (e) {
+        e.stopPropagation();
     });
 
-    $("#cetaksubmitter").submit(function(e){
+    $("#cetaksubmitter").submit(function (e) {
         e.preventDefault();
+        alert($("#tanggal2").val());
         $.ajax({
             headers: {
-                "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr("content")
+                "X-CSRF-TOKEN": $("meta[name=csrf-token]").attr("content")
             },
             url: "/printstoktrack",
             data: {
-                "berdasarkan" : $("#berdasarkan").val()
-                
+                "berdasarkan": $("#berdasarkan").val(),
+                "tanggal": $("#tanggal2").val(),
+                "tanggalakhir": $("#tanggal3").val(),
+                "hmb": $("#hmb").val(),
+                "keluar": $("#keluars").prop("checked") == true ? "true" : "false",
+                "masuk": $("#masuks").prop("checked") == true ? "true" : "false",
+                "suplier": $("#suplier").prop("checked") == true ? "true" :"false",
+
             },
             dataType: "json",
-            type:"post",
-            success: function(data){
-                printJS({printable: data['filename'], type: 'pdf', base64: true});
-            },error: function(err){
+            type: "post",
+            success: function (data) {
+                printJS({ printable: data['filename'], type: 'pdf', base64: true });
+            }, error: function (err) {
                 alert(err.responseText);
             }
         })
+    });
+
+    $(document).on('keyup', '.inputan-produk', function (e) {
+        $(e.target).closest(".parent1").children(".myUL").show();
+
+        let kw = $(e.target).val();
+
+
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                data: kw
+            },
+
+            type: "POST",
+            dataType: "JSON",
+            url: "/cari",
+            success: function (data) {
+
+
+
+
+
+                $(".drop").show();
+                if (data['data'].length > 0) {
+                    var li = "";
+                    for (var i = 0; i < data['data'].length; i++) {
+                        li += `<li>
+
+                                   <a kode="${data['data'][i]['kode_produk']}" nama="${data['data'][i]['nama_produk']}" jumlah="1" potongan="0" class="sear">${data['data'][i]["kode_produk"] + " " + data['data'][i]["nama_produk"] + " " + data['data'][i]['nama_merek']}</a>
+                                </div>
+                            
+                            </li>`;
+                    }
+                 
+
+                    $(e.target).closest(".parent1").children(".myUL").html(li);
+                } else {
+                    $(".drop").hide();
+                }
+               
+                console.log(data.length);
+
+            },
+            error: function (err, response,) {
+                Swal.fire("terjadi kesalahan", "", "info");
+            }
+        });
+
+
+    });
+
+    $("#tambahbutton").click(function () {
+        $("#first-row").after(`<div class="form-row mt-3">
+        <div class="col-6 parent1">
+       
+            <input type="text" class="form-control inputan-produk" placeholder="Ketik Kode Atau Nama" name='kode[]'>
+            <ul class="myUL">
+
+            </ul>
+        </div>
+        <div class="col-3 parent1">
+  
+            <input type="text" class="form-control nama-produk" placeholder="Nama Produk">
+        </div>
+        <div class="col parent1">
+    
+            <input type="text" class="form-control" placeholder="Jumlah" name='jumlah[]'>
+            
+        </div>
+        <div class="col-sm parent" >
+        <button class="btndel btn btn-danger">hapus</button>
+        </div>
+    </div>`);
+    });
+
+    $(document).on("click", ".btndel", function (e) {
+        $(e.target).closest(".form-row").remove();
     });
 });

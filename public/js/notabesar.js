@@ -1,10 +1,12 @@
 $(document).ready(function(){
+    $("#suratjalan").hide();
+    $(".kunci").hide();
     $("#printbutton").attr("disabled", "disabled");
 
     var jenisnota = "pintugarasi";
     $("#gm").val('Pintu Garasi');
     var pg = `
-        <label for='ukuranpg'>Ukuran : </label>
+        <label for='ukuranpg readonly'>Ukuran : </label>
         <input required class="form-control readonly" id="ukuranpg">
         <label for='daunpintupg'>Daun Pintu : </label>
         <input required class="form-control readonly" id="daunpintupg">
@@ -15,7 +17,6 @@ $(document).ready(function(){
         <label for='warnatipepg'>Warna/Tipe : </label>
         <input required class="form-control readonly" id="warnatipepg">
         <label for='waktupg'>Waktu : </label>
-        <input type="text-area" required class="form-control readonly" id="waktupg" value="2 Bulan dari Penerimaan DP 50% dan persetujuan warna, tipe, ukuran lebar dan tinggi lapangan">
         <textarea type="text-area" required class="form-control readonly" id="waktupg" value="">2 Bulan dari Penerimaan DP 50% dan persetujuan warna, tipe, ukuran lebar dan tinggi lapangan</textarea>
     `;
 
@@ -130,13 +131,28 @@ $("#trigger").click(function(e){
             type: "post",
             dataType: "json",
             success: function(data){
+                $(".readonly").attr("readonly","readonly");
+                
+                if(data["nb"][0]["termin"] == 2){
+                    $("#suratjalan").show();
+                }else{
+                $("#suratjalan").hide();
+                }
                 if(data["peringatan"] != undefined){
-                    alert("hai");
+                    alert("error");
+                }
+
+                if(data['nb'][0]['termin'] == 3){
+                    $(".kunci").show();
+                    $("#kunci").val(data['nb'][0]['kunci']);
+                    
+                }else{
+                    $(".kunci").hide();
                 }
                 console.log(data);
                 $("#tt").text(data["nb"][0]["termin"] == 3 ? "PELUNASAN" : "Termin: "+data["nb"][0]["termin"]);
-                $("#baseinputnb .col").show();
-                $("#baseinputnb input, label").show();
+             //   $("#baseinputnb .col").show();
+               // $("#baseinputnb input, label").show();
                 $("#ttd").  val(data['nb'][0]['ttd']);
                 $("#up").   val(data['nb'][0]['up']);
                 $("#us").   val(data['nb'][0]['us']);
@@ -150,8 +166,8 @@ $("#trigger").click(function(e){
                 let row = data["opsi"].map(function(e,i){
                     return `
                     <div class="form-group">
-                        <input type="text" class="form-control form-control-sm title${i+1}" id="exampleInputPassword1" value="${e['judul']}">
-                        <input type="text" class="form-control isi${i+1}" id="exampleInputPassword1" value="${e['ket']}">
+                        <label>${e['judul']}</label>
+                        <input type="text" class="form-control isi${i+1} readonly" id="exampleInputPassword1" value="${e['ket']}">
                     </div>
                     `;
                     
@@ -172,6 +188,7 @@ $("#trigger").click(function(e){
                     $("#buttonsubmit").removeClass("btn-primary");
                     $("#buttonsubmit").addClass("btn-success");
                     $("#printbutton").removeAttr("disabled");
+                    $("#suratjalan").removeAttr("disabled");
                 
                 }else{
                     $("#buttonsubmit").removeAttr("disabled");
@@ -179,9 +196,11 @@ $("#trigger").click(function(e){
                     $("#buttonsubmit").addClass("btn-primary");
                     $("#buttonsubmit").text("Bayar");
                     $("#printbutton").attr("disabled", "disabled");
+                    $("#suratjalan").attr("disabled","disabled");
                 }
             },
             error: function(err){
+                alert(err.responseText);
                 Swal.fire("error", "", "info");
             }
         });
@@ -212,9 +231,10 @@ $("#trigger").click(function(e){
         }
     });
 
-
+   
     //ketika tombol submit/bayar tertekan
     $("#preorderform").submit(function(e){
+      
         var judulpg = ["Ukuran", "Daun Pintu", "Arah Tikung", "Pilar", "Warna/Tipe", "Waktu"];
         var ospipg = [$("#ukuranpg").val(), $("#daunpintupg").val(), $("#arahtikungpg").val(), $("#pilarpg").val(), $("#warnatipepg").val(), $("#waktupg").val()];
 
@@ -287,7 +307,7 @@ $("#trigger").click(function(e){
                 ketopsi: currentopsi,
                 id_transaksi: $("#id_trans").val(),
                 tanggal: $("#tgl").val(),
-                tp: $("#tp").val()
+                kunci: $("#kunci").val(),
             },
             type: "POST",
             url: url,
@@ -307,6 +327,7 @@ $("#trigger").click(function(e){
                 $("#nn").text("No Nota: "+data["no_nota"]);
                 $("#searcher-nota").val("");
                 $("#printbutton").removeAttr('disabled');
+                $("#suratjalan").removeAttr('disabled');
                
             
             },
@@ -350,6 +371,25 @@ $("#trigger").click(function(e){
             },
             error: function(err){
             },
+        });
+    });
+
+    $("#suratjalan").click(function(){
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                 }, 
+            data: {
+                id_transaksi : $("#id_trans").val()
+            },
+            url: "/cetaksjnb",
+            type: "post",
+            success: function(response){
+                printJS({printable: response['filename'], type: 'pdf', base64: true});
+            },error: function(err){
+                Swal.fire('terjadi kesalahan','','info');
+                alert(err.responseText);
+            }
         });
     });
 });

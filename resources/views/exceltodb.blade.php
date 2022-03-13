@@ -10,6 +10,7 @@
     <form action="{{url('/injectitem')}}" method="POST" enctype=multipart/form-data>
         @csrf
         <input type="file" name="filekita">
+        <input type="file" name="filekita2">
         <input type="submit">
     </form>
 </body>

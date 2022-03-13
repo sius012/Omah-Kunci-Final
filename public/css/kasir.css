@@ -20,7 +20,7 @@ input:focus, textarea:focus, select:focus{
     border-radius: 5px;
 }
 .row .col-6 .times{
-    background-color: #1562AA;
+    background-color: #0D5497;
     color: white;
 
     width: 300px;
@@ -28,6 +28,7 @@ input:focus, textarea:focus, select:focus{
     border-radius: 5px;
 
     text-align: center;
+    float:right;
 }
 
 .row .nomor-nota{
@@ -36,7 +37,7 @@ input:focus, textarea:focus, select:focus{
 }
 
 .row .table tr th{
-    background-color: #1A79D0;
+    background-color: #0D5497;
     color: white;
 
     text-align: left;
@@ -60,8 +61,9 @@ input:focus, textarea:focus, select:focus{
     background-color: #1A79D0;
     color: white;
 
-  
+    padding: 5px;
     width: 120px;
+
     text-align: center;
     margin-right: 10px;
     border-radius: 5px;
@@ -69,12 +71,12 @@ input:focus, textarea:focus, select:focus{
 }
 .row .col-4 .row .subtotal, .row .col-4 .row .diskon{
     height: 35px;
-    width: 180px;
+    width: 195px;
 
     background-color: white;
     color: black;
     border: 1px solid #C6C6C6;
-    padding:5px;
+
     border-radius: 5px;
 }
 
@@ -82,7 +84,7 @@ input:focus, textarea:focus, select:focus{
     background-color: #12518B;
     color: white;
     border-radius: 5px;
-
+    padding: 5px;
     width: 120px;
     height: 40px;
 
@@ -92,7 +94,7 @@ input:focus, textarea:focus, select:focus{
 }
 .row .col-4 .row .total{
     height: 43px;
-    width: 180px;
+    width: 195px;
     border-radius: 2px;
 
     background-color: white;
@@ -107,7 +109,7 @@ input:focus, textarea:focus, select:focus{
 }
 
 .row .col-4 .row .selesai{
-    background-color: #48BE00;
+    
     color: white;
 
     padding: 11px;
@@ -116,6 +118,14 @@ input:focus, textarea:focus, select:focus{
 
     margin-bottom: 10px;
     box-shadow: 0px 0px 5px -2px black;
+}
+
+.selesaiindi{
+    background-color: #3f9e04;
+}
+
+.printindi{
+    background-color: #1145ff;
 }
 .row .col-4 .row .tunda{
     background-color: #247CCD;
@@ -143,7 +153,15 @@ input:focus, textarea:focus, select:focus{
     box-shadow: 0px 0px 5px -2px black;
     padding: 11px;
     width: 300px;
-    background-color:#3532fa;
+
+    color: white;
+    background-color: #0d5599;
+
+    border: none;
+    box-shadow: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    
 }
 
 
@@ -174,9 +192,7 @@ input:focus, textarea:focus, select:focus{
     transition: .2s;
 }
 
-.antartd{
-    display: none;
-}
+
 
 
 ul li .active {
@@ -184,11 +200,7 @@ ul li .active {
     border-radius: 200px !important;
 }
 
-.hargas .row {
-    display: flex;
-    margin: 0px;
-    padding:0px;
-}
+
 
 
 
@@ -215,7 +227,7 @@ ul li .active {
     z-index: 3;
     box-shadow: 0px 0px 5px -2px black;
     width:  600px;
-    top: 150px;
+    top: 100px;
   }
   
   #myUL li a {

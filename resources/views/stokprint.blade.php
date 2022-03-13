@@ -121,10 +121,11 @@
                     <tr>
                         <th >No</th>
                         <th style="width:60px">Kode Produk</th>
-                        <th>Nama Produk</th>
+                        <th style="width:170px">Nama Produk</th>
                         <th >Tipe</th>
                         <th>Tipe Kode</th>
                         <th>Merek</th>
+                        @if(auth()->user()->roles[0]['name']=='manager') <th >Harga</th>@endif
                         <th >Jumlah</th>
                     </tr>
                     @foreach($datas as $da)
@@ -135,6 +136,7 @@
                         <td >{{$da->nama_tipe}}</td>
                         <td>{{$da->nama_kodetype}}</td>
                         <td>{{$da->nama_merek}}</td>
+                        @if(auth()->user()->roles[0]['name']=='manager')<td>{{number_format($da->harga)}}</td>@endif
                         <td >{{$da->jumlah}} {{$da->satuan}}</td>
                     </tr>
                     @php $no++ @endphp

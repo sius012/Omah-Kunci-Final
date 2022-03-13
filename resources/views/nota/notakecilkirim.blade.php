@@ -159,7 +159,7 @@
                 <td valign="top">
                     <h4>No Telepon</h4>
                 </td>
-                <td>Rp. {{$data[0]->telepon}}</td>
+                <td>{{$data[0]->telepon}}</td>
                 <td></td>
                 <td></td>
 
@@ -169,7 +169,7 @@
                 <td valign="top">
                     <h4>Alamat</h4>
                 </td>
-                <td>Rp. {{$data[0]->alamat }}</td>
+                <td>{{$data[0]->alamat }}</td>
                 <td></td>
                 <td></td>
                 </tr>
@@ -209,21 +209,21 @@
             </tr>
             <tr>
                 <td style="padding-bottom: 5px;" valign="top">
-                    <h4>Total</h4>
+                    <h4>Subtotal</h4>
                 </td>
                 <td style="padding-bottom: 5px;"> Rp. {{ number_format($data[0]->subtotal) }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td style="padding-bottom: 5px;" valign="top">
-                    <h4>DISKON</h4>
+                    <h4>Diskon</h4>
                 </td>
                 <td style="padding-bottom: 5px;"> Rp. {{ number_format($data[0]->diskon) }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td style="padding-bottom: 5px;" valign="top">
-                
+                    <h4>Total</h4>
                 </td>
                 <td style="padding-bottom: 5px;"> Rp. {{ number_format($data[0]->subtotal - $data[0]->diskon) }}</td>
                 <td></td>

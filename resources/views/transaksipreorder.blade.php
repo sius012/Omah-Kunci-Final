@@ -1,7 +1,7 @@
 @php  $whoactive='riwayatnotabesar';
 $master='kasir' @endphp
 @extends('layouts.layout2')
-@section('titlepage', 'Transaksi Preorder')
+@section('pagetitle', 'Transaksi Preorder')
 
 @section('title', 'Riwayat Transaksi')
 
@@ -55,15 +55,17 @@ $master='kasir' @endphp
         
 
 
-             <div class="card datatrans"  id_trans="{{$datas['no_nota']}}">
-                <div class="card-header">
-                    <h6 class="card-title float-right mr-2">{{strtotime(date("d-m-Y")) < strtotime(date("d-m-Y", strtotime($datas['min3jatuhtempo']))) ? date("d-M-Y", strtotime($datas["created_at"])) : "Telah mendekati jatuh tempo"}} </h6>
-                    <h6 class="card-title">No Nota :  {{$datas["no_nota"]}}</h6>
+             <div class="card datatrans p-2"  id_trans="{{$datas['no_nota']}}">
+                <div class="card-header p-0 mt-0">
+                    <div class="wrapperzz p-1 mb-4 mt-0 m-1">
+                      <h6 style="font-size: 0.85rem; font-weight: bold;" class="card-title float-right mr-2">{{strtotime(date("d-m-Y")) < strtotime(date("d-m-Y", strtotime($datas['min3jatuhtempo']))) ? date("d-M-Y", strtotime($datas["created_at"])) : "Telah mendekati jatuh tempo"}} </h6>
+                      <h6 style="font-size: 0.85rem; font-weight: bold;" class="card-title">No Nota :  {{$datas["no_nota"]}}</h6>
+                    </div>
                 </div>
                 <input type="hidden" >
-                <table class="table table-borderless">
+                <table class="table table-borderless m-0">
        
-                      <tr>
+                      <tr style="font-size: 0.75rem;">
                           <th style="width: 200px"><div >Telah diterima dari</div></th>
                           <th style="width: 200px"><div >Total</div></th>
                           <th style="width: 120px"><div >Tagihan 1</div></th>
@@ -71,18 +73,16 @@ $master='kasir' @endphp
                           <th style="width: 120px"><div >Tagihan 3</div></th>
                           <td style="width: 110px" rowspan="2" align="center" valign="center" class=""><div class="mt-3 justify-content-center">
                               <a href="{{route('showdetail',['no_nota'=>$datas['no_nota']])}}" class="" ><i style="background-color:#1562AA; color:white; padding:10px; border-radius:100%;" class="fa fa-list"></i></a>
-                              <a href="{{route('showdetail',['no_nota'=>$datas['no_nota']])}}" class="" ><i style="background-color:#1562AA; color:white; padding:10px; border-radius:100%;" class="fa fa-envelope"></i></a> 
-                              @if(Auth::user()->roles[0]['name'] == 'manager')<a href="{{route('hapusnotabesar',['no_nota'=>$datas['no_nota']])}}" class="btnhapus"><i style="background-color:#1562AA; color:white; padding:10px; border-radius:100%;" class="fa fa-trash bg-danger"></i></a>@endif
                           </div></td>
                       </tr>
                    
-                      <tr>
+                      <tr style="font-size: 0.50rem;">
                           <td><div>{{$datas["ttd"]}}</div></td>
                           <td><div>Rp. {{number_format( $datas["total"] )}}</div></td>
                       
-                          <td><div><i class="fa fa-check-circle"></i></div></td>
-                          <td align="center" valign="center"><div>@If($datas[0][0]->status == "dibayar")<div><i class="fa fa-check-circle"></i></div>@else <div><a class="btn btn-success text-light" href="{{route('prosesbayar',['id' => $datas[0][0]->id_transaksi])}}">Bayar</a></div>@endif</td>
-                          <td><div>@If(  $datas[0][1]->status == "dibayar" and $datas[0][1]->status == "dibayar")<div><i class="fa fa-check-circle"></i></div>@elseif($datas[0][1]->status == "menunggu") @else <div><a class="btn btn-success text-light" href="{{route('prosesbayar',['id' => $datas[0][1]->id_transaksi])}}">Bayar</a></div>@endif</td>
+                          <td><div class="mt-1"><i class="fa fa-check-circle"></i></div></td>
+                          <td align="center" valign="center"><div>@If($datas[0][0]->status == "dibayar")<div class="mt-1"><i class="fa fa-check-circle"></i></div>@else <div><a style="font-size: 0.75rem;" class="btn btn-success text-light" href="{{route('prosesbayar',['id' => $datas[0][0]->id_transaksi])}}">Bayar</a></div>@endif</td>
+                          <td><div>@If(  $datas[0][1]->status == "dibayar" and $datas[0][1]->status == "dibayar")<div class="mt-1"><i class="fa fa-check-circle"></i></div>@elseif($datas[0][1]->status == "menunggu") @else <div><a class="btn btn-success text-light" href="{{route('prosesbayar',['id' => $datas[0][1]->id_transaksi])}}">Bayar</a></div>@endif</td>
                          
                       </tr>
                   

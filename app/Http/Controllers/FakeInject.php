@@ -51,7 +51,7 @@ class FakeInject extends Controller
 
         foreach($inj as $ijs){
             $counter = NewProduk::where('id_tipe',$ijs['id_tipe'])->where('id_ct',$ijs['id_ct'])->where('id_merek',$ijs['id_merek'])->count();
-            $barcode = $ijs['id_tipe'].str_pad($ijs['id_ct'],3,0,STR_PAD_LEFT).str_pad($ijs['id_merek'],3,0,STR_PAD_LEFT).str_pad($counter+1,3,0,STR_PAD_LEFT);
+            $barcode = str_pad($ijs['id_tipe'],2,0,STR_PAD_LEFT).str_pad($ijs['id_ct'],3,0,STR_PAD_LEFT).str_pad($ijs['id_merek'],3,0,STR_PAD_LEFT).str_pad($counter+1,3,0,STR_PAD_LEFT);
             $ijs['kode_produk'] = $barcode;
             NewProduk::insert($ijs);
             

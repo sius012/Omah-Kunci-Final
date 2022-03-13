@@ -4,6 +4,11 @@ $(document).ready(function(e){
     $(document).on('click', '.infopreorder', function(e){
     });
 
+
+    $("#usercetak").submit(function(e){
+
+    });
+
     $(".printing").click(function(){
         $.ajax({
             headers: {
@@ -183,7 +188,13 @@ $(document).ready(function(e){
                         </tr>
                     `;
                  });
+                 $("#np").text("Nama Pelanggan : "+data[0]['nama_pelanggan']);
+                 $("#tp").text("No. Telp : "+data[0]['telepon']);
+                 $("#almt").text("Alamat : "+data[0]['alamat']);
                  $("#id_trans").val(data[0]['kode_trans']);
+                 if(    data[0]['status'] == 'return'){
+                     $("#re-button").attr('disabled','disabled');
+                 }
                  $("#returncont").html(row);
 
              },error: function(err){
@@ -191,7 +202,37 @@ $(document).ready(function(e){
              }
              
          })
-     })
+     });
+
+     $(".btn-bayar").click(function(e){
+        e.preventDefault();
+        $("#tombolbayar").attr('id_trans',$(this).attr('id_trans'));
+     });
+
+     $("#tombolbayar").click(function(){
+         alert($("#nominal-bayar").val());
+        let id = $(this).attr('id_trans');
+        let nominal = $("#nominal-bayar").val();
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content')
+            },
+            url: "/bayarcicilannotakecil",
+            data: {
+                'id': id,
+                'nominal': nominal,
+            },
+            type:'post',
+            success: function(){
+                window.location = "/transaksi";
+            },
+            error: function(err){
+                alert(err.responseText);
+            }
+        });
+     });
+
+     
       
   
 

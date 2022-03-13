@@ -43,7 +43,9 @@
 </style>
 <script>
     $(document).ready(function () {
+        
         $('.dropdown-menu a.dropdown-toggle').on('click', function (e) {
+              
             if (!$(this).next().hasClass('show')) {
                 $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
             }
@@ -64,6 +66,7 @@
 <link rel="stylesheet" href="{{ asset('css/kasir.css') }}">
 <script>
     $(document).ready(function () {
+      
         $.ajax({
             headers: {
                 "X-CSRF-TOKEN": $("meta[name=csrf-token]").attr('content')
@@ -74,7 +77,7 @@
 
             },
             error: function (err) {
-
+                alert(err.responseText);
             }
         });
     });
@@ -94,16 +97,27 @@
     @endphp
 
     <section class="content">
+        <input type="hidden" id="id_pre">
+        <input type="hidden" id="jenisproduk">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-6">
-                    <div class="row mb-5">
-                        <select name="" id="jenis-transaksi" class="form-control">
-                            <option value="new">
-                                Transaksi Baru 
+                </div>
+                <div class="col-6">
+                <p class="times">
+                    {{ $date->format('l, j F Y ;  h:i ') }}
+                </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="row mb-3">
+                        <select style="width: 500px;" name="" id="jenis-transaksi" class="form-control">
+                            <option @if($jenis=="umum") selected @endif value="normal">
+                                Transaksi Normal
                             </option>
-                            <option value="retur">
-                                Return
+                            <option  @if($jenis=="preorder") selected @endif value="preorder">
+                                Transaksi Preorder
                             </option>
                         </select>
                         <select name="" id="list-return" class="form-control">
@@ -124,13 +138,14 @@
                                 </div>
                             </div>
                             <div style="border-bottom:1px solid lightgray; x" class="card-body ">
-                                <table style="width: 450px">
+                                <table style="w-100">
                                     <tr>
-                                        <td> <input style="width: 300px" required class="search-box form-control mr-2"
+                                        <td width="60%"> <input  required class="search-box form-control w-100 mr-2"
                                                 type="text" id="searcher" placeholder="Cari Barang Disini..."></td>
-                                        <td style="width: 200px"> <input min="1" required class="qty form-control "
+                                                <td class="pl-5 pr-3">QTY: </td>
+                                        <td class="align-content-right">   <input min="1" required class="form-control mr-3 w-75" 
                                                 id="qty" placeholder="Quantity" type="number" value=1>
-                                            <input style="width: 300px" required class="qty " id="hrg"
+                                            <input style="width: 300px" required class="qty mr-3 " id="hrg"
                                                 placeholder="Quantity" type="hidden" value=1></td>
                                         <ul id="myUL">
                                         </ul>
@@ -151,130 +166,30 @@
                 </div>
                 <div class="times-wrapper col-6">
                     <div class="wrapperrs float-right">
-                        <div class="row">
-                            <p class="times">
-                                {{ $date->format('l, j F Y ;  h:i ') }}
-                            </p>
-                        </div>
                         <div class="row float-right">
-                            <!-- Button trigger modal -->
-                            <div class="card pl-2">
-                                <div class="card-body">
-                                    <p><i style="width:30px;"
-                                            class="fa fa-info bg-primary p-2 rounded-circle text-light ml-3 text-center mr-2"></i>Produk
-                                        habis?</p>
-                                    <button type="button" class="btn btn-primary float-right" data-toggle="modal"
-                                        data-target="#exampleModal">
-                                        Tambah Preorder
-                                    </button>
-                                </div>
+                    <div style="width: 450px;" class="col float-right">
+                        <div class="form-group form-group ml-2 ">
+                            <input type="text" class="form-control mb-1" id="nama" placeholder="Nama Pelanggan...">
+                            <input type="text" class="form-control mb-1"  id="telp" placeholder="No Telp">
+                            <input type="text" class="form-control mb-1" id="alamat"  placeholder="Alamat">
+                            <div class="normalt">
+                            <div class="d-inline-flex normalt" >
+                                <label style="padding: 6px; width: 210px; background-color: #1363ae" class="rounded text-light mr-1 text-center">Subtotal</label>
+                                <input class="form-control bg-light" id="totality" type="text" value=0 readonly>
                             </div>
-
-
-                            <!-- Modal -->
-                            <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <form action="/sss" id="preordersubmitter">
-                                    <div class="modal-dialog modal-lg" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Tambah Preorder</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-
-                                                <div class="form-group">
-                                                    <label for="exampleInputEmail1">Telah Terima Dari</label>
-                                                    <input id="ttd" type="text" class="form-control"
-                                                        aria-describedby="emailHelp" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleInputEmail1">Telepon</label>
-                                                    <input id="telepon" type="text" class="form-control"
-                                                        aria-describedby="emailHelp" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleInputEmail1">Uang Sejumlah</label>
-                                                    <input id="us" type="text" class="form-control uang"
-                                                        aria-describedby="emailHelp" required>
-                                                </div>
-                                                <div class="form-row">
-                                                    <div class="col-md-4 mb-3">
-                                                        <label for="">Hai</label>
-                                                        <a class="nav-link dropdown-toggle dropdown-custom" href="http://example.com"
-                                                            id="navbarDropdownMenuLink" data-toggle="dropdown"
-                                                            aria-haspopup="true" aria-expanded="false">
-                                                            Dropdown link
-                                                        </a>
-                                                        <ul class="dropdown-menu"
-                                                            aria-labelledby="navbarDropdownMenuLink">
-                                                            <li><a class="dropdown-item" href="#">Action</a></li>
-                                                            <li><a class="dropdown-item" href="#">Another action</a>
-                                                            </li>
-                                                            <li class="dropdown-submenu"><a
-                                                                    class="dropdown-item dropdown-toggle"
-                                                                    href="#">Submenu</a>
-                                                                <ul class="dropdown-menu">
-                                                                    <li><a class="dropdown-item" href="#">Submenu
-                                                                            action</a></li>
-                                                                    <li><a class="dropdown-item" href="#">Another
-                                                                            submenu action</a></li>
-
-
-                                                                    <li class="dropdown-submenu"><a
-                                                                            class="dropdown-item dropdown-toggle"
-                                                                            href="#">Subsubmenu</a>
-                                                                        <ul class="dropdown-menu">
-                                                                            <li><a class="dropdown-item"
-                                                                                    href="#">Subsubmenu action</a></li>
-                                                                            <li><a class="dropdown-item"
-                                                                                    href="#">Another subsubmenu
-                                                                                    action</a></li>
-                                                                        </ul>
-                                                                    </li>
-                                                                    <li class="dropdown-submenu"><a
-                                                                            class="dropdown-item dropdown-toggle"
-                                                                            href="#">Second subsubmenu</a>
-                                                                        <ul class="dropdown-menu">
-                                                                            <li><a class="dropdown-item"
-                                                                                    href="#">Subsubmenu action</a></li>
-                                                                            <li><a class="dropdown-item"
-                                                                                    href="#">Another subsubmenu
-                                                                                    action</a></li>
-                                                                        </ul>
-                                                                    </li>
-                                                                </ul>
-                                                    </div>
-                                                    <div class="col-md-4 mb-3">
-                                                        <label for="validationCustom02"></label>
-                                                        <input type="text" class="form-control" id="validationCustom02"
-                                                            placeholder="Last name" value="Otto" required>
-                                                        <div class="valid-feedback">
-                                                            Looks good!
-                                                        </div>
-                                                    </div>
-
-
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleInputEmail1">Sejumlah</label>
-                                                    <input id="sejumlah" type="text" class="form-control"
-                                                        aria-describedby="emailHelp" required>
-                                                </div>
-
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-warning" " id_pre="" id="
-                                                    tombolcetak2">Cetak</button>
-                                                <button type="submit" class="btn btn-primary">Kirim</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
+                            <div class="d-inline-flex normalt">
+                                <label style="padding: 6px; width: 210px; background-color: #1363ae" class="rounded text-light mr-1 text-center">Potongan</label>
+                                <input class="form-control bg-light" type="text" id="diskon" readonly value=0>
                             </div>
+                            <div class="d-inline-flex normalt">
+                                <label style="padding: 6px; width: 210px; background-color: #06335C" class="rounded text-light mr-1 text-center" >Total</label>
+                                <input class="form-control bg-light" id="subtotal" type="text" value=0 readonly>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                     
                         </div>
                     </div>
                 </div>
@@ -285,12 +200,13 @@
                 <table class="table table-light table-borderless">
                     <tr>
                         <th>No.</th>
+                        <th>Kode</th>
                         <th>Item</th>
                         <th>Merek</th>
                         <th>Jumlah</th>
-                        <th>Harga(/pcs)</th>
-                        <th>Diskon(/pcs)</th>
-                        <th>Total</th>
+                        <th class="normalt">Harga(/pcs)</th>
+                        <th class="normalt">Diskon(/pcs)</th>
+                        <th class="normalt">Total</th>
                         <th>Aksi</th>
                         <th class="antartd">Diantar</th>
                     </tr>
@@ -307,73 +223,50 @@
             </div>
 
             <div class="row">
-                <div class="col-4 hargas">
-                    <div class="row">
-                        <input class="nama-pelanggan w-100" type="text" placeholder="Nama Pelanggan" id="nama" required>
+            <div class="col">
+                <div class="card" id="tunai" style="margin-left: -10px;">
+                    <div class="card-header mb-1">
+                        <p class="card-title">Pembayaran</p>
                     </div>
-                    <div class="row">
-                        <input class="nama-pelanggan w-100" type="text" placeholder="No Telp" id="telp" required>
-                    </div>
-                    <div class="row">
-                        <input class="nama-pelanggan w-100" type="text" placeholder="Alamat" id="alamat" required>
-                    </div>
-                    <div class="row">
-                        <label class="subtotal-label    " for="subtotal">Subtotal</label>
-                        <input type="text" class="subtotal" id="subtotal" name="subtotal" readonly>
-                    </div>
-                    <div class="row">
-                        <label class="diskon-label" for="diskon">Potongan(RP)</label>
-                        <input type="" class="diskon uang" id="diskon" name="diskon">
-                    </div>
-                    <div class="row">
-                        <label class="total-label" for="total">Total</label>
-                        <input type="text" class="total" id="totality" name="total" readonly>
-                    </div>
-                </div>
+                    <div class="card-body d-inline-flex mt-0">
+                        <div class="col-8">
+                            <div class="form-group mr-3">
+                                <div class="normalt">
+                                <label>Pengiriman : </label>
+                                <select class="form-control float-right mb-3" id="antarkah">
+                                    <option value="tidak">Tidak dikirim</option>
+                                    <option value="ya">Dikirim</option>
 
-                <div class="col-4">
-                    <div class="card" id="tunai" style="width: 100%">
-                        <div class="card-header mb-3">
-                            <p class="card-title">Pembayaran</p>
-                        </div>
-                        <div class="card-body">
-                        <div class="form-group">
-                            <label>Pengiriman : </label>
-                            <select class="form-control float-right" id="antarkah"> 
-                                <option value="tidak">Tidak diantar</option>
-                                <option value="ya">Diantar</option>
-                               
-                            </select>
-                        </div>
-                        <div class="form-group d-inline-flex mt-3">
-                            <input style="width:170px;" class="form-control mr-4 usethis uang" type="text">
-                            <select class="custom-select form-control usethisvia">
-                                <option value="Langsung">Tunai</option>
-                                <option value="BCA">BCA</option>
-                                <option value="Mandiri">Mandiri</option>
-                                <option value="Transfer">Transfer</option>
-                            </select>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-
-                <div class="col-4">
-                    <div class="wrapper float-right">
-                        <div class="row">
-                            <button class="btn selesai" id="selesai"><i class="fa fa-check mr-3"></i>Selesai</button>
+                                </select>
+                                </div>
+                                <input class="form-control mr-3 mb-3 usethis uang" type="text">
+                                <select class="custom-select form-control usethisvia">
+                                    <option value="Langsung">Tunai</option>
+                                    <option value="BCA">BCA</option>
+                                    <option value="Mandiri">Mandiri</option>
+                                    <option value="Transfer">Transfer</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="row">
-                            <button class="btn reset " id="reset-button"><i class="fa fa-trash mr-3"></i>Buang</button>
-                        </div>
-                        <div class="row">
-                            <button class="btn next text-light" id="next-button">Lanjut</button>
+                        <div class="col-4">
+                            <div class="wrapper float-right mt-3">
+                                <div class="row">
+                                    <button class="btn selesai selesaiindi" id="selesai"><i class="fa fa-check mr-3"></i>Selesai</button>
+                                </div>
+
+                                <div class="row">
+                                    <button class="btn reset " id="reset-button"><i class="fa fa-trash mr-3"></i>Buang</button>
+                                </div>
+                                <div class="row">
+                                    <button class="next text-light" id="next-button">Lanjut</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
+        </div>
 
 
 

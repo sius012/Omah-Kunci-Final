@@ -98,7 +98,6 @@
         <div class="col login d-flex align-items-center justify-content-center mt-3">
             <button type="submit">Log In</button>
         </div>
-        <a class="d-flex align-items-center justify-content-center text-light mt-3" href="#">Lupa Password ?</a>
         <hr class="bg-light mb-4" style="width: 298px;">
         <div class="request-akuns d-flex align-items-center justify-content-center">
             <a class="request-akunr" href="{{url('/register')}}">Request Akun</a>

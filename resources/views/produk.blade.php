@@ -51,7 +51,7 @@ $m = isset($mereknya) ? $mereknya : '';
                 <div class="wrappers d-inline-flex mt-3">
                 <div class="form-group d-inline-flex">
                     
-                    <select name="tipe" id="tipe" class="form-control dynamic w-50 form-control-sm" data-dependent = "state">
+                    <select name="tipe" id="tipe" class="form-control dynamic w-50 form-control-sm mr-5"  data-dependent = "state">
                         <option value="">TIPE</option>
                         @foreach($tipe as $tipes)
                             <option value = "{{$tipes->id_tipe}}">{{$tipes->nama_tipe}}</option>
@@ -287,7 +287,7 @@ $m = isset($mereknya) ? $mereknya : '';
                         
                                 <label for="exampleInputEmail1" class="form-label">Merek</label>
                                
-                                <select class="form-control" name="id_merek">
+                                <select class="form-control" name="id_merek" disabled>
                                     @foreach ($merek as $merks)
                                         <option value="{{ $merks->id_merek }}" @if ($merks->nama_merek == $data->nama_merek) selected @endif>
                                             {{ $merks->nama_merek}}</option>
@@ -297,7 +297,7 @@ $m = isset($mereknya) ? $mereknya : '';
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Tipe</label>
-                                <select class="form-control" required name="id_tipe">
+                                <select class="form-control" name="id_tipe" disabled>
                                     @foreach ($tipe as $kats)
                                         <option value="{{ $kats->id_tipe }}"
                                             @if ($kats->id_tipe == $data->id_tipe) selected @endif>{{ $kats->nama_tipe }}</option>
@@ -306,7 +306,7 @@ $m = isset($mereknya) ? $mereknya : '';
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Tipe Kode</label>
-                                <select class="form-control" required name="id_ct">
+                                <select class="form-control" name="id_ct" disabled>
                                     @foreach ($kodetype as $kt)
                                         <option value="{{ $kt->id_kodetype }}" @if ($kt->id_kodetype == $data->id_ct) selected @endif>
                                             {{ $kt->nama_kodetype}}</option>

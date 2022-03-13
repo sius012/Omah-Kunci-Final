@@ -4,7 +4,7 @@ $master='kasir';
 $no=1;
 @endphp
 @extends('layouts.layout2')
-@section('titlepage', 'Transaksi')
+@section('pagetitle', 'Riwayat Preorder')
 @section('title', 'Riwayat Transaksi')
 
 
@@ -16,6 +16,7 @@ $no=1;
 @endsection
 @section('js')
 <script src="{{ asset('js/transaksi.js') }}"></script>
+<script src="{{ asset('js/print.js') }}"></script>
 <script>
     $(document).ready(function(){
         $(".hapustrans").click(function(e){
@@ -33,7 +34,68 @@ $no=1;
              
             }
           });
-        })
+        });
+
+        $(".btninfo").click(function(){
+            var id=$(this).attr('id_trans');
+            $.ajax({
+                headers: {
+                    "X-CSRF-TOKEN": $("meta[name=csrf-token]").attr('content'),
+                },
+                url: "/infopreorder",
+                data: {
+                    id: id
+                },
+                type: "post",
+                dataType: "json",
+                success: function(data){
+                    let row = data.map(function(datos,i){
+                        return `
+                            <tr>
+                                <td>${i+1}</td>
+                                <td>${datos['kode_produk']}</td>
+                                <td>${datos['nama_produk']} ${datos['nama_merek']}</td>
+                                <td>${datos['jumlah']}</td>
+                            </tr>
+                        `;
+                    });
+                    $("#nn").text("No. nota: "+data[0]['no_nota']);
+                    $("#tgl").text("Tanggal: "+data[0]['created_at']);
+                    $("#ttd").text("Nama Pemesan: "+data[0]['ttd']);
+                    $("#tlp").text("No Telp: "+data[0]['telepon']);
+                    $("#dp").text("DP: Rp."+parseInt(data[0]['us']).toLocaleString());
+                    $("#btncetak").attr("id_pre",data[0]['id_preorder']);
+                    $("#contproduk").html(row);
+                },error: function(err){
+                    alert(err.responseText);
+                }
+
+            })
+        });
+
+        function printpreorder(id_trans){
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content')
+            },
+            data: {
+                id: id_trans,
+            },
+            type: 'post',
+            dataType: "json",
+            url: "/cetakpreorder",
+            success: function(data){
+                printJS({printable: data['filename'], type: 'pdf', base64: true});
+            },
+            error: function(err){
+                alert(err.responseText);
+            }
+        });
+    }
+
+    $(".btncetak").click(function(){
+        printpreorder($(this).attr("id_pre"));
+    });
     });
 </script>
 @stop
@@ -58,8 +120,8 @@ $no=1;
 <div class="card datatrans p-3" id_trans="">
     <input type="hidden">
     <table class="table table-borderless text-center">
-        <tr class="mb-0">
-            <th style="width: 40px; margin-left:9px;">
+        <tr style="font-size: 0.75rem;" class="mb-0">
+            <th style="width: 120px; margin-left:9px;">
                 <div>No Nota</div>
             </th>
             <th style="width: 200px">
@@ -69,37 +131,25 @@ $no=1;
                 <div>No Telp</div>
             </th>
             <th style="width: 200px">
-                <div>Guna Membayar</div>
-            </th>
-            <th style="width: 200px">
-                <div>Sejumlah</div>
-            </th>
-            <th style="width: 200px">
                 <div>DP</div>
             </th>
-            <th style="width:170px;">
+            <th style="width:190px;">
                 <div>Tanggal Transaksi</div>
             </th>
             <th rowspan="2" style="width:120px;">
-                <div class="mt-3">@if(auth()->user()->roles[0]['name'] == 'manager')<a href="{{route('hapuspre',['id'=>$datas->id])}}" class="btn btn-danger hapustrans"><i style="" class="fa fa-trash"></i></a>@endif</div>
+                <div class="mt-3"><a data-toggle="modal" data-target="#exampleModal" id_trans="{{$datas->id}}" class="btn btn-info btninfo"><i style="" class="fa fa-info"></i></a></div>
             </th>
         </tr>
       
         <tr>
             <td style="width: 60px">
-                <div>{{$no}}</div>
+                <div>{{$datas->no_nota}}</div>
             </td>
             <td>
                 <div>{{$datas->ttd}}</div>
             </td>
             <td>
                 <div>{{$datas->telepon}}</div>
-            </td>
-            <td class="align-items-center justify-content-center">
-                <div>{{$datas->gm}}</div>
-            </td>
-            <td class="align-items-center justify-content-center">
-                <div>{{$datas->sejumlah}}</div>
             </td>
             <td class=" align-items-center justify-content-center">
                 <div>Rp. {{number_format($datas->us)}}</div>
@@ -113,5 +163,49 @@ $no=1;
     </table>
 </div>
 @endforeach
+
+
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Informasi Preorder</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <p id="tgl">Tanggal</p>
+      <p id="nn">No. nota</p>
+        <p id="ttd">Telah terima dari: Dionisius</p>
+        <p id="tlp">Telepon: 083333</p>
+        <p id="dp">DP: 083333</p>
+        <table class="table"> 
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Kode</th>
+                    <th>Nama dan Merek</th>
+                    <th>Jumlah</th>
+                <tr>
+            </thead>
+            <tbody id="contproduk">
+                <tr>
+                    <td>No</td>
+                    <td>No</td>
+                    <td>No</td>
+                    <td>No</td>
+                <tr>
+            </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        <button id_pre=""id="btncetak" class="btn btn-info btncetak ml-2"><i style="" class="fa fa-print"></i></button>
+      </div>
+    </div>
+  </div>
 </div>
 @endsection
+ 

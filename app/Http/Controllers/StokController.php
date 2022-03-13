@@ -17,7 +17,10 @@ class StokController extends Controller
         $kategori = DB::table('tipes')->get();
         $kodetype = DB::table('kode_types')->get();
         $merek = DB::table('mereks')->get();
-        $produk = DB::table('stok')->join('new_produks','new_produks.kode_produk','=','stok.kode_produk')->join('mereks','new_produks.id_merek','mereks.id_merek')->join('tipes','new_produks.id_tipe','tipes.id_tipe')->join('kode_types','new_produks.id_ct','kode_types.id_kodetype');
+        $produk = DB::table('stok')->join('new_produks','new_produks.kode_produk','=','stok.kode_produk')
+        ->join('mereks','new_produks.id_merek','mereks.id_merek')
+        ->join('tipes','new_produks.id_tipe','tipes.id_tipe')
+        ->join('kode_types','new_produks.id_ct','kode_types.id_kodetype');
         if($req->filled("tipe")){
             $produk->where('new_produks.id_tipe',$req->tipe);
         }
@@ -37,7 +40,7 @@ class StokController extends Controller
             }
         }
 
-        return view("stok", ["tipe" => $kategori,"produk"=>$produk->get(), "data" => $produk->get(), "merek" => $merek, "kodetype" => $kodetype]);
+        return view("stok", ["tipe" => $kategori,"produk"=>$produk->take(20)->get(), "data" => $produk->get(), "merek" => $merek, "kodetype" => $kodetype]);
     }
 
 
