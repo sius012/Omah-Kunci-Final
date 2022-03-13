@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="{{asset('css/bootstrap.css')}}">
     <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
 
+    <link rel="icon" href="{{ asset('assets/preloader.svg') }}">
+
+    <title>Omah Kunci || Login</title>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');

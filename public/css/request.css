@@ -1,33 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
-*{
+* {
     font-family: 'Quicksand', sans-serif;
 }
-body{
-    background-color: #1562AA;
+
+body {
+    background-image: linear-gradient(to right, #06335C, #1562AA);
 }
-.container .col img{
+
+.container .col img {
     margin-top: 30px;
 }
-.container .col h3{
+
+.container .col h3 {
     color: #FAE511;
 }
-.container .col .namalengkap input, .username input, .katasandi input, .konfirmasi input{
+
+.container .col .username input, .email input, .katasandi input, .konfirmasi input {
+    padding: 10px;
     border: 2px solid white;
-    border-radius: 100px;
-    color: white;
+    background-color: transparent;
 
     width: 300px;
-    padding: 12px;
-
-    background-color: transparent;
+    border-radius: 100px;
 }
-.container .col .request-akun{
+
+.container .col .username input, .email input, .katasandi input, .konfirmasi input {
+    color: white;
+}
+
+.container .col .request-akun {
     background-color: white;
-    color: #1562AA;
-    font-weight: bolder;
-    font-size: 20px;
+    color: #022F59;
+    font-weight: bold;
 
     padding: 11px;
     text-align: center;
@@ -36,6 +42,6 @@ body{
     border-radius: 100px;
 }
 
-button{
+button {
     border: 0px;
 }

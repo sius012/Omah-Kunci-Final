@@ -197,8 +197,8 @@
                with font-awesome or any other icon font library -->
                         @if(auth()->user()->roles[0]['name'] == 'kasir' or auth()->user()->roles[0]['name'] == 'manager' )
                         <li class="nav-item menu-open">
-                            <a style="background-color: white; " href="#" class="nav-link {{$master=='kasir' ? 'actives' : ''}}">
-                                <p style="color: #1363ae;">
+                            <a style="background-color: rgba(108, 117, 125, 0.253); " href="#" class="nav-link {{$master=='kasir' ? 'actives' : ''}}">
+                                <p style="color: white;">
                                     Kasir
                                 </p>
                             </a>
@@ -238,8 +238,8 @@
 
                         @if(auth()->user()->roles[0]['name'] == 'admin gudang' or auth()->user()->roles[0]['name'] == 'manager')
                         <li class="nav-item menu-open">
-                            <a style="background-color: white;" href="#" class="nav-link {{$master =='admingudang' ? 'actives' : ''}}">
-                                <p style="color: #1363ae;">
+                            <a style="background-color: rgba(108, 117, 125, 0.253);" href="#" class="nav-link {{$master =='admingudang' ? 'actives' : ''}}">
+                                <p style="color: white;">
                                     Admin Gudang
                                 </p>
                             </a>
@@ -261,8 +261,8 @@
 
                         @if(auth()->user()->roles[0]['name'] == 'manager' )
                         <li class="nav-item menu-open">
-                            <a style="background-color: white;" href="#" class="nav-link {{$master=='manager' ? 'actives' : ''}}">
-                                <p style="color: #1363ae;">
+                            <a style="background-color: rgba(108, 117, 125, 0.253);" href="#" class="nav-link {{$master=='manager' ? 'actives' : ''}}">
+                                <p style="color: white;">
                                     Manager
                                 </p>
                             </a>

@@ -148,8 +148,8 @@
   }
   
   .sidebar .active {
-      background-color: rgba(108, 117, 125, 0.253) !important;
-      color: white !important;
+      background-color: white !important;
+      color: #1363ae !important;
   }
   
   
