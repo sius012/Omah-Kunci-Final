@@ -217,7 +217,7 @@ class KasirController extends Controller
 
         
 
-        DB::table('preorder')->where('id', $id_transaksi)->update(["no_nota" => $no_nota,"ttd" => $data['nama_pelanggan'],'telepon' => $telp,"us" => $data["bayar"]]);
+        DB::table('preorder')->where('id', $id_transaksi)->update(["status"=>"selesai","no_nota" => $no_nota,"ttd" => $data['nama_pelanggan'],'telepon' => $telp,"us" => $data["bayar"]]);
 
         
 

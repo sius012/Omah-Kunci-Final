@@ -307,11 +307,19 @@ $subtotal = 0;
                         <td align="right">{{number_format($data[0]->bayar,0,".",".") }}</td>
 
                     </tr>
+                    @if($data[0]->status == "belum lunas")
+                    <tr>
+                        <td>Kurang Bayar</td>
+                        <td align="right">{{number_format(  ($subtotal - $data[0]->diskon) - $data[0]->bayar,0,".",".") }}</td>
+
+                    </tr>
+                    @else
                     <tr>
                         <td>Kembalian</td>
                         <td align="right">{{number_format( $data[0]->bayar - ($subtotal - $data[0]->diskon),0,".",".") }}</td>
 
                     </tr>
+                    @endif
 
                 </table>
              

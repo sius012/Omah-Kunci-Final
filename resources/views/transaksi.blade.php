@@ -199,12 +199,12 @@ $haslampau = false;
           </div>
         </div>
         <div class="form-check">
-        <input name="telepon" id="telepon" type="checkbox" class="form-check-input">
+        <input name="telepon" checked id="telepon" type="checkbox" class="form-check-input">
           <label for="telepon" class="">No Telepon</label>
          
         </div>
         <div class="form-check">
-        <input name="alamat" id="alamat" type="checkbox" class="form-check-input">
+        <input name="alamat" checked id="alamat" type="checkbox" class="form-check-input">
           <label for="alamat" class="">Alamat</label>
          
         </div>

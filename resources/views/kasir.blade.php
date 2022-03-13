@@ -179,7 +179,7 @@
                             </div>
                             <div class="d-inline-flex normalt">
                                 <label style="padding: 6px; width: 210px; background-color: #1363ae" class="rounded text-light mr-1 text-center">Potongan</label>
-                                <input class="form-control bg-light" type="text" id="diskon" readonly value=0>
+                                <input class="form-control bg-light" type="text" id="diskon"  value=0>
                             </div>
                             <div class="d-inline-flex normalt">
                                 <label style="padding: 6px; width: 210px; background-color: #06335C" class="rounded text-light mr-1 text-center" >Total</label>

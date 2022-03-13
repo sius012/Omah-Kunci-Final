@@ -9,7 +9,7 @@ class RiwayatPre extends Controller
 {
     public function index(Request $req){
         if($req->has('nama')){
-            $data = DB::table('preorder')->where('ttd','LIKE','%'.$req->nama."%")->get();
+            $data = DB::table('preorder')->where('ttd','LIKE','%'.$req->nama."%")->orWhere('no_nota','LIKE','%'.$req->nama."%")->get();
 
             return view("preorderPage",['data'=>$data]);
         }

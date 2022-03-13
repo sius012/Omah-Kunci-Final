@@ -48,7 +48,9 @@ $m = isset($mereknya) ? $mereknya : '';
                 @csrf
                 <h5 class="card-title">Cari Berdasarkan : </h5>
                 <br>
+                <input type="text" name="nama" class="form-control form-control-sm w-25" placeholder="ketik nama atau kodeproduk">
                 <div class="wrappers d-inline-flex mt-3">
+                    
                 <div class="form-group d-inline-flex">
                     
                     <select name="tipe" id="tipe" class="form-control dynamic w-50 form-control-sm mr-5"  data-dependent = "state">

@@ -69,11 +69,11 @@
       </div>
 
     </td>
-                                            <td type="submit" class="d-flex align-items-center justify-content-center mb-0">@if($akuns->id
-                                                != auth()->user()->id)<button type="submit"
+                                            <td type="submit" class="d-flex align-items-center justify-content-center mb-0"><button type="submit"
                                                     class="mr-1 btn btn-primary p-1 px-2"><i
                                                         class="fa fa-check p-0"></i></button>
-                                    </form><button class="btn btn-danger p-1 px-2"><a
+                                    </form> @if($akuns->id
+                                                != auth()->user()->id)<button class="btn btn-danger p-1 px-2"><a
                                             href="{{ route('hapusakun',['id'=>$akuns->id]) }}"
                                             class="text-light"><i class="fa fa-trash"></i></a></button>@endif
                                         </td>

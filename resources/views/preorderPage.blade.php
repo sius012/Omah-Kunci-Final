@@ -66,6 +66,8 @@ $no=1;
                     $("#dp").text("DP: Rp."+parseInt(data[0]['us']).toLocaleString());
                     $("#btncetak").attr("id_pre",data[0]['id_preorder']);
                     $("#contproduk").html(row);
+
+                    $("#examplemodal").modal("show");
                 },error: function(err){
                     alert(err.responseText);
                 }
@@ -96,11 +98,20 @@ $no=1;
     $(".btncetak").click(function(){
         printpreorder($(this).attr("id_pre"));
     });
+
+
+
+    $(".close").click(function(){
+       // alert("hai");
+        $("#exampleModal").modal("hide");
+    })
     });
+
+   
 </script>
 @stop
 @section('content')
-<form action="/caritransaksi" type="get">
+    
     @csrf
 <div class="row">
     <form action="{{url('/caripreorder')}}" method="get">
@@ -137,7 +148,7 @@ $no=1;
                 <div>Tanggal Transaksi</div>
             </th>
             <th rowspan="2" style="width:120px;">
-                <div class="mt-3"><a data-toggle="modal" data-target="#exampleModal" id_trans="{{$datas->id}}" class="btn btn-info btninfo"><i style="" class="fa fa-info"></i></a></div>
+                <div class="mt-3"><a id_trans="{{$datas->id}}" class="btn btn-info btninfo"><i style="" class="fa fa-info"></i></a></div>
             </th>
         </tr>
       
@@ -165,13 +176,19 @@ $no=1;
 @endforeach
 
 
-</div>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+
+
+
+
+
+
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+    <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Informasi Preorder</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -207,5 +224,6 @@ $no=1;
     </div>
   </div>
 </div>
+
 @endsection
  

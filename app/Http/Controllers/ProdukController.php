@@ -43,6 +43,9 @@ class ProdukController extends Controller
         if($req->filled("merek")){
             $produk->where('new_produks.id_merek',$req->merek);
         }
+        if($req->filled("nama")){
+            $produk->where('new_produks.nama_produk',"LIKE","%".$req->nama."%")->orWhere('new_produks.kode_produk',"LIKE","%".$req->nama."%");
+        }
 
         return view("produk", ["tipe" => $kategori, "produk" => $produk->orderBy('new_produks.updated_at','desc')->get(), "merek" => $merek, "kodetype" => $kodetype]);
     }
