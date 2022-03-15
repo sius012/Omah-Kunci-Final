@@ -12,7 +12,7 @@ class TransaksiPreorder extends Controller
     public function index(Request $req,$no_nota=null){
         $data = [];
         
-        $get = DB::table("nota_besar")->groupBy("no_nota")->get()->toArray();
+        $get = DB::table("nota_besar")->groupBy("no_nota")->orderBy("created_at",'desc')->get()->toArray();
         if($req->has("no_nota")){
             if($req->no_nota != ""){
                 $get = DB::table("nota_besar")->where("no_nota", $req->no_nota)->groupBy("no_nota")->get()->toArray();

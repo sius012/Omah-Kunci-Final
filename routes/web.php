@@ -39,6 +39,8 @@ Route::middleware(["role:kasir|manager"])->group(function(){
     Route::post('/removesection','Kasir2Controller@remover');
     Route::get('/kasir', 'Kasir2Controller@index')
 ->name("kasir");
+
+    Route::post('/downloadtrans','transaksiController@downloadtransaksi')->name('download_trans');
     
     Route::post('/tambahItem', 'KasirController@tambahTransaksiDetail');
     Route::post('/bayarcicilannotakecil', 'KasirController@bcnk');
@@ -134,7 +136,7 @@ Route::post('/rejecting', 'DSMController@rejecting');
         return view('exceltodb');
     });
     Route::post('/injectitem', 'SeederJoyEvo@inject');
-    Route::get('/paket', 'PaketController@index');
+    Route::get('/paket', 'PaketController@index')->name('paket');
     Route::post('/tambahpaket','PaketController@tambahpaket');
     Route::post('/ubahpaket','PaketController@ubahpaket');
     Route::get('/hapuspaket/{id}', 'PaketController@hapuspaket')->name('hapuspaket');

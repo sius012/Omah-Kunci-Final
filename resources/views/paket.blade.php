@@ -4,22 +4,45 @@
 @endphp
 @extends('layouts.layout2')
 
+@section('title', "Paket")
+@section('pagetitle', "Paket")
 @section("js")
     <script src="{{asset('js/paket/paket.js')}}"></script>
     <script>
         $(document).ready(function(){
             $("#modalpaketedit").modal("show");
+            $(".closedBtn").click(function(e){
+                $("#modalpaketedit").modal("hide");
+            });
+
+
+
+            $(".hps").click(function(e){
+                e.preventDefault();
+                Swal.fire({
+            title: 'Apakah anda yakin ingin menghapus',
+            showDenyButton: true,
+            confirmButtonText: 'Batalkan',
+            denyButtonText: `Hapus`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                
+            } else if (result.isDenied) {
+                
+                window.location = $(this).attr('href');
+            }
+        })
+            });
         });
     </script>
 @endsection
 @section('content')
-<h3>
 
-</h3>
-<h1 class="mb-2"> Daftar Paket</h1>
+
 <button style="background-color: #094985;" data-target="#modalpaket" data-toggle="modal" class=" btn mb-4 text-light">Tambah Paket</button>
 <div class="wrapper card p-1">
-<table class="table table-stripped table-light table-borderless mt-3">
+<table style="font-size: 0.75rem" class="table table-borderless  mt-3">
 <thead>
     <tr>
         <th style="width: 150px;">Kode Paket</th>
@@ -37,12 +60,12 @@
     <td>Rp. {{number_format($harga,0,",",".")}}</td>
     <td>27 Januari 2022</td>
     <td class="text-center">
-        <a class="btn btn-danger text-light mr-3" href="{{route('hapuspaket',['id'=>$pakets->id])}}"><i class="fa fa-trash"></i></a>
-        <a href="{{route('editpaket',['id'=>$pakets->id])}}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+        <a style="font-size: 0.75rem" class="btn btn-danger text-light mr-3 hps" href="{{route('hapuspaket',['id'=>$pakets->id])}}"><i class="fa fa-trash"></i></a>
+        <a style="font-size: 0.75rem" href="{{route('editpaket',['id'=>$pakets->id])}}" class="btn btn-warning "><i class="fa fa-edit"></i></a>
     </td>
 </tr>
 @empty
-    <h3>Tidak ada paket terdaftar</h3>
+    <h3 class="p-2">Tidak ada paket terdaftar</h3>
 
 @endforelse
 </table>
@@ -75,6 +98,10 @@
                         </ul>
                     </div>
                     <div class="col">
+                        <Label>Produk</Label>
+                        <input type="text" class="form-control produk bg-light"  placeholder="Produk">
+                    </div>
+                    <div class="col">
                         <Label>Harga Produk</Label>
                         <input type="text" class="form-control harga-produk bg-light"  placeholder="Harga Produk" readonly>
                     </div>
@@ -105,7 +132,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Tambah Paket</h5>
-                <button type="button" class="closedBtn" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="closedBtn close" >
                     <span aria-hidden="true">&times;</span>
                 </button> 
             </div>

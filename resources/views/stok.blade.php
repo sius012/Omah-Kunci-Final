@@ -68,7 +68,13 @@ $master='admingudang';
     <table class="table table-striped mt-3 table-bordered ">
         <thead class="thead-dark">
             <tr class="text-center">
-                <th style="width: 50px">NO</th><th style="width:100px">Kode Produk</th><th align="left" class="w-25" style="text-align: left">Nama Produk</th><th>Merek</th><th>Tipe</th><th>Tipekode</th><th>Jumlah</th>
+                <th style="width: 50px">NO</th>
+                <th>Tipe</th>
+                <th>Tipekode</th>
+                <th>Merek</th>
+                <th style="width:100px">Kode Produk</th>
+                <th align="left" class="w-25" style="text-align: left">Nama Produk</th>
+                <th>Jumlah</th>
             </tr>
         </thead>
         <tbody id="stokfiller">
@@ -77,7 +83,16 @@ $master='admingudang';
         @endphp
         @forelse($data as $datas)
             <tr class="text-center">
-                <td>{{$no}}</td><td>{{$datas->kode_produk}}</td><td align="left">{{$datas->nama_produk}}</td><td>{{$datas->nama_merek}}</td><td>{{$datas->nama_tipe}}</td><td>{{$datas->nama_kodetype}}</td><td>{{$datas->jumlah}} {{$datas->satuan}}</td>
+                <td>{{$no}}</td>
+                <td>{{$datas->nama_tipe}}</td>
+                <td>{{$datas->nama_kodetype}}</td>
+                <td>{{$datas->nama_merek}}</td>
+                <td>{{$datas->kode_produk}}</td>
+                <td align="left">{{$datas->nama_produk}}</td>
+                
+                
+                
+                <td>{{$datas->jumlah}} {{$datas->satuan}}</td>
             </tr>
             @php $no++ @endphp
         @empty

@@ -142,7 +142,7 @@
             <div class="sidebar  p-0 overflow-x-hidden" style="overflow-x: hidden !important;" >
                 <a href="index3.html" class="brand-link m-0 d-flex align-items-center justify-content-center" style="border-bottom:2px solid white;padding: 15px; background-color: #06335C;">
                     <img style="margin-right: -40px;" src="{{asset('assets/preloader.svg')}}" alt="AdminLTE Logo" class="brand-image m-0">
-                    <span style="color: #FAE511;" class="brand-text font-weight-bold">OmahKunci</span>
+                    <span style="color: #FAE511;" class="brand-text font-weight-bold">Omah Kunci</span>
                 </a>
                 <!-- Sidebar user panel (optional) -->
                 <div class="mt-3 pb-3 mb-3 d-block pl-0  " >
@@ -307,7 +307,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">@yield('pagetitle')</h1>
+                            <h1 class="m-0 font-weight-bold mb-2">@yield('pagetitle')</h1>
                         </div><!-- /.row -->
                     </div><!-- /.container-fluid -->
                 </div>

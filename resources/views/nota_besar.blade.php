@@ -11,14 +11,28 @@
         * {
             margin: 0px;
 
-            font-size: 10pt;
+            font-size: 12pt;
+            line-height: ;
+        }
+        @media print {
+            @page {
+                size: landscape
+            }
         }
 
         body {
-            max-height: 5000px;
+            max-height: 10px;
+            
+            
         }
 
         td{
+            height: 0px;
+            padding: 1px;
+        }
+
+        td h4{
+          
         }
 
         .container-wrapper {
@@ -40,7 +54,7 @@
         .container-wrapper table .address .brand-address {
             margin-top: 0;
 
-            font-size: 6pt;
+            font-size: 8pt;
         }
 
         .container-wrapper table .date-times {
@@ -106,7 +120,7 @@
 
         h4 {
 
-            font-size: 9pt;
+            font-size: 12pt;
             margin: 0px;
             padding: 0px !important;
         }
@@ -118,19 +132,19 @@
 
 <body>
     <div class="container-wrapper">
-        <table style="margin-top: 20px; width: 750px">
+        <table style="margin-top: 20px; width: 1100px">
             <tr>
                 <td>
                     <div class="address" style="width:120px">
-                        <img style="height:20px;" src="{{ public_path('assets/logo.svg') }}" alt="">
+                        <img style="height:25px;" src="{{ public_path('assets/logo.svg') }}" alt="">
                         <p class="brand-address">Jl. Agus Salim D no.10 <br> Telp/Fax 085712423453 / (024) 3554929  <br>
                             Semarang </p>
                     </div>
                 </td>
-                <td style="width:170px"></td>
+                <td style="width:350px"></td>
                 <td align="right" style="width:50px" valign="top">
                     <h4 class="date-times">Semarang,
-                        {{ date("d-M-Y")}}</h4>
+                        {{ date("d-M-Y", strtotime($data->updated_at))}}</h4>
                 </td>
             </tr>
             <tr>
@@ -162,18 +176,18 @@
                 <tr>
 
                     <td valign="top">
-                        <h4>Telah Dibayar</h4>
+                        <h4>Pembayaran Sebelumnya</h4>
                     </td>
-                    <td>Rp. {{ number_format($td) }}</td>
+                    <td>Rp. {{ number_format($td,0,',','.') }}</td>
                     <td></td>
 
                 </tr>
             @endif
             <tr>
-                <td style="padding-bottom: 5px;" valign="top">
+                <td style="" valign="top">
                     <h4>Uang Sejumlah</h4>
                 </td>
-                <td style="padding-bottom: 5px;"> Rp. {{ number_format($data->us) }}</td>
+                <td style="padding-bottom: 10px;"> Rp. {{ number_format($data->us,0,',','.') }}</td>
                 <td></td>
             </tr>
             <tr>
@@ -184,7 +198,7 @@
                 <td></td>
             </tr>
             <tr>
-                <td>
+                <td valign="top">
                     <h4>Guna Membayar</h4>
                 </td>
                 <td> {{ $data->gm }}</td>
@@ -194,7 +208,7 @@
                 <td style="padding-bottom: 5px;" valign="top">
                     <h4>Total</h4>
                 </td>
-                <td style="padding-bottom: 5px;"> Rp. {{ number_format($data->total) }}</td>
+                <td style="padding-bottom: 5px;"> Rp. {{ number_format($data->total,0,',','.') }}</td>
                 <td></td>
             </tr>
             <tr>

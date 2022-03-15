@@ -79,7 +79,7 @@ class PaketController extends Controller
       
         DB::table('paket')->where("id",$id)->update(["nama_paket"=>$nama_paket,"kode_produk"=>$produk,"jumlah"=>$jumlah,"harga"=>$harga]);
 
-        return back();
+        return redirect()->name('paket');
        
         
     }
@@ -87,7 +87,7 @@ class PaketController extends Controller
     public function hapuspaket($id){
         DB::table("paket")->where("id",$id)->delete();
 
-        return back();
+        return redirect()->route("paket");
     }
 
     public function editpaket($id){

@@ -1,3 +1,5 @@
+
+
 $(document).ready(function(e){
     $("#infomodal").modal("show");
 
@@ -207,29 +209,39 @@ $(document).ready(function(e){
      $(".btn-bayar").click(function(e){
         e.preventDefault();
         $("#tombolbayar").attr('id_trans',$(this).attr('id_trans'));
+        $("#totalbayar").val($(this).attr('subtotal'));
+        $("#td").val($(this).attr('td'));
      });
 
      $("#tombolbayar").click(function(){
-         alert($("#nominal-bayar").val());
+        let total=parseInt($("#totalbayar").val().replace(/[._]/g, ''));
+        let td=parseInt($("#td").val().replace(/[._]/g, ''));
+        
         let id = $(this).attr('id_trans');
-        let nominal = $("#nominal-bayar").val();
-        $.ajax({
-            headers: {
-                "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content')
-            },
-            url: "/bayarcicilannotakecil",
-            data: {
-                'id': id,
-                'nominal': nominal,
-            },
-            type:'post',
-            success: function(){
-                window.location = "/transaksi";
-            },
-            error: function(err){
-                alert(err.responseText);
-            }
-        });
+        let nominal = parseInt($("#nominal-bayar").val().replace(/[._]/g, ''));
+        alert(nominal+td);
+        if(nominal+td>=total){
+            $.ajax({
+                headers: {
+                    "X-CSRF-TOKEN" : $("meta[name=csrf-token]").attr('content')
+                },
+                url: "/bayarcicilannotakecil",
+                data: {
+                    'id': id,
+                    'nominal': nominal,
+                },
+                type:'post',
+                success: function(){
+                    window.location = "/transaksi";
+                },
+                error: function(err){
+                    alert(err.responseText);
+                }
+            });
+        }else{
+            Swal.fire("Nominal kurang","","info");
+        }
+       
      });
 
      

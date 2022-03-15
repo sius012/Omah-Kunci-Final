@@ -116,7 +116,7 @@ class ProdukController extends Controller
        $dato =  DB::table('new_produks')->where('kode_produk', $kode)->first();
 
         $jmltipe = DB::table("new_produks")->where("id_tipe", $dato->id_tipe)->count();
-        $jmlkodetipe = DB::table("new_produks")->where("id_kodetype", $dato->id_kodetype)->count();
+        $jmlkodetipe = DB::table("new_produks")->where("id_ct", $dato->id_ct)->count();
         $jmlmerek = DB::table("new_produks")->where("id_merek", $dato->id_merek)->count();
 
         if($jmltipe < 2){

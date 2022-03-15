@@ -12,6 +12,7 @@
             margin: 0px;
 
             font-size: 10pt;
+            line-height: 100%;
         }
 
         body{
@@ -181,7 +182,16 @@
                     <td colspan="2">Barang Telah dipasang dengan baik</td>
 
 
-                    </tr>
+             </tr>
+             <tr>
+
+                <td valign="top">
+                    <h4>Kunci</h4>
+                </td>
+                <td colspan="2">{{$data->kunci}}</td>
+
+
+             </tr>
           
             <tr align="center" >
                 <td colspan="3" style="padding-top:50px; padding-bottom:30px">

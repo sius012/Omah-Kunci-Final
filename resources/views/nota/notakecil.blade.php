@@ -214,22 +214,9 @@ $subtotal = 0;
         <hr style="margin:0;">
         <div>
             <table>
-                @php 
-                    $status = '';
-                    switch($data[0]->status){
-                        case 'return':
-                            $status =  "RETUR" ;
-                        break;
-                        case 'lunas':
-                            $status =  "TANDA TERIMA" ;
-                        break;
-                        case 'belum lunas':
-                            $status =  "SURAT JALAN" ;
-                        break;
-                    }
-                @endphp
+
                 <tr>
-                    <td style="text-align: center; font-size: 1rem;" colspan=2>{{$status}}</td>
+                    <td style="text-align: center; font-size: 1rem;" colspan=2>NOTA</td>
                 </tr>
                 @if($data[0]->status == 'return')
                 <tr>
@@ -237,7 +224,7 @@ $subtotal = 0;
                 </tr>
                 @endif
                 <tr>
-                    <td>{{$data[0]->no_nota}}</td>
+                    <td>{{$data[0]->metode}}</td>
                     <td align="right">{{date("d-m-Y" ,strtotime($data[0]->created_at))}}</td>
 
                 </tr>

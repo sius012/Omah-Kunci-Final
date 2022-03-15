@@ -32,9 +32,9 @@
                                     <div class="description-block border-right">
 
                                         <h5 class="description-header">
-                                            Rp.{{ number_format($daily['hari']['pemasukan']) }}
+                                            Rp.{{ number_format($daily['hari']['pemasukan nota kecil']) }}
                                         </h5>
-                                        <span class="description-text">PEMASUKAN HARI INI</span>
+                                        <span class="description-text">Pemasukan Nota Kecil</span>
                                     </div>
                                     <!-- /.description-block -->
                                 </div>
@@ -42,9 +42,9 @@
                                 <div class="col-sm-4 col-6">
                                     <div class="description-block border-right">
                                         <h5 class="description-header">Rp.
-                                            {{ number_format($daily['minggu']['pemasukan']) }}
+                                            {{ number_format($daily['hari']['pemasukan nota besar']) }}
                                         </h5>
-                                        <span class="description-text">PEMASUKAN MINGGU INI</span>
+                                        <span class="description-text">Pemasukan nota besar</span>
                                     </div>
                                     <!-- /.description-block -->
                                 </div>
@@ -52,9 +52,9 @@
                                 <div class="col-sm-4 col-6">
                                     <div class="description-block border-right">
                                         <h5 class="description-header">Rp.
-                                            {{ number_format($daily['bulanan']['pemasukan']) }}
+                                            {{ number_format($daily['hari']['pemasukan preorder']) }}
                                         </h5>
-                                        <span class="description-text">PEMASUKAN BULAN INI</span>
+                                        <span class="description-text">Pemasukan preorder</span>
                                     </div>
                                     <!-- /.description-block -->
                                 </div>

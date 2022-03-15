@@ -1,4 +1,7 @@
 @php  $whoactive='riwayatnotabesar';
+$haslampau = false;
+$hastoday = false;
+
 $master='kasir' @endphp
 @extends('layouts.layout2')
 @section('pagetitle', 'Transaksi Preorder')
@@ -7,6 +10,7 @@ $master='kasir' @endphp
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/transaksiPreorder.css') }}">
+    <script src="{{ asset('js/print.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/transaksi_progress_bar.css') }}">
     <script>
       $(document).ready(function(){
@@ -31,7 +35,28 @@ $master='kasir' @endphp
              
             }
           });
+
+         
         });
+
+        $("#printbutton").click(function(){
+            
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                 }, 
+            data: {
+                id_transaksi : $(this).attr('id_nb')
+            },
+            url: "/cetaknotabesar",
+            type: "post",
+            success: function(response){
+                printJS({printable: response['filename'], type: 'pdf', base64: true ,style: '@page { size: Letter landscape; }'});
+            },error: function(err){
+                Swal.fire('terjadi kesalahan','','info');
+            }
+        });
+    });
       });
     </script>
 @endsection
@@ -39,7 +64,7 @@ $master='kasir' @endphp
 @section('content')
 <form action="{{route('caritranspreorder')}}" method="post">
   @csrf
-        <div class="row">
+        <div class="row mb-5">
             <div class="col-12">
                 <input class="search-box " type="text" placeholder="Cari nomor nota..." name="no_nota">
                 <button type="submit" class="search-icon"><i class="fas fa-search p-1"></i></button>
@@ -48,11 +73,17 @@ $master='kasir' @endphp
       </form>
 
         <div class="row">
-            <h5 class="date">Hari Ini</h5>
+          
         </div>
     
         @foreach($data as $datas)
-        
+        @if(\Carbon\Carbon::parse($datas['created_at'])->isToday() == 1 and $hastoday == false)
+<h5 class="font-weight-bold ml-2 mb-2">Hari Ini</h5>
+@php $hastoday=true @endphp
+@elseif(\Carbon\Carbon::parse($datas['created_at'])->isToday() == 0 and $haslampau == false)
+<h5 class="font-weight-bold">Sebelumnya</h5>
+@php $haslampau=true @endphp
+@endif
 
 
              <div class="card datatrans p-2"  id_trans="{{$datas['no_nota']}}">
@@ -168,6 +199,7 @@ $master='kasir' @endphp
             </div>
         </div>
         <div class="modal-footer">
+        <button id="printbutton" type="button" id_nb=" @if($info[1]->status == 'dibayar' and @info[2]->status == 'ready') {{$info[1]->id_transaksi}} @elseif( $info[2]->status == 'dibayar') {{$info[2]->id_transaksi}} @else  {{$info[0]->id_transaksi}} @endif" class="btn btn-primary">Cetak</button>
           <button type="button" class="btn btn-secondary btnClose" data-dismiss="modal">Tutup</button>
         </div>
       </div>

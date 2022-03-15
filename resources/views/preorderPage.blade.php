@@ -2,6 +2,11 @@
 $whoactive = "preorderpage";
 $master='kasir';
 $no=1;
+
+$haslampau = false;
+$hastoday = false;
+
+
 @endphp
 @extends('layouts.layout2')
 @section('pagetitle', 'Riwayat Preorder')
@@ -18,7 +23,12 @@ $no=1;
 <script src="{{ asset('js/transaksi.js') }}"></script>
 <script src="{{ asset('js/print.js') }}"></script>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function(){   
+        $(".btnclose").click(function(){
+            $("#exampleModal").modal("hide");
+        });
+
+
         $(".hapustrans").click(function(e){
             e.preventDefault();
             Swal.fire({
@@ -113,7 +123,7 @@ $no=1;
 @section('content')
     
     @csrf
-<div class="row">
+<div class="row mb-3">
     <form action="{{url('/caripreorder')}}" method="get">
     <div class="col-12">
         <input class="search-box " type="text" placeholder="Ketik Nama Pelanggan" name="nama">
@@ -123,11 +133,16 @@ $no=1;
 </div>
 </form>
 
-<div class="row">
-    <h5 class="date">Hari Ini</h5>
-</div>
+
 
 @foreach($data as $datas)
+@if(\Carbon\Carbon::parse($datas->created_at)->isToday() == 1 and $hastoday == false)
+<h5 class="font-weight-bold ml-2 mb-2">Hari Ini</h5>
+@php $hastoday=true @endphp
+@elseif(\Carbon\Carbon::parse($datas->created_at)->isToday() == 0 and $haslampau == false)
+<h5 class="font-weight-bold">Sebelumnya</h5>
+@php $haslampau=true @endphp
+@endif
 <div class="card datatrans p-3" id_trans="">
     <input type="hidden">
     <table class="table table-borderless text-center">
@@ -218,7 +233,7 @@ $no=1;
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-secondary btnclose" data-dismiss="modal">Tutup</button>
         <button id_pre=""id="btncetak" class="btn btn-info btncetak ml-2"><i style="" class="fa fa-print"></i></button>
       </div>
     </div>

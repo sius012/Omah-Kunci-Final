@@ -1,166 +1,76 @@
-@php 
-    $no = 1;
-@endphp
-@php
-        $date = \Carbon\Carbon::parse(date('d-M-Y'))->locale('id');
-
-        $date->settings(['formatFunction' => 'translatedFormat']);
-
-    @endphp
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-
-    <style>
-        *{
-            margin: 0;
-            font-size: 5pt !important;
-            font-weight: bold;
-        }
-
-        img{
-            width: 20px;
-            position: relative;
-            transform: rotate(-90);
-            left: 55px;
-            bottom: 30px;
-        }
-
-        .kode{
-            letter-spacing: 5pt;
-            font-size: 4pt !important;
-        }
-    body{
-        width: 100mm;
-        margin: 5mm;
-        
-    }
-.container{
-
+<style> 
+*{
+    margin: 0px;
+    font-size: 8pt;
+}
+#main {
+    width: 21cm;
+    margin-left: 3px;
     
+ 
+
 }
 
+body{
+    margin-top: 20px;
+}
 
+#main div {
+  width: 5cm;
+  height: 2cm;
+  display: inline-block;
 
-.pie{
+  
+}
+
+.cardi{
+    background: white;
+    border: 1px solid black;
+    display: block;
+    padding: 0px;
+}
+.barcode{
+    letter-spacing: 8.2pt;
+    font-size: 6pt;
+
+    font-weight: bold;
+}
+
+.jdl{
+    font-size: 6pt;
+    font-weight: bold;
+}
+
+img{
+    width: 30px;
+    left: 30px;
     position: relative;
-    background: red ;
-    display: inline;
-    margin: 0.5px;
+    transform: rotate(-90);
 }
-
-.card{
-  
-     background-color: white;
-     width: 33mm;
-     height: 15mm;
-    border:1px solid gray;
-    border-radius: 4px;
-  
-    padding-top:0px;
-}
-
-    </style>
-
-    <style>
-        @font-face /*perintah untuk memanggil font eksternal*/
-        {
-            font-family: barcode; /*memberikan nama bebas untuk font*/
-            src: url("{{storage_path('fonts/code128.ttf')}}");/*memanggil file font eksternalnya di folder nexa*/
-        }
-        * {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-         .logo-img {
-           width: 200px;
-        }
-
-        .container .header {
-            align-items: center;
-    
-
-            margin-top: 0px;
-        }
-
-        .container .address {
-  
-
-            margin-bottom: 0px;
-        }
-
-        .container .data-wrapper {
-   
-
-        }
-        .container .data-wrapper .table tbody tr td, th{
-            padding: 2px;
-        }
-
-        .container .data-wrapper .table{
-            border-collapse: collapse;
-        
-        }
-
-        .table-data{
-        width: 1px;
-        border-collapse: collapse;
-        
-        }
-
-        .table-data td, .table-data th{
-            border: 1px solid black;
-            font-size: 8pt;
-            padding: 20px;
-            margin: 0;
-        }
-
-        .barcode{
-            
-            font-size: 20pt !important;
-        }
-
-        td{
-            margin: -10px;
-        }
-
-        p{
-            margin: 0;
-            font-size: 8pt;
-
-        }
-        span{
-            font-size: 6pt;
-            margin:0px;
-        }
-    </style>
+</style>
 </head>
-
 <body>
-  
-    
-         
-    <div style="width:200px; ">
+
+
+<div id="main">
     @foreach($data as $datas)
-        <div style="margin-top: 0px;  justify-content: center;flex-direction: unset;width: 100mm;align-items: center;">
-      
-            <div style="display: inline-block;text-align: center; width:300px"><div class="card">
-                <span style="text-align:left;font-size: 13px;left:25px;margin-top:4px;width:150px;position:absolute">{{$datas->nama_produk}} {{$datas->nama_merek}}</span>
-                <div style="text-align:center !important; margin-left: 5px; margin-top: 15px; margin-bottom: 0px;">
-                <span style="size: 8px !important;">{!! DNS1D::getBarcodeHTML($datas->kode_produk, 'C128',0.9,30) !!}</span>
-                </div>
-                <span class="kode" style="align-left: left;font-size: 13px; margin-left:3px">{{$datas->kode_produk}}</span>
-                <img src="{{public_path('assets/ok.png')}}" alt="">
-            </div>
-     
-        </div>
-    @endforeach
+    <div style="margin-left: 2px; margin-top: 12px;" class="cardi">
+    <div style="margin-left: 12px">
+    <span style="text-align:left; width:1px;" class="jdl">{{$datas->nama_produk}}</span><br>
+    <span style="">{!! DNS1D::getBarcodeHTML($datas->kode_produk, 'C128',1.35,40) !!}</span><br>
+    <span class="barcode" >{{$datas->kode_produk}}</span>
+    <img style="left: 155px ;top: -15   px;" src="{{public_path('assets/ok.png')}}" alt="">
     </div>
+    </div>
+    @endforeach
+  
+
+</div>
+
+
+
 </body>
-,
 </html>

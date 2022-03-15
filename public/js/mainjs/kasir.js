@@ -1,3 +1,5 @@
+
+
 function formatRupiah(angka, prefix) {
     var number_string = angka.replace(/[^,\d]/g, '').toString(),
         split = number_string.split(','),
@@ -17,6 +19,7 @@ function formatRupiah(angka, prefix) {
 
 
 $(document).ready(function () {
+    
     var hasfinish = false;
     if($("#jenis-transaksi").val() == "normal"){
         $(".normalt").show();
@@ -115,14 +118,13 @@ $(document).ready(function () {
                     return `
                         <tr>
                             <td>${i + 1}</td>
-                            <td>${data['kode_produk']}</td>
-                            <td>${dato['nama_produk']}</td>
-                            <td>${dato['nama_merek']}</td>
+                            <td>${dato['kode_produk']}</td>
+                            <td>${dato['nama_kodetype']+" "+dato['nama_merek']+" "+dato['nama_produk']}</td>
                             <td>${dato['jumlah']}</td>
                             <td>Rp. ${parseInt(dato['harga']).toLocaleString()}</td>
                             <td>Rp. ${parseInt(dato['potongan']).toLocaleString()}</td>
                             <td> Rp. ${doDisc(dato['jumlah'], dato['harga'], dato['potongan'], dato['prefix']).toLocaleString()}</td>
-                            <td><buttton class="btn btn-danger buang" id_detail="${dato['id']}"><i class="fa fa-trash"></i></button></td>
+                            <td><buttton class="btn btn-danger beforesend buang" id_detail="${dato['id']}"><i class="fa fa-trash"></i></button></td>
                         </tr>
                     `
 
@@ -143,10 +145,10 @@ $(document).ready(function () {
                     return `
                     <tr>
                         <td>${i + 1}</td>
-                        <td>${dato['nama_produk']}</td>
-                        <td>${dato['nama_merek']}</td>
+                        <td>${dato['kode_produk']}</td>
+                        <td>${dato['nama_kodetype']+" "+dato['nama_merek']+" "+dato['nama_produk']}</td>
                         <td>${dato['jumlah']}</td>
-                        <td><button  class="btn btn-danger buang" id_detail="${dato['id']}"><i class="fa fa-trash"></i></button></td>
+                        <td><button  class="btn btn-danger beforesend buang" id_detail="${dato['id']}"><i class="fa fa-trash"></i></button></td>
                     </tr>
                 `;});
                 $('#tabling').html(row);
@@ -252,7 +254,7 @@ $(document).ready(function () {
                     for (var i = 0; i < data['data'].length; i++) {
                         li += `<li>
 
-                                   <a jenis="produk" kode="${data['data'][i]['kode_produk']}" harga="${data['data'][i]['harga']}" jumlah="1" potongan="0" class="sear">${data['data'][i]["kode_produk"] + " " + data['data'][i]["nama_produk"] + " " + data['data'][i]['nama_merek']}</a>
+                                   <a jenis="produk" kode="${data['data'][i]['kode_produk']}" harga="${data['data'][i]['harga']}" jumlah="1" potongan="0" class="sear">${data['data'][i]["kode_produk"]+ " "+data['data'][i]['nama_kodetype'] +" "+ data['data'][i]['nama_merek'] + " " + data['data'][i]["nama_produk"] + " "}</a>
                                 </div>
                             
                             </li>`;
@@ -335,13 +337,13 @@ $(document).ready(function () {
                             <tr>
                                 <td>${i + 1}</td>
                                 <td>${dato['kode_produk']}</td>
-                                <td>${dato['nama_produk']}</td>
-                                <td>${dato['nama_merek']}</td>
+                                <td>${dato['nama_kodetype']+ " " +dato['nama_merek']+" "+dato['nama_produk']}</td>
+                               
                                 <td>${dato['jumlah']}</td>
                                 <td>Rp. ${parseInt(dato['harga_produk']).toLocaleString()}</td>
                                 <td>${renderDisc(dato['potongan'], dato['prefix'])}</td>
                                 <td> Rp.${doDisc(dato['jumlah'], dato['harga_produk'], dato['potongan'], dato['prefix']).toLocaleString()}</td>
-                                <td><button   class="btn btn-danger buang" id_detail="${dato['id']}"><i class="fa fa-trash"></i></button></td>
+                                <td><button   class="btn btn-danger beforesend buang" id_detail="${dato['id']}"><i class="fa fa-trash"></i></button></td>
                             </tr>
                         `;
 
@@ -390,10 +392,9 @@ $(document).ready(function () {
                             <tr>
                                 <td>${i + 1}</td>
                                 <td>${dato['kode_produk']}</td>
-                                <td>${dato['nama_produk']}</td>
-                                <td>${dato['nama_merek']}</td>
+                                <td>${dato['nama_kodetype']+" "+dato['nama_merek']+" "+dato['nama_produk']}</td>
                                 <td>${dato['jumlah']}</td>
-                                <td><button  class="btn btn-danger buang" id_detail="${dato['id']}"><i class="fa fa-trash"></i></button></td>
+                                <td><button  class="btn btn-danger beforensend buang" id_detail="${dato['id']}"><i class="fa fa-trash"></i></button></td>
                             </tr>
                         `;
 
@@ -472,7 +473,7 @@ $(document).ready(function () {
         if (parseInt($(".usethis").val()) < subtotalafterdiskon && $('input[name=payment]:checked').val() == "cash") {
             alert("uang kurang");
         } else {
-            $(".buang").attr("disabled","disabled");
+           
             id_trans = $("#kodetrans").val();
             if ($("#nama").val() == null || $("#nama").val() == "" || $(".usethis").val() == "" || $(".usethis").val() == null  || $(".usethisvia").val() == " " || $('#telp').val() == "" || $("#alamat").val() == "") {
                 Swal.fire("Pastikan Semua Kolom terisi(kecuali diskon)", "", "info");
@@ -515,6 +516,7 @@ $(document).ready(function () {
                             printpreorder($("#id_pre").val());
                         }
                         $("#next-button").removeAttr("disabled");
+                        $(".beforesend").attr("disabled","disabled");
                     },
                     error: function (err, response, errorThrown, jqXHR) {
                         Swal.fire(
@@ -561,7 +563,7 @@ $(document).ready(function () {
                 window.location = "/kasir";
             },
             error: function (err) {
-                Swal.fire("terjadi kesalahan", "", "info");
+               window.location="/kasir";
             }
         });
         }
@@ -569,7 +571,6 @@ $(document).ready(function () {
 
    
     function hapusdetail(id_detail) {
-        alert($("#jenis-transaksi").val());
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

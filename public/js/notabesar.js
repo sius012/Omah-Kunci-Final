@@ -1,8 +1,10 @@
+
+
 $(document).ready(function(){
     $("#suratjalan").hide();
     $(".kunci").hide();
     $("#printbutton").attr("disabled", "disabled");
-
+    $(".td").hide();
     var jenisnota = "pintugarasi";
     $("#gm").val('Pintu Garasi');
     var pg = `
@@ -142,11 +144,10 @@ $("#trigger").click(function(e){
                     alert("error");
                 }
 
-                if(data['nb'][0]['termin'] == 3){
+                if(data['nb'][0]['termin'] > 1){
                     $(".kunci").show();
                     $("#kunci").val(data['nb'][0]['kunci']);
-                    
-                }else{
+                 }else{
                     $(".kunci").hide();
                 }
                 console.log(data);
@@ -158,16 +159,21 @@ $("#trigger").click(function(e){
                 $("#us").   val(data['nb'][0]['us']);
                 $("#brp").  val(data['nb'][0]['brp']);
                 $("#gm").   val(data['nb'][0]['gm']);
-                $("#total").val(data['nb'][0]['total']);
+                $("#total").val(parseInt(data['nb'][0]['total']).toLocaleString());
+                $("#total2").val(parseInt(data['nb'][0]['total']));
                 $("#nn").text("No Nota: "+data["nb"][0]["no_nota"]);
                 $("#tgl").val(data["nb"][0]["created_at"]);
+                $("#jt").val(data["nb"][0]["jatuh_tempo"]);
+                $("#td2").val(parseInt(data['nb'][0]['total']));
+                $("#termin").val(data['nb'][0]['termin']);
+    
     
     
                 let row = data["opsi"].map(function(e,i){
                     return `
                     <div class="form-group">
                         <label>${e['judul']}</label>
-                        <input type="text" class="form-control isi${i+1} readonly" id="exampleInputPassword1" value="${e['ket']}">
+                        <input type="text" class="form-control isi${i+1} readonly" readonly id="exampleInputPassword1" value="${e['ket']}">
                     </div>
                     `;
                     
@@ -180,17 +186,23 @@ $("#trigger").click(function(e){
                 $("#preorderform").attr("action", "/bayarpreorder");
                 $("#id_trans").val(data["nb"][0]["id_transaksi"]);
                 $(".td").show();
-                $(".td").children("input").val(data["td"]);
+                $(".td").children("input").val(parseInt(data["td"]).toLocaleString());
                 $("#addopsi").hide();
                 if(data["nb"][0]["status"] == "dibayar"){
+                    $("#us").attr("disabled", "disabled");
+                    $("#brp").attr("disabled", "disabled");
                     $("#buttonsubmit").attr("disabled", "disabled");
                     $("#buttonsubmit").text("Sudah Lunas");
                     $("#buttonsubmit").removeClass("btn-primary");
                     $("#buttonsubmit").addClass("btn-success");
                     $("#printbutton").removeAttr("disabled");
                     $("#suratjalan").removeAttr("disabled");
+                    $("#kunci").attr("readonly",'readonly');
+                
                 
                 }else{
+                    $("#us").removeAttr("disabled");
+                    $("#brp").removeAttr("disabled");
                     $("#buttonsubmit").removeAttr("disabled");
                     $("#buttonsubmit").removeClass("btn-success");
                     $("#buttonsubmit").addClass("btn-primary");
@@ -296,6 +308,7 @@ $("#trigger").click(function(e){
         }
 
         console.log(formData);
+        if(parseInt($("#termin").val()) != 3 || parseInt($("#td2").val()) + parseInt($("#us").val().replace(/[._]/g,'')) >= parseInt($("#total2").val())){
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -308,6 +321,7 @@ $("#trigger").click(function(e){
                 id_transaksi: $("#id_trans").val(),
                 tanggal: $("#tgl").val(),
                 kunci: $("#kunci").val(),
+                jt: $("#jt").val()
             },
             type: "POST",
             url: url,
@@ -320,14 +334,16 @@ $("#trigger").click(function(e){
                 $("#preorderform").attr("disabled", "disabled");
                
                 $("#buttonsubmit").attr("disabled", "disabled");
-                $("#buttonsubmit").text("Sudah Lunas");
+                $("#buttonsubmit").text("Sudah dibayar");
                 $("#buttonsubmit").removeClass("btn-primary");
                 $("#buttonsubmit").addClass("btn-success");
                 $("#id_trans").val(data["id_nb"]);
                 $("#nn").text("No Nota: "+data["no_nota"]);
+                $("#termin").val(data['termin']);
                 $("#searcher-nota").val("");
                 $("#printbutton").removeAttr('disabled');
                 $("#suratjalan").removeAttr('disabled');
+                $("#us").attr("disabled", "disabled");
                
             
             },
@@ -336,6 +352,9 @@ $("#trigger").click(function(e){
                 alert(err.responseText);
             }
         });
+    }else{
+        Swal.fire("Nominal kurang");
+    }
        
     });
 
@@ -351,7 +370,7 @@ $("#trigger").click(function(e){
             url: "/cetaknotabesar",
             type: "post",
             success: function(response){
-                printJS({printable: response['filename'], type: 'pdf', base64: true});
+                printJS({printable: response['filename'], type: 'pdf', base64: true, style: '@page { size: Letter landscape; }'});
             },error: function(err){
                 Swal.fire('terjadi kesalahan','','info');
             }
@@ -359,6 +378,7 @@ $("#trigger").click(function(e){
     });
 
     $("#resetbutton").click(function(e){
+        alert( $(this).attr("href"));
         e.preventDefault();
         $.ajax({
             headers: {
@@ -367,9 +387,11 @@ $("#trigger").click(function(e){
             url: '/resettrans',
             type: 'POST',
             success: function(){
-                window.location = "/notabesar";
+                alert('hai');
+                window.location = $("#resetbutton").attr("href");
             },
             error: function(err){
+                alert('hai');
             },
         });
     });
@@ -385,7 +407,7 @@ $("#trigger").click(function(e){
             url: "/cetaksjnb",
             type: "post",
             success: function(response){
-                printJS({printable: response['filename'], type: 'pdf', base64: true});
+                printJS({printable: response['filename'], type: 'pdf', base64: true, style: '@page { size: Letter landscape; }'});
             },error: function(err){
                 Swal.fire('terjadi kesalahan','','info');
                 alert(err.responseText);

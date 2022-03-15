@@ -38,7 +38,7 @@ $(document).ready(function () {
                     for (var i = 0; i < data['data'].length; i++) {
                         li += `<li>
 
-                                   <a kode="${data['data'][i]['kode_produk']}" harga="${data['data'][i]['harga']}" jumlah="1" potongan="0" class="sear">${data['data'][i]["kode_produk"] + " " + data['data'][i]["nama_produk"] + " " + data['data'][i]['nama_merek']}</a>
+                                   <a kode="${data['data'][i]['kode_produk']}" produk="${data['data'][i]['nama_kodetype']+" "+data['data'][i]['nama_merek']+data['data'][i]['nama_produk']}" harga="${data['data'][i]['harga']}" jumlah="1" potongan="0" class="sear">${data['data'][i]["kode_produk"] + " " + data['data'][i]["nama_produk"] + " " + data['data'][i]['nama_merek']}</a>
                                 </div>
                             
                             </li>`;
@@ -63,7 +63,7 @@ $(document).ready(function () {
     $(document).on("click", ".sear", function (event) {
         $(event.target).closest(".col").children("input").val($(event.target).attr("kode"));
         $(event.target).closest(".form-row").children(".col").children(".harga-produk").val(parseInt($(event.target).attr("harga")).toLocaleString());
-
+       $(event.target).closest(".form-row").children(".col").children(".produk").val($(event.target).attr("produk"));
     });
 
     $("#tambah-produk").click(function(){
@@ -76,10 +76,12 @@ $(document).ready(function () {
             </ul>
         </div>
         <div class="col">
-            <input type="text" class="form-control harga-produk bg-light" name="harga[]" placeholder="Harga Produk" readonly>
+            <input type="text" class="form-control produk bg-light" name="" placeholder="Produk" readonly>
         </div>
         <div class="col">
-           
+            <input type="text" class="form-control harga-produk bg-light" name="" placeholder="Harga Produk" readonly>
+        </div>
+        <div class="col">
             <input type="text" class="form-control bg-light" name="jumlah[]" placeholder="Jumlah" required>
         </div>
         <div class="col">

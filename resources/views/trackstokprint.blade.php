@@ -266,8 +266,8 @@
                     
                     @endforeach
                     <tr>
-                        <td colspan="5">Total</td>
-                        <td>Rp. {{number_format($total,0,",",".")}}</td>
+                    @if(Auth::user()->roles[0]['name']="manager") <td colspan="5">Total</td> @else <td colspan="6">Total</td>@endif
+                        @if(Auth::user()->roles[0]['name']="manager")<td>Rp. {{number_format($total,0,",",".")}}</td>@endif
                         <td>{{$jumlah}}</td>
 
                     </tr>

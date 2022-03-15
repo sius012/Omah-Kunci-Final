@@ -114,7 +114,7 @@
                     <div class="row mb-3">
                         <select style="width: 500px;" name="" id="jenis-transaksi" class="form-control">
                             <option @if($jenis=="umum") selected @endif value="normal">
-                                Transaksi Normal
+                                Transaksi Umum
                             </option>
                             <option  @if($jenis=="preorder") selected @endif value="preorder">
                                 Transaksi Preorder
@@ -155,7 +155,7 @@
                             </div>
 
                             <div class="card-footer">
-                                <button href="" class="btn btn-success" id="tambahproduk">Tambah Produk</button>
+                                <button href="" class="btn btn-success beforesend" id="tambahproduk">Tambah Produk</button>
                             </div>
                         </div>
                     </div>
@@ -169,21 +169,21 @@
                         <div class="row float-right">
                     <div style="width: 450px;" class="col float-right">
                         <div class="form-group form-group ml-2 ">
-                            <input type="text" class="form-control mb-1" id="nama" placeholder="Nama Pelanggan...">
-                            <input type="text" class="form-control mb-1"  id="telp" placeholder="No Telp">
-                            <input type="text" class="form-control mb-1" id="alamat"  placeholder="Alamat">
+                            <input type="text" class="form-control mb-1 beforesend" id="nama" placeholder="Nama Pelanggan...">
+                            <input type="text" class="form-control mb-1 beforesend"  id="telp" placeholder="No Telp">
+                            <input type="text" class="form-control mb-1 beforesend" id="alamat"  placeholder="Alamat">
                             <div class="normalt">
                             <div class="d-inline-flex normalt" >
                                 <label style="padding: 6px; width: 210px; background-color: #1363ae" class="rounded text-light mr-1 text-center">Subtotal</label>
-                                <input class="form-control bg-light" id="totality" type="text" value=0 readonly>
+                                <input class="form-control bg-light" id="subtotal" type="text" value=0 readonly>
                             </div>
                             <div class="d-inline-flex normalt">
                                 <label style="padding: 6px; width: 210px; background-color: #1363ae" class="rounded text-light mr-1 text-center">Potongan</label>
-                                <input class="form-control bg-light" type="text" id="diskon"  value=0>
+                                <input class="form-control bg-light uang beforesend" type="number" id="diskon" min="0" value=0>
                             </div>
                             <div class="d-inline-flex normalt">
                                 <label style="padding: 6px; width: 210px; background-color: #06335C" class="rounded text-light mr-1 text-center" >Total</label>
-                                <input class="form-control bg-light" id="subtotal" type="text" value=0 readonly>
+                                <input class="form-control bg-light" id="totality" type="text" value=0 readonly>
                             </div>
                             </div>
                         </div>
@@ -202,7 +202,6 @@
                         <th>No.</th>
                         <th>Kode</th>
                         <th>Item</th>
-                        <th>Merek</th>
                         <th>Jumlah</th>
                         <th class="normalt">Harga(/pcs)</th>
                         <th class="normalt">Diskon(/pcs)</th>
@@ -233,14 +232,14 @@
                             <div class="form-group mr-3">
                                 <div class="normalt">
                                 <label>Pengiriman : </label>
-                                <select class="form-control float-right mb-3" id="antarkah">
+                                <select class="form-control float-right beforesend mb-3" id="antarkah">
                                     <option value="tidak">Tidak dikirim</option>
                                     <option value="ya">Dikirim</option>
 
                                 </select>
                                 </div>
-                                <input class="form-control mr-3 mb-3 usethis uang" type="text">
-                                <select class="custom-select form-control usethisvia">
+                                <input placeholder="Nominal pembayaran" class="form-control mr-3 mb-3 beforesend usethis uang" type="text">
+                                <select class="custom-select form-control beforesend usethisvia">
                                     <option value="Langsung">Tunai</option>
                                     <option value="BCA">BCA</option>
                                     <option value="Mandiri">Mandiri</option>

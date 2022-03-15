@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
+use Excel;
 use App\Exports\PelangganExport;
+use App\Exports\TransaksiExport;
 use function GuzzleHttp\json_encode;
 
 class transaksiController extends Controller
@@ -37,7 +38,7 @@ class transaksiController extends Controller
         $get = DB::table("transaksi");
 
         if($req->filled('no_nota')){
-            $get->where('no_nota',$req->no_nota);
+            $get->where('no_nota',$req->no_nota)->orWhere('nama_pelanggan',"LIKE","%".$req->no_nota."%");
         }
 
         if($req->filled('status')){
@@ -129,5 +130,30 @@ class transaksiController extends Controller
         $almt = isset($req->alamat) ? $req->alamat : null;
 
         return Excel::download(new PelangganExport($md,$sd,$tlp,$almt),'Pelanggan.xlsx');
+    }
+
+    public function downloadtransaksi(Request $req){
+        $tglstart = $req->md;
+        $tglend = $req->sd;
+
+        $datas = DB::table("transaksi")->where("status","!=","draf")->whereBetween(DB::raw('substr(created_at,1,10)'),[$tglstart,$tglend])->get();
+
+        $data = [];
+
+        foreach($datas as $i => $dts){
+          
+            $quer = DB::table('detail_transaksi')
+                                ->join('new_produks', 'detail_transaksi.kode_produk', '=', 'new_produks.kode_produk')
+                                ->join('kode_types','kode_types.id_kodetype','new_produks.id_ct')
+                                ->join('mereks','mereks.id_merek','new_produks.id_merek')
+                                ->where('kode_trans', $dts->kode_trans);
+            $data[$i] = $quer->get()->toArray();
+        
+            $data[$i]['jmltrans'] = $quer->count();
+            $data[$i]['datas'] = $dts;
+        }
+      // dd($data);
+
+      return Excel::download(new TransaksiExport($data), "check.xls");
     }
 }

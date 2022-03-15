@@ -12,9 +12,11 @@ $master='kasir' @endphp
 @isset($id)
 <script>
     $(document).ready(function() {
+        $(".readonly").attr("readonly","readonly");
         $("#notabesar").hide();
         $(".kunci").hide();
         $("#suratjalan").hide();
+        $("#buttonreset").attr('href','/transaksipreorder');
         $.ajax({
             headers: {
                 "X-CSRF-TOKEN": $("meta[name=csrf-token]").attr('content')
@@ -31,11 +33,12 @@ $master='kasir' @endphp
                     $("#suratjalan").show();
                 }
 
-                if(data['nb'][0]['termin'] == 3){
+                if(data['nb'][0]['termin'] > 1){
                     $(".kunci").show();
                     $("#kunci").val(data['nb'][0]['kunci']);
                 }else{
                     $(".kunci").hide();
+                 
                 }
                 console.log(data);
                 $("#tt").text(data["nb"][0]["termin"] == 3 ? "PELUNASAN" : "Termin: " + data["nb"][0]["termin"]);
@@ -47,16 +50,17 @@ $master='kasir' @endphp
                 $("#us").val(data['nb'][0]['us']);
                 $("#brp").val(data['nb'][0]['brp']);
                 $("#gm").val(data['nb'][0]['gm']);
-                $("#total").val(data['nb'][0]['total']);
+                $("#total").val(parseInt(data['nb'][0]['total']).toLocaleString());
                 $("#nn").text("No Nota: " + data["nb"][0]["no_nota"]);
                 $("#tgl").val(data["nb"][0]["created_at"]);
-
+                $("#jt").val(data["nb"][0]["jatuh_tempo"]);
+                $("#termin").val(data['nb'][0]['termin']);
 
                 let row = data["opsi"].map(function(e, i) {
                     return `
                     <div class="form-group">
                         <label>${e['judul']}</label>
-                        <input type="text" class="form-control isi${i+1} readonly" id="exampleInputPassword1" value="${e['ket']}">
+                        <input type="text" readonly class="form-control isi${i+1} readonly" id="exampleInputPassword1" value="${e['ket']}">
                     </div>
                     `;
 
@@ -71,13 +75,18 @@ $master='kasir' @endphp
                 $(".td").show();
                 $(".td").children("input").val(parseInt(data["td"]).toLocaleString());
                 $("#addopsi").hide();
+                $("#suratjalan").attr("disabled","disabled");
                 if (data["nb"][0]["status"] == "dibayar") {
+                    $("#us").attr("disabled", "disabled");
+                    $("#us").val(parseInt($("#us").val()).toLocaleString());
+                    $("#brp").attr("disabled", "disabled");
                     $("#buttonsubmit").attr("disabled", "disabled");
                     $("#buttonsubmit").text("Sudah Lunas");
                     $("#buttonsubmit").removeClass("btn-primary");
                     $("#buttonsubmit").addClass("btn-success");
                     $("#printbutton").removeAttr("disabled");
                     $("#suratjalan").removeAttr("disabled");
+                    $("#kunci").attr("readonly",'readonly');
 
                 } else {
                     $("#buttonsubmit").removeAttr("disabled");
@@ -120,7 +129,7 @@ $master='kasir' @endphp
 
         <input type="hidden" id="id_trans" val="0">
         
-
+        <input type="hidden" id="termin" val="0">
         <form id="preorderform" action="/tambahpreorder">
         <div class="card">
 
@@ -133,7 +142,7 @@ $master='kasir' @endphp
                 <select name="" class="custom-select mb-3" id="notabesar">
                     <option value="pintugarasi">Pintu Garasi</option>
                     <option value="pintugadandp">Pintu GA & DP </option>
-                    <option value="autog">Auto Gate & Auto Gate</option>
+                    <option value="autog">Auto Gate & Auto Garage</option>
                     <option value="upvc">UPVC</option>
                     <option value="omge">OMGE</option>
                 </select>
@@ -156,6 +165,7 @@ $master='kasir' @endphp
                         <div class="form-group td">
                             <label for="exampleInputPassword1">Telah Dibayar</label>
                             <input type="text" class="form-control readonly" id="td">
+                            <input type="hidden" class="form-control readonly" id="td2">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Uang sejumlah</label>
@@ -170,6 +180,10 @@ $master='kasir' @endphp
                             <input type="text" class="form-control readonly" id="gm" required>
                         </div>
                         <div class="form-group">
+                            <label for="exampleInputPassword1">Jatuh Tempo</label>
+                            <input type="date" class="form-control readonly" id="jt" required>
+                        </div>
+                        <div class="form-group">
                             <label class="kunci" for="exampleInputPassword1">Kunci</label>
                             <input type="text" class="form-control kunci" id="kunci">
                         </div>
@@ -180,6 +194,7 @@ $master='kasir' @endphp
                     <div class="col">
                         <div class="form-group">
                             <label for="exampleInputPassword1">Total</label>
+                            <input type="hidden" class="form-control readonly" id="total2">
                             <input type="text" class="form-control readonly uang" id="total" required>
                         </div>
                         <div class="form-group opsigrup">
@@ -196,7 +211,7 @@ $master='kasir' @endphp
             </div>
             <div class="row ml-3 mb-3">
                 <button type="submit" class="btn btn-primary" id="buttonsubmit">Kirim</button>
-                <button type="button" class="btn btn-primary ml-2" id="resetbutton"><i class="fa fa-back"></i>Kembali</button>
+                <button type="button" class="btn btn-primary ml-2" href="/notabesar" id="resetbutton"><i class="fa fa-back"></i>Kembali</button>
                
                 <button type="button" class="btn btn-warning ml-2" id="printbutton"><i class="fa fa-print mr-2"></i>Print</button>
                 <button type="button" id="suratjalan"  data-target="#exampleModal" class="btn btn-primary float-right ml-2">Surat Jalan</button>

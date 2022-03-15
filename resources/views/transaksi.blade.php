@@ -50,19 +50,22 @@ $haslampau = false;
 
                
                 </div>
+                
                 <button class="btn btn-primary btn-sm ml-2" type="submit">Cari</button>
                 </form>
 
-                <button data-toggle="modal" data-target="#modaluser" class="btn btn-info"><i class="fa fa-excel; mr-3"></i>Unduh Daftar Pelangan</button>
+                <button data-toggle="modal" data-target="#modalRiwayat" class="btn btn-primary"><i class="fa fa-print"></i></button>
+
+                <!--<button data-toggle="modal" data-target="#modaluser" class="btn btn-info"><i class="fa fa-excel; mr-3"></i>Unduh Daftar Pelangan</button>-->
   </div>
 </div>
 
 @foreach($data as $datas)
 @if(\Carbon\Carbon::parse($datas['created_at'])->isToday() == 1 and $hastoday == false)
-<h4 class="font-weight-bold ml-2 mb-2">Hari Ini</h4>
+<h5 class="font-weight-bold ml-2 mb-2">Hari Ini</h5>
 @php $hastoday=true @endphp
 @elseif(\Carbon\Carbon::parse($datas['created_at'])->isToday() == 0 and $haslampau == false)
-<h4>Sebelumnya</h4>
+<h5 class="font-weight-bold">Sebelumnya</h5>
 @php $haslampau=true @endphp
 @endif
 <div class="cardo">
@@ -85,7 +88,7 @@ $haslampau = false;
         @if($datas['status']=="lunas")
         <span  class="bg-success font-weight-bold pl-3 pr-3 text-center rounded-pill" style="width:10px ">LUNAS</span>
         @elseif($datas['status']=='belum lunas')
-        <button data-toggle="modal" data-target="#exampleModalCenter" class="btn-bayar bg-danger font-weight-bold pl-3 pr-3 text-center rounded-pill" id_trans="{{$datas['kode_trans']}}">Belum Lunas</button>
+        <button data-toggle="modal" data-target="#exampleModalCenter" class="btn-bayar bg-danger font-weight-bold pl-3 pr-3 text-center rounded-pill" td="{{$datas['bayar']}}" subtotal="{{$datas['subtotal']}}" id_trans="{{$datas['kode_trans']}}">Belum Lunas</button>
         @elseif($datas['status']=='return') <span class="bg-warning font-weight-bold pl-3 pr-3 text-center rounded-pill">RETUR</span>
         @elseif($datas['status']=='draf')<span class="bg-primary font-weight-bold pl-3 pr-3 text-center rounded-pill">DRAF</span>
         @endif
@@ -163,8 +166,10 @@ $haslampau = false;
       </div>
       <div class="modal-body">
         <div class="form-group">
+        <input type="hidden" class="form-control" id="totalbayar">
+        <input type="hidden" class="form-control" id="td">
             <label for="">Masukan Nominal</label>
-            <input type="text" class="form-control" id="nominal-bayar">
+            <input type="text" class="form-control uang" id="nominal-bayar">
         </div>
       </div>
       <div class="modal-footer">
@@ -219,4 +224,70 @@ $haslampau = false;
   </div>
 </div>
 
+
+
+
+<!-- modal print riwayat -->
+<div class="modal fade" id="modalRiwayat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Cetak Riwayat</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form action="{{route('download_trans')}}" method="post">
+        @csrf
+      <div class="form-row mb-3">
+          <div class="col">
+                <label for="">Mulai dari</label>
+                <input name="md" class="form-control" id="md" type="date">
+          </div>
+          <div class="col">
+               <label for="">Sampai dengan</label>
+                <input name="sd" class="form-control" id="sd" type="date">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+        $(document).ready(function () {
+
+
+
+
+            $(".uang").keyup(function () {
+                $(this).val(formatRupiah($(this).val(), ""))
+            });
+
+
+            function formatRupiah(angka, prefix) {
+                var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                    split = number_string.split(','),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                // tambahkan titik jika yang di input sudah menjadi angka ribuan
+                if (ribuan) {
+                    separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                }
+
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                return prefix == undefined ? rupiah : (rupiah ? '' + rupiah : '');
+            }
+        });
+
+    </script>
 @endsection

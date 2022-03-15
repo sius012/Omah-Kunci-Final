@@ -85,11 +85,14 @@ $m = isset($mereknya) ? $mereknya : '';
                 <thead style="font-size:10pt;">
                     <tr>
                         <th>No</th>
-                        <th>Barcode</th>
-                        <th style="width:180px;">Nama Produk</th>
                         <th style="width:110px;">Tipe</th>
                         <th style="width:130px;">Tipe Kode</th>
                         <th>Merek</th>
+                        <th>Barcode</th>
+                        <th style="width:180px;">Nama Produk</th>
+                        
+                        
+                        
                         <th>Satuan</th>
                         <th style="width:130px;">Harga</th>
                         <th>Diskon</th>
@@ -100,11 +103,14 @@ $m = isset($mereknya) ? $mereknya : '';
                     @foreach ($produk as $produks)
                         <tr>
                             <td>{{ $no }}</td>
-                            <td>{{ $produks->kode_produk }}</td>
-                            <td>{{ $produks->nama_produk }}</td>
                             <td>{{ $produks->nama_tipe}}</td>
                             <td>{{ $produks->nama_kodetype}}</td>
                             <td>{{ $produks->nama_merek }}</td>
+                            <td>{{ $produks->kode_produk }}</td>
+                            <td>{{ $produks->nama_produk }}</td>
+                            
+                            
+                            
                             <td>{{ $produks->satuan }}</td>
                             <td>Rp. {{ number_format($produks->harga) }}</td>
                             <td>{{$produks->diskon_tipe == "persen" ? $produks->diskon."%" : "Rp.".number_format((int)$produks->diskon) }}</td>
@@ -317,8 +323,8 @@ $m = isset($mereknya) ? $mereknya : '';
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Harga</label>
-                                <input type="number" class="form-control uang" aria-describedby="emailHelp"
-                                    value="{{ $data->harga }}" name="harga">
+                                <input type="text" class="form-control uang" aria-describedby="emailHelp"
+                                    value="{{number_format( $data->harga,0,',','.') }}" name="harga">
                             </div>
                             <div class="form-row">
                             <div class="form-group col-md-6">

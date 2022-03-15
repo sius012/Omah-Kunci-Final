@@ -90,7 +90,7 @@ class PreorderController extends Controller
         $tanggal = $req->tanggal;
         
 
-        $tanggal2 = Carbon::createFromFormat("Y.m.d", date("Y.m.d",strtotime($tanggal)))->addDays(20)->format("Y-m-d");
+        $tanggal2 = $req->jt;
 
 
 
@@ -192,8 +192,9 @@ class PreorderController extends Controller
         DB::table("nota_besar")->where("no_nota", $no_nota)->where("termin",$termin)->update(["status" => "dibayar"]);
         DB::table("nota_besar")->where("no_nota", $no_nota)->where("termin",$termin+1)->update(["status" => "ready"]);
         DB::table('nota_besar')->where("id_transaksi", $id)->update(['us'=> $formdata["us"],'brp'=> $formdata["brp"]]);
-        if($termin == 3){
+        if($termin == 2){
             DB::table('nota_besar')->where("id_transaksi", $id)->update(['kunci'=>$req->kunci]);
+            DB::table('nota_besar')->where("no_nota", $no_nota)->where("termin",3)->update(['kunci'=>$req->kunci]);
         }
 
         return json_encode(["id_nb" => $id,"no_nota" => $no_nota]);
@@ -259,7 +260,8 @@ class PreorderController extends Controller
         $td = DB::table("nota_besar")->where('no_nota',$data[0]->no_nota)->where("termin","<",$data[0]->termin)->count();
         $opsi = DB::table("nb_detail")->join("nota_besar", "nota_besar.id_transaksi", "=", "nb_detail.id_nb")->where("id_nb", $id_trans)->get();
         
-        $pdf = PDF::loadview('nota_besar', ["data" => $data[0],"opsi"=>$opsi, "td" => $td < 1 ? 0 : $td = DB::table("nota_besar")->where('no_nota',$data[0]->no_nota)->where("termin","<",$data[0]->termin)->sum("us")]);
+        $pdf = PDF::loadview('nota_besar', ["data" => $data[0],"opsi"=>$opsi, "td" => $td < 1 ? 0 : $td = DB::table("nota_besar")->where('no_nota',$data[0]->no_nota)->where("termin","<",$data[0]->termin)->sum("us")])
+        ->setPaper('a4', 'landscape');
         $path = public_path('pdf/');
         $fileName =  date('mdy').'-'.$data[0]->id_transaksi. '.' . "nota_besar".'pdf' ;
         $pdf->save(storage_path("pdf/$fileName"));
