@@ -33,9 +33,10 @@ $master='kasir' @endphp
                     $("#suratjalan").show();
                 }
 
-                if(data['nb'][0]['termin'] > 1){
+                if(data['nb'][0]['termin'] == 2){
                     $(".kunci").show();
                     $("#kunci").val(data['nb'][0]['kunci']);
+                    $(".jt").show();
                 }else{
                     $(".kunci").hide();
                  
@@ -75,7 +76,7 @@ $master='kasir' @endphp
                 $(".td").show();
                 $(".td").children("input").val(parseInt(data["td"]).toLocaleString());
                 $("#addopsi").hide();
-                $("#suratjalan").attr("disabled","disabled");
+               // $("#suratjalan").attr("disabled","disabled");
                 if (data["nb"][0]["status"] == "dibayar") {
                     $("#us").attr("disabled", "disabled");
                     $("#us").val(parseInt($("#us").val()).toLocaleString());
@@ -94,7 +95,6 @@ $master='kasir' @endphp
                     $("#buttonsubmit").addClass("btn-primary");
                     $("#buttonsubmit").text("Bayar");
                     $("#printbutton").attr("disabled", "disabled");
-                    $("#suratjalan").addAttr("disabled","disabled");
                 }
                 $(".readonly").attr('readonly', 'readonly');
             }
@@ -179,7 +179,7 @@ $master='kasir' @endphp
                             <label for="exampleInputPassword1">Guna Membayar</label>
                             <input type="text" class="form-control readonly" id="gm" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group jt">
                             <label for="exampleInputPassword1">Jatuh Tempo</label>
                             <input type="date" class="form-control readonly" id="jt" required>
                         </div>
@@ -214,7 +214,7 @@ $master='kasir' @endphp
                 <button type="button" class="btn btn-primary ml-2" href="/notabesar" id="resetbutton"><i class="fa fa-back"></i>Kembali</button>
                
                 <button type="button" class="btn btn-warning ml-2" id="printbutton"><i class="fa fa-print mr-2"></i>Print</button>
-                <button type="button" id="suratjalan"  data-target="#exampleModal" class="btn btn-primary float-right ml-2">Surat Jalan</button>
+                <button type="button" id="suratjalan" data-toggle="modalgi" data-target="#exampleModal" class="btn btn-primary float-right ml-2">Surat Jalan</button>
             </div>
         </div>
         </form>

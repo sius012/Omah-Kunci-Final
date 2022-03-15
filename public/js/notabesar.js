@@ -2,6 +2,7 @@
 
 $(document).ready(function(){
     $("#suratjalan").hide();
+    $(".jt").hide();
     $(".kunci").hide();
     $("#printbutton").attr("disabled", "disabled");
     $(".td").hide();
@@ -137,6 +138,7 @@ $("#trigger").click(function(e){
                 
                 if(data["nb"][0]["termin"] == 2){
                     $("#suratjalan").show();
+                    $(".jt").show();
                 }else{
                 $("#suratjalan").hide();
                 }
@@ -208,7 +210,7 @@ $("#trigger").click(function(e){
                     $("#buttonsubmit").addClass("btn-primary");
                     $("#buttonsubmit").text("Bayar");
                     $("#printbutton").attr("disabled", "disabled");
-                    $("#suratjalan").attr("disabled","disabled");
+                   
                 }
             },
             error: function(err){
