@@ -3,6 +3,7 @@
     $master='admingudang';
 @endphp
 @extends('layouts.layout2')
+@section('icon', 'fa fa-cube ml-3 mr-2')
 
 @section('pagetitle', 'Stok Harian')
 
@@ -31,11 +32,11 @@
 
                         <button type="button" class="btn btn-tambah-data bg-warning ml-2 float-right"
                             data-toggle="modal" data-target="#exampleModals">
-                            Return Barang
+                            <i class="fa fa-undo mr-2"></i>Return Barang
                         </button>
 
                         <button type="button" class="btn float-right btn-tambah-data" data-toggle="modal"
-                            data-target="#exampleModal">Tambah Data</button>
+                            data-target="#exampleModal"><i class="fa fa-plus mr-2"></i>Tambah Data</button>
 
                         
                     </div>

@@ -3,6 +3,7 @@ $master='kasir' @endphp
 @extends('layouts.layout2')
 
 @section('pagetitle', 'Nota Besar')
+@section('icon', 'fa fa-sticky-note mr-2 ml-3')
 @section('title', 'Nota Besar')
 
 @section('js')
@@ -213,7 +214,7 @@ $master='kasir' @endphp
                 <button type="submit" class="btn btn-primary" id="buttonsubmit">Kirim</button>
                 <button type="button" class="btn btn-primary ml-2" href="/notabesar" id="resetbutton"><i class="fa fa-back"></i>Kembali</button>
                
-                <button type="button" class="btn btn-warning ml-2" id="printbutton"><i class="fa fa-print mr-2"></i>Print</button>
+                <button type="button" class="btn btn-primary ml-2" id="printbutton"><i class="fa fa-print mr-2"></i>Print</button>
                 <button type="button" id="suratjalan" data-toggle="modalgi" data-target="#exampleModal" class="btn btn-primary float-right ml-2">Surat Jalan</button>
             </div>
         </div>

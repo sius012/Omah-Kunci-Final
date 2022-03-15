@@ -219,7 +219,6 @@
                 </a>
               </li>
               
-              <li class=" nav-header">Transaksi Nota Besar</li>
                                 <li class="nav-item">
                                     <a href="{{url('/notabesar')}}" class="nav-link {{$whoactive=='notabesar' ? 'active' : ''}}"">
                   <p>Nota Besar</p>
@@ -307,7 +306,10 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 font-weight-bold mb-2">@yield('pagetitle')</h1>
+                            <h1 class="m-0 font-weight-bold mb-2">
+                                <i class="@yield('icon')"></i>
+                                @yield('pagetitle')
+                            </h1>
                         </div><!-- /.row -->
                     </div><!-- /.container-fluid -->
                 </div>
